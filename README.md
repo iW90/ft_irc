@@ -5,7 +5,7 @@ This project is an HTTP server implementation in C++98, inspired by **Nginx**. T
 ## Features
 
 - Compliant with HTTP/1.1 protocol.
-- Handles multiple clients concurrently using **multiplexing** (select, poll, or epoll).
+- Handles multiple clients concurrently using **multiplexing** (epoll).
 - Basic request parsing and response generation.
 - Support for GET, POST, and DELETE methods.
 - Configurable through a custom configuration file.
@@ -14,6 +14,6 @@ This project is an HTTP server implementation in C++98, inspired by **Nginx**. T
 ## Project Structure
 
 - **src/**: Source files for the server, request/response handling, and utilities.
-- **include/**: Header files and interfaces.
-- **config/**: Configuration files for testing different setups.
+- **inc/**: Header files and interfaces.
+- **cfg/**: Configuration files for testing different setups.
 - **www/**: Directory containing sample files for testing file serving and CGI.
