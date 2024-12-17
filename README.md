@@ -43,7 +43,7 @@ class: `HTTPResponse`
 
 
 ## 4. Event Multiplexing
-class: `EventManager`
+class: `Multiplexer`
 - [ ] Integrate `select`, `poll`, or `epoll` for handling multiple connections.
 - [ ] Process multiple clients concurrently without blocking.
 

@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpServer.hpp                                     :+:      :+:    :+:   */
+/*   Multiplexer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:43:58 by maalexan          #+#    #+#             */
-/*   Updated: 2024/12/17 19:21:02 by maalexan         ###   ########.fr       */
+/*   Updated: 2024/12/16 21:16:58 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#define DEFAULT_PORT 8080
+#include <sys/epoll.h>
+
 #define MAX_BACKLOG 10
+#define MAX_EVENTS 10
 
-class HttpServer {
+class Multiplexer {
  public:
-  HttpServer();
-  ~HttpServer();
-  HttpServer(const HttpServer& other);
-  HttpServer& operator=(const HttpServer& other);
+  Multiplexer();
+  ~Multiplexer();
+  Multiplexer(const Multiplexer& other);
+  Multiplexer& operator=(const Multiplexer& other);
 
-  void start();
+  void start(int server_fd);
   
  private:
-  int server_fd;
-  sockaddr_in address;
+  int epoll_fd;
+  struct epoll_event epoll_event;
 
-  HttpServer& createServerSocket();
-  HttpServer& bindSocket();
-  HttpServer& listenForConnections();
-
+  Multiplexer& createEpollInstance(int server_fd);
+  Multiplexer& addEpollEvent(int fd);
+  Multiplexer& handleEvents(int server_fd);
+  Multiplexer& acceptConnections(int server_fd);
 };
