@@ -5,7 +5,7 @@ const std::string& ATarget::getType() const {
     return type;
 }
 
-ATarget::Atarget(std::string type): type(type) {}
+ATarget::ATarget(std::string type): type(type) {}
 
 void ATarget::getHitBySpell(const ASpell& spell) const {
     std::cout << this->getType() << " has been " << spell.getEffects() << "!" << std::endl;

@@ -24,6 +24,6 @@ ASpell& ASpell::operator=(const ASpell& other) {
     return *this;
 }
 
-ASpell::Aspell(const ASpell& other) {
+ASpell::ASpell(const ASpell& other) {
     *this = other;
 }
