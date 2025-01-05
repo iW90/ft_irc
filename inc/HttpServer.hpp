@@ -18,17 +18,21 @@
 class HttpServer {
  public:
   HttpServer();
+  HttpServer(uint16_t port);
   ~HttpServer();
   HttpServer(const HttpServer& other);
   HttpServer& operator=(const HttpServer& other);
 
   void start();
+  HttpServer& useIPv6();
   
  private:
   int server_fd;
   sockaddr_in address;
 
+  HttpServer& setPort(uint16_t port);
   HttpServer& createServerSocket();
+  HttpServer& setSocketOptions ();
   HttpServer& bindSocket();
   HttpServer& listenForConnections();
 
