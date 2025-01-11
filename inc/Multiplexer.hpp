@@ -12,7 +12,12 @@
 
 #pragma once
 
+#include <arpa/inet.h>
 #include <sys/epoll.h>
+#include <unistd.h>
+#include <cstring>
+#include <stdexcept>
+#include <vector>
 
 #define MAX_BACKLOG 10
 #define MAX_EVENTS 10
@@ -24,14 +29,12 @@ class Multiplexer {
   Multiplexer(const Multiplexer& other);
   Multiplexer& operator=(const Multiplexer& other);
 
-  void start(int server_fd);
-  
+
  private:
   int epoll_fd;
   struct epoll_event epoll_event;
 
-  Multiplexer& createEpollInstance(int server_fd);
-  Multiplexer& addEpollEvent(int fd);
-  Multiplexer& handleEvents(int server_fd);
-  Multiplexer& acceptConnections(int server_fd);
+  void addSocket(int fd, uint32_t events);
+  void removeSocket(int fd);
+  std::vector<struct epoll_event> waitForEvents(int max_events, int timeout = -1);
 };

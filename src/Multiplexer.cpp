@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #include "Multiplexer.hpp"
-#include <cstring>
-#include <unistd.h>
-#include <stdexcept>
-#include <arpa/inet.h>
 
 Multiplexer::Multiplexer() : epoll_fd(-1) {
+  epoll_fd = epoll_create1(0);
+  if (epoll_fd == -1) {
+    throw std::runtime_error("Failed to create epoll instance");
+  }
 }
 
 Multiplexer::~Multiplexer() {
@@ -25,55 +25,27 @@ Multiplexer::~Multiplexer() {
   }
 }
 
-
-Multiplexer& Multiplexer::acceptConnections(int server_fd) {
-  int client_fd = accept(server_fd, NULL, NULL);
-  if (client_fd == -1) {
-    throw std::runtime_error("Failed to accept connection");
-  }
-  addEpollEvent(client_fd);
-  return *this;
-}
-
-Multiplexer& Multiplexer::createEpollInstance(int server_fd) {
-  epoll_fd = epoll_create1(0);
-  if (epoll_fd == -1) {
-    throw std::runtime_error("Failed to create epoll instance");
-  }
-  epoll_event.events = EPOLLIN;
-  epoll_event.data.fd = server_fd;
-  if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, server_fd, &epoll_event) == -1) {
-    throw std::runtime_error("Failed to add server socket to epoll");
-  }
-  return *this;
-}
-
-Multiplexer& Multiplexer::addEpollEvent(int fd) {
-  epoll_event.events = EPOLLIN;
-  epoll_event.data.fd = fd;
-  if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &epoll_event) == -1) {
-    throw std::runtime_error("Failed to add socket to epoll");
-  }
-  return *this;
-}
-
-Multiplexer& Multiplexer::handleEvents(int server_fd) {
-  struct epoll_event events[MAX_EVENTS];
-  int num_events = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
-  if (num_events == -1) {
-    throw std::runtime_error("epoll_wait failed");
-  }
-
-  for (int i = 0; i < num_events; ++i) {
-    if (events[i].data.fd == server_fd) {
-      acceptConnections(server_fd);
-    } else {
-      // Handle data for existing connection (not implemented here)
+void Multiplexer::addSocket(int fd, uint32_t events) {
+    struct epoll_event ev{};
+    ev.events = events;
+    ev.data.fd = fd;
+    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &ev) == -1) {
+      throw std::runtime_error("Failed to add socket to epoll");
     }
-  }
-  return *this;
 }
 
-void Multiplexer::start(int server_fd) {
-  createEpollInstance(server_fd).handleEvents(server_fd);
+void Multiplexer::removeSocket(int fd) {
+    if (epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, nullptr) == -1) {
+      throw std::runtime_error("Failed to remove socket from epoll");
+    }
+}
+
+std::vector<epoll_event> Multiplexer::waitForEvents(int max_events, int timeout = -1) {
+    std::vector<struct epoll_event> events(max_events);
+    int num_events = epoll_wait(epoll_fd, events.data(), max_events, timeout);
+    if (num_events == -1) {
+      throw std::runtime_error("epoll_wait failed");
+    }
+    events.resize(num_events);
+    return events;
 }

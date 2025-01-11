@@ -6,12 +6,12 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 19:37:25 by maalexan          #+#    #+#              #
-#    Updated: 2024/11/02 10:54:10 by maalexan         ###   ########.fr        #
+#    Updated: 2025/01/11 10:47:38 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Program name
-NAME		:=	webserv
+NAME		:=	ircserv
 
 # Directories for source, object and libraries
 SRC_DIR		:=	./src

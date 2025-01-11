@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpServer.hpp                                     :+:      :+:    :+:   */
+/*   Server.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,29 +11,33 @@
 /* ************************************************************************** */
 
 #pragma once
+#include <arpa/inet.h>
+#include <cstdint>
+#include <cstring>
+#include <netinet/in.h>
+#include <stdexcept>
+#include <unistd.h>
 
-#define DEFAULT_PORT 8080
+#define DEFAULT_PORT 6667
 #define MAX_BACKLOG 10
 
-class HttpServer {
- public:
-  HttpServer();
-  HttpServer(uint16_t port);
-  ~HttpServer();
-  HttpServer(const HttpServer& other);
-  HttpServer& operator=(const HttpServer& other);
+class Server {
+private:
+    int server_fd;
+    struct sockaddr_in address;
 
-  void start();
-  HttpServer& useIPv6();
-  
- private:
-  int server_fd;
-  sockaddr_in address;
+public:
+    Server();
+    Server(uint16_t port);
+    Server(const Server& other);
+    Server& operator=(const Server& other);
+    ~Server();
 
-  HttpServer& setPort(uint16_t port);
-  HttpServer& createServerSocket();
-  HttpServer& setSocketOptions ();
-  HttpServer& bindSocket();
-  HttpServer& listenForConnections();
-
+    Server& setPort(uint16_t port);
+    Server& createServerSocket();
+    Server& bindSocket();
+    Server& setSocketOptions();
+    Server& listenForConnections();
+    Server& useIPv6();
+    void start();
 };
