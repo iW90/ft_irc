@@ -23,7 +23,7 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
 # ft_irc Project Roadmap
 
 ## 1. Server Setup
-- **Class**: `IRCServer`
+- **Class**: `Server`
 - [x] Create a listening socket.
 - [x] Bind the socket to a port.
 - [x] Set the socket to listen for connections.
@@ -33,7 +33,7 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
 ---
 
 ## 2. Event Multiplexing
-- **Class**: `IRCMultiplexer`
+- **Class**: `Multiplexer`
 - [x] Integrate `epoll` for efficient event-driven I/O.
 - [ ] Monitor multiple sockets for incoming data or disconnections.
 - [ ] Notify the server of triggered events for processing.
@@ -49,7 +49,7 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
 ---
 
 ## 4. Client State Management
-- **Class**: `IRCClient`
+- **Class**: `Client`
 - [ ] Track client nickname, username, and connection status.
 - [ ] Handle message sending and receiving.
 - [ ] Manage client-specific state (e.g., joined channels).
@@ -58,7 +58,7 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
 ---
 
 ## 5. Channel Management
-- **Class**: `IRCChannel`
+- **Class**: `Channel`
 - [ ] Support channel creation and destruction.
 - [ ] Track clients in a channel.
 - [ ] Manage channel topics, modes, and permissions.
