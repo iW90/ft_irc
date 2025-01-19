@@ -5,7 +5,7 @@
 
 # include <string>
 # include <iostream>
-# include <cstdint>
+# include <cstring>
 # include <arpa/inet.h>   // Necessário para inet_pton (converter string para binário)
 # include <netinet/in.h>  // Necessário para sockaddr_in
 # include <unistd.h>      // Necessário para close()
@@ -17,7 +17,7 @@ class Server
     private:
         bool                running;        // Estado do servidor (rodando ou não)
         struct sockaddr_in  address;        // Configurações de porta e host
-        int                 fdSocket;       // Socket do servidor
+        int                 fdServer;       // FD do socket do servidor
 
         /*
         struct sockaddr_in {
@@ -29,21 +29,20 @@ class Server
 
     public:
         // Construtor e destruidor
-        Server(const std::string& host, int port);
+        Server();
         ~Server();
 
         // Getters e Setters
-        std::string getHost() const;
-        void setHost(const std::string& host);
-
-        int getPort() const;
-        void setPort(int port);
+        sockaddr_in getAddress() const;
+        void setAddress(const sockaddr_in& addr);
 
         int getSocket() const;
         void setSocket(int socket);
 
         bool isRunning() const;
-        void setRunning(bool running);
+        void setRunning(bool runn);
+
+
 };
 
 #endif //SERVER_HPP
