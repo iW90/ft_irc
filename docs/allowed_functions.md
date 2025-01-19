@@ -1,6 +1,5 @@
 # Funções permitidas
 
-
 1. socket()
 
 - Protótipo: `int socket(int domain, int type, int protocol);`
@@ -11,6 +10,8 @@
     int protocol: Protocolo a ser usado (ex: 0 para o protocolo padrão de domain e type).
 - Saída: Retorna um descritor de arquivo (um inteiro) que representa o socket criado ou -1 em caso de erro.
 
+---
+
 2. close()
 
 - Protótipo: `int close(int fd);`
@@ -18,6 +19,8 @@
 - Parâmetros:
     int fd: Descritor de arquivo (incluindo o socket) que será fechado.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
+
+---
 
 3. setsockopt()
 
@@ -31,6 +34,8 @@
     - socklen_t optlen: Tamanho de optval.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 
+---
+
 4. getsockname()
 
 - Protótipo: `int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);`
@@ -41,6 +46,8 @@
     - socklen_t *addrlen: Tamanho da estrutura addr (deve ser inicialmente o tamanho da estrutura).
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 
+---
+
 5. getprotobyname()
 
 - Protótipo: `struct protoent *getprotobyname(const char *name);`
@@ -49,6 +56,8 @@
     - const char *name: Nome do protocolo (ex: "tcp", "udp").
 - Saída: Retorna um ponteiro para uma estrutura protoent com informações sobre o protocolo ou NULL em caso de erro.
 
+---
+
 6. gethostbyname()
 
 - Protótipo: `struct hostent *gethostbyname(const char *name);`
@@ -56,6 +65,8 @@
 - Parâmetros:
     - const char *name: Nome de domínio ou endereço IP.
 - Saída: Retorna um ponteiro para a estrutura hostent contendo informações sobre o host ou NULL em caso de erro.
+
+---
 
 7. getaddrinfo()
 
@@ -68,6 +79,8 @@
     - struct addrinfo **res: Ponteiro onde a lista de endereços será armazenada.
 - Saída: Retorna 0 em caso de sucesso ou um código de erro em caso de falha.
 
+---
+
 8. freeaddrinfo()
 
 - Protótipo: `void freeaddrinfo(struct addrinfo *res);`
@@ -75,6 +88,8 @@
 - Parâmetros:
     - struct addrinfo *res: Ponteiro para a lista de endereços que deve ser liberada.
 - Saída: Nenhuma. Libera a memória alocada por getaddrinfo.
+
+---
 
 9. bind()
 
@@ -86,6 +101,8 @@
     - socklen_t addrlen: Tamanho da estrutura addr.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 
+---
+
 10. connect()
 
 - Protótipo: `int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);`
@@ -96,6 +113,8 @@
     - socklen_t addrlen: Tamanho da estrutura addr.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 
+---
+
 11. listen()
 
 - Protótipo: `int listen(int sockfd, int backlog);`
@@ -104,6 +123,8 @@
     - int sockfd: Descritor de arquivo do socket.
     - int backlog: Número de conexões pendentes que podem ser enfileiradas.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
+
+---
 
 12. accept()
 
@@ -115,6 +136,8 @@
     - socklen_t *addrlen: Tamanho da estrutura addr.
 - Saída: Retorna um novo descritor de arquivo para a conexão aceita ou -1 em caso de erro.
 
+---
+
 13. htons()
 
 - Protótipo: `uint16_t htons(uint16_t hostshort);`
@@ -122,6 +145,8 @@
 - Parâmetros:
     - uint16_t hostshort: Valor de 16 bits em ordem de byte "host".
 - Saída: Retorna o valor convertido para a ordem de byte "network".
+
+---
 
 14. htonl()
 
@@ -131,6 +156,8 @@
     - uint32_t hostlong: Valor de 32 bits em ordem de byte "host".
 - Saída: Retorna o valor convertido para a ordem de byte "network".
 
+---
+
 15. ntohs()
 
 - Protótipo: `uint16_t ntohs(uint16_t netshort);`
@@ -138,6 +165,8 @@
 - Parâmetros:
     - uint16_t netshort: Valor de 16 bits em ordem de byte "network".
 - Saída: Retorna o valor convertido para a ordem de byte "host".
+
+---
 
 16. ntohl()
 
@@ -147,6 +176,8 @@
     - uint32_t netlong: Valor de 32 bits em ordem de byte "network".
 - Saída: Retorna o valor convertido para a ordem de byte "host".
 
+---
+
 17. inet_addr()
 
 - Protótipo: `in_addr_t inet_addr(const char *cp);`
@@ -155,6 +186,8 @@
     - const char *cp: Endereço IP em formato de string (ex: "192.168.1.1").
 - Saída: Retorna o endereço IP convertido em formato de 32 bits ou INADDR_NONE em caso de erro.
 
+---
+
 18. inet_ntoa()
 
 - Protótipo: `char *inet_ntoa(struct in_addr in);`
@@ -162,6 +195,8 @@
 - Parâmetros:
     - struct in_addr in: Estrutura contendo o endereço IP (em formato binário de 32 bits).
 - Saída: Retorna o endereço IP em formato de string (ex: "192.168.1.1").
+
+---
 
 19. send()
 
@@ -174,6 +209,8 @@
     - int flags: Flags adicionais de envio.
 - Saída: Retorna o número de bytes enviados ou -1 em caso de erro.
 
+---
+
 20. recv()
 
 - Protótipo: `ssize_t recv(int sockfd, void *buf, size_t len, int flags);`
@@ -185,6 +222,8 @@
     - int flags: Flags adicionais de recepção.
 - Saída: Retorna o número de bytes lidos ou -1 em caso de erro.
 
+---
+
 21. signal()
 
 - Protótipo: `sighandler_t signal(int signum, sighandler_t handler);`
@@ -193,6 +232,8 @@
     - int signum: Número do sinal a ser tratado.
     - void (*handler)(int): Função de tratamento do sinal.
 - Saída: Retorna o ponteiro para a função de tratamento anterior ou SIG_ERR em caso de erro.
+
+---
 
 22. sigaction()
 
@@ -204,6 +245,8 @@
     - struct sigaction *oldact: Estrutura para armazenar a ação anterior.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 
+---
+
 23. lseek()
 
 - Protótipo: `off_t lseek(int fd, off_t offset, int whence);`
@@ -214,6 +257,8 @@
     - int whence: Posição de referência (SEEK_SET, SEEK_CUR, SEEK_END).
 - Saída: Retorna o novo deslocamento em bytes ou -1 em caso de erro.
 
+---
+
 24. fstat()
 
 - Protótipo: `int fstat(int fd, struct stat *statbuf);`
@@ -222,6 +267,8 @@
     - int fd: Descritor de arquivo.
     - struct stat *statbuf: Estrutura onde as informações sobre o arquivo serão armazenadas.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
+
+---
 
 25. fcntl()
 
@@ -232,6 +279,8 @@
     - int cmd: Comando a ser executado (ex: F_SETFL para configurar flags).
     - long arg: Argumento adicional para o comando (ex: flags a serem configuradas).
 - Saída: Retorna o valor solicitado pela operação ou -1 em caso de erro.
+
+---
 
 26. epoll()
 
@@ -246,3 +295,5 @@
 - Outras funções do epoll:
     - Cria um descritor de arquivo para o epoll: `int epoll_create(int size);`
     - Aguarda eventos no descritor de arquivo epoll: `int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);`
+
+> O **epoll()** também pode ser substituído por equivalentes como **select()**, **kqueue()**, or **poll()**.
