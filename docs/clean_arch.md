@@ -13,6 +13,7 @@
 │   │   │   ├── SendMessage
 │   │   │   └── SetTopic
 │   │   └── /services
+│   │       ├── ServerService
 │   │       ├── ChannelService
 │   │       ├── UserService
 │   │       ├── CommandService
@@ -27,11 +28,11 @@
 │   │   ├── /enums
 │   │   │   └── Xxxx
 │   │   └── /exceptions
-│   │       └── Xxxx
+│   │       └── ServerException
 │   │
 │   └── /infrastructure
 │       └── /network
-│           ├── ServerSocket
+│           ├── Socket
 │           ├── Multiplexer (ClientHandler)
 │           └── PollManager
 │

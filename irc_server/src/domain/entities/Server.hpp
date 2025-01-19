@@ -4,16 +4,14 @@
 # define SERVER_HPP
 
 # include <netinet/in.h>    // Necessário para sockaddr_in
-# include <unistd.h>        // Necessário para close()
 # include <cstring>         // Necessário para memset()
 
 
 class Server
 {
     private:
-        bool                running;        // Estado do servidor (rodando ou não)
-        struct sockaddr_in  address;        // Configurações de porta e host
-        int                 fdServer;       // FD do socket do servidor
+        bool                running;
+        struct sockaddr_in  address;
 
         /*
         struct sockaddr_in {
@@ -24,21 +22,15 @@ class Server
         */
 
     public:
-        // Construtor e destruidor
         Server();
         ~Server();
 
         // Getters e Setters
-        sockaddr_in getAddress() const;
-        void setAddress(const sockaddr_in& addr);
+        struct sockaddr_in  getAddress() const;
+        void                setAddress(const struct sockaddr_in& addr);
 
-        int getSocket() const;
-        void setSocket(int socket);
-
-        bool isRunning() const;
-        void setRunning(bool runn);
-
-
+        bool                isRunning() const;
+        void                setRunning(bool runn);
 };
 
-#endif //SERVER_HPP
+#endif // SERVER_HPP
