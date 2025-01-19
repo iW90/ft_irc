@@ -1,6 +1,4 @@
-# Entendendo o que é o quê
-
-## SOCKET
+# SOCKET
 
 Um socket permite que os programas troquem dados entre si, seja na mesma máquina ou através de uma rede (como a internet). Ele atua como um ponto final para a comunicação de rede.
 
@@ -18,7 +16,7 @@ Um socket permite que os programas troquem dados entre si, seja na mesma máquin
 
     - **TCP (Transmission Control Protocol)**: Protocolo orientado à conexão, que garante a entrega dos dados de forma confiável.
 
-### Como funciona
+## Como funciona
 
 Existem dois tipos principais de sockets, baseados em como a comunicação é feita, o de Servidor e o de Client (lembrando que não criaremos um Client):
 
@@ -34,7 +32,7 @@ Existem dois tipos principais de sockets, baseados em como a comunicação é fe
     Depois de estabelecida a conexão, o cliente pode enviar ou receber dados do servidor.
 
 
-### Como usar
+## Como usar
 
 Aqui está um esboço do que acontece durante a comunicação:
 
