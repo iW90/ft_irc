@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef SERVERSETUP_HPP
-# define SERVERSETUP_HPP
+#ifndef SERVER_SERVICE_HPP
+# define SERVER_SERVICE_HPP
 
 # include "irc_server/src/domain/entities/Server.cpp"
 # include "irc_server/src/domain/exceptions/ServerException.hpp"
@@ -32,4 +32,4 @@ class ServerService
         void closeSocket();
 };
 
-#endif // SERVERSETUP_HPP
+#endif // SERVER_SERVICE_HPP
