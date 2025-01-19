@@ -1,5 +1,5 @@
-#ifndef SERVER_EXCEPTIONS_HPP
-# define SERVER_EXCEPTIONS_HPP
+#ifndef SERVER_EXCEPTION_HPP
+# define SERVER_EXCEPTION_HPP
 
 # include <exception>
 # include <iostream>
@@ -18,4 +18,4 @@ class ServerException : public std::exception {
         const char* what() const throw();
 };
 
-#endif // SERVER_EXCEPTIONS_HPP
+#endif // SERVER_EXCEPTION_HPP

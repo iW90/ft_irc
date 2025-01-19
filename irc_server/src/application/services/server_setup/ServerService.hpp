@@ -4,20 +4,20 @@
 # define SERVERSETUP_HPP
 
 # include "irc_server/src/domain/entities/Server.cpp"
-# include "irc_server/src/domain/exceptions/ServerExceptions.hpp"
+# include "irc_server/src/domain/exceptions/ServerException.hpp"
 
 # include <iostream>
 # include <fcntl.h>         // Necessário para fcntl e suas const
 # include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 
-class ServerManager
+class ServerService
 {
     private:
         Server& server;
         
     public:
-        ServerManager(Server& serv);
-        ~ServerManager();
+        ServerService(Server& serv);
+        ~ServerService();
 
         // Funções para controle do servidor
         void start(const std::string& host, int port);

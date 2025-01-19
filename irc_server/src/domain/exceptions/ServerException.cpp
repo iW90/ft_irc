@@ -1,4 +1,4 @@
-#include "ServerExceptions.hpp"
+#include "ServerException.hpp"
 
 
 ServerException::ServerException(const std::exception& e, const std::string& message)

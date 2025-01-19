@@ -1,15 +1,15 @@
-#include "ServerManager.hpp"
+#include "ServerService.hpp"
 
 
-ServerManager::ServerManager(Server& serv) : server(serv) {}
+ServerService::ServerService(Server& serv) : server(serv) {}
 
-ServerManager::~ServerManager() {
+ServerService::~ServerService() {
     if (server.isRunning()) {
         stop();
     }
 }
 
-void ServerManager::start(const std::string& host, int port) {
+void ServerService::start(const std::string& host, int port) {
     if (server.isRunning()) {
         std::cout << "Servidor já está rodando!" << std::endl;
         return;
@@ -28,7 +28,7 @@ void ServerManager::start(const std::string& host, int port) {
     }
 }
 
-void ServerManager::stop() {
+void ServerService::stop() {
     if (!server.isRunning()) {
         std::cout << "Servidor já está parado!" << std::endl;
         return;
@@ -45,7 +45,7 @@ void ServerManager::stop() {
 }
 
 
-void ServerManager::configureSocket(const std::string& host, int port) {
+void ServerService::configureSocket(const std::string& host, int port) {
     try {
         int sockfd = socket(AF_INET, SOCK_STREAM, 0);
         if (sockfd == -1) {
@@ -72,7 +72,7 @@ void ServerManager::configureSocket(const std::string& host, int port) {
     }
 }
 
-void ServerManager::bindSocket() {
+void ServerService::bindSocket() {
     try {
         sockaddr_in address = server.getAddress();
         if (bind(server.getSocket(), (struct sockaddr*)&address, sizeof(address)) == -1) {
@@ -84,7 +84,7 @@ void ServerManager::bindSocket() {
     }
 }
 
-void ServerManager::listenForConnections() {
+void ServerService::listenForConnections() {
     try {
         if (listen(server.getSocket(), 10) == -1) {
             throw std::runtime_error("Erro ao ouvir por conexões");
@@ -95,7 +95,7 @@ void ServerManager::listenForConnections() {
     }
 }
 
-void ServerManager::acceptConnection() {
+void ServerService::acceptConnection() {
     try {
         sockaddr_in clientAddress;
         socklen_t clientAddrLen = sizeof(clientAddress);
@@ -115,7 +115,7 @@ void ServerManager::acceptConnection() {
     } 
 }
 
-void ServerManager::setSocketNonBlocking() {
+void ServerService::setSocketNonBlocking() {
     try {
         int flags = fcntl(server.getSocket(), F_GETFL, 0);
         if (flags == -1) {
@@ -131,7 +131,7 @@ void ServerManager::setSocketNonBlocking() {
     }
 }
 
-void ServerManager::closeSocket() {
+void ServerService::closeSocket() {
     try {
         if (close(server.getSocket()) == -1) {
             throw std::runtime_error("Erro ao fechar o socket");
