@@ -3,11 +3,12 @@
 #ifndef SERVERSETUP_HPP
 # define SERVERSETUP_HPP
 
-#include "Server.hpp"
+# include "irc_server/src/domain/entities/Server.cpp"
+# include "irc_server/src/domain/exceptions/ServerExceptions.hpp"
 
-#include <cstring>
-#include <arpa/inet.h>
-#include <fcntl.h>
+# include <iostream>
+# include <fcntl.h>         // Necessário para fcntl e suas const
+# include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 
 class ServerManager
 {

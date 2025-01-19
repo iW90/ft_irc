@@ -24,7 +24,7 @@ void ServerManager::start(const std::string& host, int port) {
         std::cout << "Servidor iniciado e aguardando conexões..." << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Erro ao iniciar o servidor: " << e.what() << std::endl;
+        throw ServerException(e, "Erro ao iniciar o servidor");
     }
 }
 
@@ -40,71 +40,105 @@ void ServerManager::stop() {
         std::cout << "Servidor parado." << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Erro ao parar o servidor: " << e.what() << std::endl;
+        throw ServerException(e, "Erro ao parar o servidor");
     }
 }
 
 
 void ServerManager::configureSocket(const std::string& host, int port) {
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
-        throw std::runtime_error("Erro ao criar o socket");
+    try {
+        int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        if (sockfd == -1) {
+            throw std::runtime_error("Erro ao criar o socket");
+        }
+
+        server.setSocket(sockfd);
+
+        // Configurando o endereço do servidor
+        sockaddr_in address = server.getAddress();          // Configurações do server
+        address.sin_port = htons(port);                     // Porta
+        address.sin_addr.s_addr = inet_addr(host.c_str());  // Endereço IP
+
+        if (address.sin_addr.s_addr == INADDR_NONE) {
+            close(sockfd);
+            server.setSocket(-1);
+            throw std::runtime_error("Endereço IP inválido ou erro na conversão");
+        }
+
+        server.setAddress(address);
     }
-
-    server.setSocket(sockfd);
-
-    sockaddr_in address = server.getAddress();          // Configurações do server
-    address.sin_port = htons(port);                     // Porta
-    address.sin_addr.s_addr = inet_addr(host.c_str());  // Endereço IP
-
-    if (address.sin_addr.s_addr == INADDR_NONE) {
-        close(sockfd);
-        server.setSocket(-1);
-        throw std::runtime_error("Endereço IP inválido ou erro na conversão");
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao configurar o socket");
     }
-
-    server.setAddress(address);
 }
 
 void ServerManager::bindSocket() {
-    sockaddr_in address = server.getAddress();
-    if (bind(server.getSocket(), (struct sockaddr*)&address, sizeof(address)) == -1) {
-        throw std::runtime_error("Erro ao fazer bind do socket");
+    try {
+        sockaddr_in address = server.getAddress();
+        if (bind(server.getSocket(), (struct sockaddr*)&address, sizeof(address)) == -1) {
+            throw std::runtime_error("Erro ao fazer bind do socket");
+        }
+    }
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao fazer bind do socket");
     }
 }
 
 void ServerManager::listenForConnections() {
-    if (listen(server.getSocket(), 10) == -1) {
-        throw std::runtime_error("Erro ao ouvir por conexões");
+    try {
+        if (listen(server.getSocket(), 10) == -1) {
+            throw std::runtime_error("Erro ao ouvir por conexões");
+        }
+    }
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao ouvir por conexões");
     }
 }
 
 void ServerManager::acceptConnection() {
-    sockaddr_in clientAddress;
-    socklen_t clientAddrLen = sizeof(clientAddress);
-    int clientSocket = accept(server.getSocket(), (struct sockaddr*)&clientAddress, &clientAddrLen);
-    if (clientSocket == -1) {
-        throw std::runtime_error("Erro ao aceitar conexão");
-    }
+    try {
+        sockaddr_in clientAddress;
+        socklen_t clientAddrLen = sizeof(clientAddress);
+        int clientSocket = accept(server.getSocket(), (struct sockaddr*)&clientAddress, &clientAddrLen);
+        if (clientSocket == -1) {
+            throw std::runtime_error("Erro ao aceitar conexão");
+        }
 
-    std::cout << "Cliente conectado: " << inet_ntoa(clientAddress.sin_addr) << std::endl;
-    close(clientSocket);  // Aqui você pode começar a interagir com o cliente
+        std::cout << "Cliente conectado: " << inet_ntoa(clientAddress.sin_addr) << std::endl;
+
+        // Aqui você pode começar a interagir com o cliente
+
+        close(clientSocket);  
+    }
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao aceitar conexão");
+    } 
 }
 
 void ServerManager::setSocketNonBlocking() {
-    int flags = fcntl(server.getSocket(), F_GETFL, 0);
-    if (flags == -1) {
-        throw std::runtime_error("Erro ao obter flags do socket");
-    }
+    try {
+        int flags = fcntl(server.getSocket(), F_GETFL, 0);
+        if (flags == -1) {
+            throw std::runtime_error("Erro ao obter flags do socket");
+        }
 
-    if (fcntl(server.getSocket(), F_SETFL, flags | O_NONBLOCK) == -1) {
-        throw std::runtime_error("Erro ao definir o socket como não bloqueante");
+        if (fcntl(server.getSocket(), F_SETFL, flags | O_NONBLOCK) == -1) {
+            throw std::runtime_error("Erro ao definir o socket como não bloqueante");
+        }
+    }
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao definir socket como não bloqueante");
     }
 }
 
 void ServerManager::closeSocket() {
-    if (close(server.getSocket()) == -1) {
-        throw std::runtime_error("Erro ao fechar o socket");
+    try {
+        if (close(server.getSocket()) == -1) {
+            throw std::runtime_error("Erro ao fechar o socket");
+        }
+        std::cout << "Socket fechado com sucesso." << std::endl;
     }
-    std::cout << "Socket fechado com sucesso." << std::endl;
+    catch (const std::exception& e) {
+        throw ServerException(e, "Erro ao fechar o socket");
+    }
 }

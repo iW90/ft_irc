@@ -3,13 +3,9 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <string>
-# include <iostream>
-# include <cstring>
-# include <arpa/inet.h>   // Necessário para inet_pton (converter string para binário)
-# include <netinet/in.h>  // Necessário para sockaddr_in
-# include <unistd.h>      // Necessário para close()
-# include <stdexcept>     // Necessário para runtime_error()
+# include <netinet/in.h>    // Necessário para sockaddr_in
+# include <unistd.h>        // Necessário para close()
+# include <cstring>         // Necessário para memset()
 
 
 class Server
