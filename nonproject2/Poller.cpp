@@ -7,6 +7,8 @@ Poller::Poller(int timeout_ms) {
     if (epoll_fd == -1)
         throw std::runtime_error("Erro ao criar epoll");
     fds.reserve(10); // Reserve um tamanho inicial para fds
+
+    std::cout << "\n\nTESTE: " << fds.size() << "\n\n" << std::endl;
 }
 
 
@@ -37,11 +39,15 @@ void Poller::removeSocket(int socketFD) {
 }
 
 int Poller::pollSockets() {
-    /*
-    TEM UM ERRO AQUI RELACIONADO AO TAMANHO DO FD. AVALIAR CORRIGIR MAIS TARDE.
-    */
     std::vector<struct epoll_event> events(fds.size());    // Cria um array de epoll_event para aguardar eventos
-    int ret = epoll_wait(epoll_fd, &events[0], fds.size(), timeout);
+    // int ret = epoll_wait(epoll_fd, &events[0], fds.size(), timeout);
+    
+    // Se o vetor fds estiver vazio, defina uma capacidade mínima (por exemplo, 10 eventos)
+    size_t numEvents = fds.size();
+    if (numEvents == 0)
+        numEvents = 10;  // Número mínimo de eventos que você espera monitorar
+    int ret = epoll_wait(epoll_fd, &events[0], numEvents, timeout);
+
     if (ret < 0)
         throw std::runtime_error("Erro ao executar epoll_wait");
     fds = events;  // Atualiza o vetor de eventos monitorados

@@ -293,7 +293,7 @@
     - struct epoll_event *event: Estrutura com as informações do evento.
 - Saída: Retorna 0 em caso de sucesso ou -1 em caso de erro.
 - Outras funções do epoll:
-    - Cria um descritor de arquivo para o epoll: `int epoll_create(int size);`
+    - Cria um descritor de arquivo para o epoll: `int epoll_create1(int size);`
     - Aguarda eventos no descritor de arquivo epoll: `int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);`
 
 > O **epoll()** também pode ser substituído por equivalentes como **select()**, **kqueue()**, or **poll()**.
