@@ -10,12 +10,14 @@
 # include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 # include <stdexcept>       // Necessário para exceções
 
+# define MAX_CONNECTIONS 20
 
 class Socket
 {
     protected:
         int                 _socket_fd;
         struct sockaddr_in  _address;
+        int                 _max_connections;
         /*
             struct sockaddr_in {
                 sa_family_t    sin_family;   // Família de endereço (AF_INET para IPv4)
@@ -30,9 +32,10 @@ class Socket
         void    _set_non_blocking();
         void    _configure_address(const std::string& host, int port);
         void    _bind_socket_to_address();
+        void    _set_listening();
 
     public:
-        Socket(const std::string& host, int port);
+        Socket(const std::string& host, int port, int max_conn = MAX_CONNECTIONS);
         ~Socket();
 };
 
