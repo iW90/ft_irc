@@ -25,7 +25,7 @@ Multiplexer::~Multiplexer() {
 void Multiplexer::subscribe_fd_for_monitoring(int fd) {
     epoll_event event;
 
-    event.events = EPOLLIN;
+    event.events = EPOLLIN | EPOLLOUT | EPOLLERR | EPOLLHUP;
     event.data.fd = fd;
     if (epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, fd, &event) == -1)
         throw std::runtime_error("Failed to add fd to epoll");
@@ -78,6 +78,7 @@ void Multiplexer::wait_for_events(Server& server) {
 
         std::cout << "DIACHO DE LOOPING QUE NÃO DESLIGA." << std::endl;
         sleep(3);
+
     }
 
     /*
@@ -101,7 +102,7 @@ void Multiplexer::handle_events(int server_fd, int total_events) {
     for (int i = 0; i < total_events; i++) {
 
         // Se o evento for de desconexão ou erro do client
-        if ((_events[i].events & EPOLLERR) || (_events[i].events & EPOLLHUP))
+        if ((_events[i].events & EPOLLHUP) || (_events[i].events & EPOLLERR))
             disconnect_client(_events[i].data.fd);
 
 
@@ -114,6 +115,11 @@ void Multiplexer::handle_events(int server_fd, int total_events) {
             else
                 read_client_message(_events[i].data.fd);
         }
+
+        // EXEMPLO P/ EPOLLOUT, MAS FUNÇÃO NÃO CRIADA
+        // if (_events[i].events & EPOLLOUT) {
+        //     send_message_to_client(_events[i].data.fd);
+        // }
     }
 }
 

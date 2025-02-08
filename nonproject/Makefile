@@ -1,5 +1,5 @@
 # Variables
-NAME		:=	minirc
+NAME		:=	ircserv
 FILES			:=	main.cpp \
 					Socket.cpp \
 					Server.cpp \

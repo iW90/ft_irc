@@ -6,6 +6,7 @@
 # include <errno.h>
 # include <sys/epoll.h>
 # include <iostream>
+# include <map>
 
 # define MAX_EVENTS 20
 
