@@ -1,6 +1,6 @@
 #include "Socket.hpp"
 
-Socket::Socket(const std::string& host, int port, int max_conn) {
+Socket::Socket(const std::string& host, int port, int max_conn) : _max_connections(max_conn) {
     _create_socket();
     _configure_socket();
     _set_non_blocking();

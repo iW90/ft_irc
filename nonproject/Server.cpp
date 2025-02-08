@@ -3,32 +3,38 @@
 
 Server::Server(const std::string& host, int port, const std::string& pass) : 
     Socket(host, port),
-    _password(pass),
-    _running(false) {}
+    _running(false), 
+    _password(pass) {}
 
 Server::~Server() {}
 
 
 // INICIA O SERVER
-void Server::turn_on_server() {
+void Server::turn_on() {
     try {
         _running = true;
-
-        _multiplexer.add_fd_to_multiplexer(Socket::_socket_fd);
-        _multiplexer.handle_events(*this);
-
         std::cout << "Server is now running." << std::endl;
+
+        _multiplexer.subscribe_fd_for_monitoring(Socket::_socket_fd);
+        _multiplexer.wait_for_events(*this);
+
     } catch (const std::exception& e) {
         throw ServerException(e, "Unable to turn on the server.");
     }
 }
 
 // INTERROMPE O SERVER
-void Server::turn_off_server() {
-    if (_running)
-        _running = false;
+void Server::turn_off() {
+    try {
+        if (_running) {
+            _running = false;
+            _multiplexer.unsubscribe_fd_for_monitoring(Socket::_socket_fd);
+        }
 
-    std::cout << "Server has been shut down." << std::endl;
+        std::cout << "Server has been shut down." << std::endl;
+    } catch (const std::exception& e) {
+        throw ServerException(e, "Unable to turn off the server.");
+    }
 }
 
 // Getters
