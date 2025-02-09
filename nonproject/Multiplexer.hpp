@@ -26,7 +26,7 @@ class Multiplexer
 
         void    subscribe_fd_for_monitoring(int fd);
         void    unsubscribe_fd_for_monitoring(int fd);
-        void    monitor_events();
+        void    check_for_events();
 
         void    handle_events(int total_events);
 

@@ -67,7 +67,7 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 }
 
 // LOOPING QUE FICA MONITORANDO EVENTOS
-void Multiplexer::monitor_events() {
+void Multiplexer::check_for_events() {
 
     int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
     if (total_events == -1)
