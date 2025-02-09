@@ -67,13 +67,13 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 }
 
 // LOOPING QUE FICA MONITORANDO EVENTOS
-void Multiplexer::check_for_events() {
+int Multiplexer::check_for_events() {
 
     int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
     if (total_events == -1)
         throw std::runtime_error("Error while polling with epoll");
 
-    handle_events(total_events);
+    return total_events;
 
     /*
         - epoll_wait é uma função que bloqueia o thread até que um evento 
@@ -95,25 +95,26 @@ void Multiplexer::check_for_events() {
 void Multiplexer::handle_events(int total_events) {
     for (int i = 0; i < total_events; i++) {
 
-        // Se o evento for de desconexão ou erro do client
-        if ((_events[i].events & EPOLLHUP) or (_events[i].events & EPOLLERR))
-            disconnect_client(_events[i].data.fd);
+        // Eventos do client
+        if (_events[i].data.fd != _server_fd) {
+            // Se o evento for de desconexão ou erro do client
+            if ((_events[i].events & EPOLLHUP) or (_events[i].events & EPOLLERR))
+                disconnect_client(_events[i].data.fd);
 
-
-        if (_events[i].events & EPOLLIN) {
-            // Nova conexão (novo client tentando conectar)
-            if (_events[i].data.fd == _server_fd) {
-                connect_client(_events[i].data.fd);
-            }
-            // Mensagem a ser lida
-            else
+            // Se o evento for uma mensagem do client
+            if (_events[i].events & EPOLLIN)
                 read_client_message(_events[i].data.fd);
-        }
 
-        // EXEMPLO P/ EPOLLOUT, MAS FUNÇÃO NÃO CRIADA
-        // if (_events[i].events & EPOLLOUT) {
-        //     send_message_to_client(_events[i].data.fd);
-        // }
+        // Eventos do servidor
+        } else {
+            // Nova conexão (novo client tentando conectar)
+            if ((_events[i].events & EPOLLIN))
+                connect_client(_events[i].data.fd);
+            // Eventos de envio de mensagem para o client
+            if (_events[i].events & EPOLLOUT)
+                continue ;
+                // send_message_to_client(_events[i].data.fd);
+        }
     }
 }
 
@@ -157,6 +158,7 @@ void Multiplexer::read_client_message(int client_fd) {
         char buffer[BUFFER_SIZE];
         bzero(buffer, BUFFER_SIZE);
 
+        // Vai salvando a mensagem no buffer, e depois agrega em "message"
         while (!strstr(buffer, "\n"))
         {
             bzero(buffer, BUFFER_SIZE);
@@ -168,11 +170,14 @@ void Multiplexer::read_client_message(int client_fd) {
                 message.append(buffer);
         }
 
+        // Apaga a última quebra de linha
         if (!message.empty() && message[message.size() - 1] == '\n')
             message.erase(message.size() - 1);
 
+        // Imprime a mensagem do terminal, identificada pelo FD do usuário
         std::cout << client_fd << ": " << message << std::endl;
 
+        // Apenas para testar. Se o usuário escreve exit(), é removido
         if (message == "exit()")
             disconnect_client(client_fd);
 
