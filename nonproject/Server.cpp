@@ -4,7 +4,8 @@
 Server::Server(const std::string& host, int port, const std::string& pass) : 
     Socket(host, port),
     _running(false), 
-    _password(pass) {}
+    _password(pass),
+    _multiplexer(this->Socket::_socket_fd) {}
 
 Server::~Server() {}
 

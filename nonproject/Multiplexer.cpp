@@ -2,7 +2,8 @@
 #include "Server.hpp"
 
 
-Multiplexer::Multiplexer() {
+Multiplexer::Multiplexer(int server_fd) {
+    _server_fd = server_fd;
     _epoll_fd = epoll_create1(0);
     if (_epoll_fd == -1)
         throw std::runtime_error("Failed to create epoll file descriptor");
@@ -70,15 +71,11 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 void Multiplexer::wait_for_events(Server& server) {
     while (server.is_running()) {
 
-        int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, 0); //implementar o sinal de sair do programa
+        int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
         if (total_events == -1)
             throw std::runtime_error("Error while polling with epoll");
 
-        handle_events(server.get_server_fd(), total_events);
-
-        std::cout << "DIACHO DE LOOPING QUE NÃO DESLIGA." << std::endl;
-        sleep(3);
-
+        handle_events(total_events);
     }
 
     /*
@@ -98,18 +95,18 @@ void Multiplexer::wait_for_events(Server& server) {
 }
 
 // PARSER PARA GERENCIAR OS DIFERENTES EVENTOS
-void Multiplexer::handle_events(int server_fd, int total_events) {
+void Multiplexer::handle_events(int total_events) {
     for (int i = 0; i < total_events; i++) {
 
         // Se o evento for de desconexão ou erro do client
-        if ((_events[i].events & EPOLLHUP) || (_events[i].events & EPOLLERR))
+        if ((_events[i].events & EPOLLHUP) or (_events[i].events & EPOLLERR))
             disconnect_client(_events[i].data.fd);
 
 
         if (_events[i].events & EPOLLIN) {
             // Nova conexão (novo client tentando conectar)
-            if (_events[i].data.fd == server_fd) {
-                connect_client(server_fd);
+            if (_events[i].data.fd == _server_fd) {
+                connect_client(_events[i].data.fd);
             }
             // Mensagem a ser lida
             else
@@ -132,6 +129,7 @@ void Multiplexer::disconnect_client(int client_fd) {
 
 // CONECTA UM CLIENT AO SERVER
 void Multiplexer::connect_client(int server_fd) {
+    std::cout << "TESTE!" << std::endl;
     sockaddr_in addr = {};
     socklen_t   size = sizeof(addr);
 
@@ -157,23 +155,33 @@ void Multiplexer::connect_client(int server_fd) {
 
 // MINI GNL
 void Multiplexer::read_client_message(int client_fd) {
-    std::string message;
-    
-    char buffer[100];
-    bzero(buffer, 100);
+    try {
+        std::string message;
+        
+        char buffer[BUFFER_SIZE];
+        bzero(buffer, BUFFER_SIZE);
 
-    while (!strstr(buffer, "\n"))
-    {
-        bzero(buffer, 100);
+        while (!strstr(buffer, "\n"))
+        {
+            bzero(buffer, BUFFER_SIZE);
 
-        if ((recv(client_fd, buffer, 100, 0) < 0) and (errno != EWOULDBLOCK))
-            throw std::runtime_error("Error while reading buffer from a client!");
+            if ((recv(client_fd, buffer, BUFFER_SIZE, 0) <= 0) and (errno != EWOULDBLOCK)) {
+                disconnect_client(client_fd);
+                return ;
+            } else
+                message.append(buffer);
+        }
 
-        message.append(buffer);
+        if (!message.empty() && message[message.size() - 1] == '\n')
+            message.erase(message.size() - 1);
+
+        std::cout << message << std::endl;
+
+        if (message == "exit()") {
+            disconnect_client(client_fd);
+        }
+
+    } catch (const std::exception& e) {
+        std::cout << "Error processing the message: " << e.what() << std::endl;
     }
-
-    if (!message.empty() && message[message.size() - 1] == '\n')
-        message.erase(message.size() - 1);
-
-    std::cout << message << std::endl;
 }
