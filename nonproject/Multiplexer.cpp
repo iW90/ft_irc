@@ -129,7 +129,6 @@ void Multiplexer::disconnect_client(int client_fd) {
 
 // CONECTA UM CLIENT AO SERVER
 void Multiplexer::connect_client(int server_fd) {
-    std::cout << "TESTE!" << std::endl;
     sockaddr_in addr = {};
     socklen_t   size = sizeof(addr);
 
@@ -175,11 +174,10 @@ void Multiplexer::read_client_message(int client_fd) {
         if (!message.empty() && message[message.size() - 1] == '\n')
             message.erase(message.size() - 1);
 
-        std::cout << message << std::endl;
+        std::cout << client_fd << ": " << message << std::endl;
 
-        if (message == "exit()") {
+        if (message == "exit()")
             disconnect_client(client_fd);
-        }
 
     } catch (const std::exception& e) {
         std::cout << "Error processing the message: " << e.what() << std::endl;
