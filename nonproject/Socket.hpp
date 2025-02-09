@@ -3,7 +3,6 @@
 #ifndef SOCKET_HPP
 # define SOCKET_HPP
 
-# include <netinet/in.h>    // Necessário para sockaddr_in
 # include <unistd.h>        // Necessário para close()
 # include <cstring>         // Necessário para memset()
 # include <fcntl.h>         // Necessário para fcntl e suas constantes

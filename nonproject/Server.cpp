@@ -17,7 +17,9 @@ void Server::turn_on() {
         std::cout << "Server is now running." << std::endl;
 
         _multiplexer.subscribe_fd_for_monitoring(Socket::_socket_fd);
-        _multiplexer.wait_for_events(*this);
+
+        while(_running)
+            _multiplexer.monitor_events();
 
     } catch (const std::exception& e) {
         throw ServerException(e, "Unable to turn on the server.");

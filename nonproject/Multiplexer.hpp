@@ -3,15 +3,15 @@
 #ifndef MULTIPLEXER_HPP
 # define MULTIPLEXER_HPP
 
-# include <errno.h>
-# include <sys/epoll.h>
-# include <iostream>
-# include <map>
+# include <iostream>        // Necessário para std::cout
+# include <errno.h>         // Necessário para errno
+# include <sys/epoll.h>     // Necessário para epoll
+# include <unistd.h>        // Necessário para ::close()
+# include <netinet/in.h>    // Necessário para sockaddr_in
+# include <cstring>         // Necessário para strstr() e bzero()
 
 # define MAX_EVENTS 20
 # define BUFFER_SIZE 100
-
-class Server;
 
 class Multiplexer
 {
@@ -26,7 +26,7 @@ class Multiplexer
 
         void    subscribe_fd_for_monitoring(int fd);
         void    unsubscribe_fd_for_monitoring(int fd);
-        void    wait_for_events(Server& server);
+        void    monitor_events();
 
         void    handle_events(int total_events);
 

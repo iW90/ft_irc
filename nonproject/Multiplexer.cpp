@@ -1,5 +1,4 @@
 #include "Multiplexer.hpp"
-#include "Server.hpp"
 
 
 Multiplexer::Multiplexer(int server_fd) {
@@ -68,15 +67,13 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 }
 
 // LOOPING QUE FICA MONITORANDO EVENTOS
-void Multiplexer::wait_for_events(Server& server) {
-    while (server.is_running()) {
+void Multiplexer::monitor_events() {
 
-        int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
-        if (total_events == -1)
-            throw std::runtime_error("Error while polling with epoll");
+    int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
+    if (total_events == -1)
+        throw std::runtime_error("Error while polling with epoll");
 
-        handle_events(total_events);
-    }
+    handle_events(total_events);
 
     /*
         - epoll_wait é uma função que bloqueia o thread até que um evento 

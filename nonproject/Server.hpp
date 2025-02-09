@@ -7,9 +7,8 @@
 # include "ServerException.hpp"
 # include "Multiplexer.hpp"
 
-# include <iostream>
-
 # define MAX_EVENTS 20
+
 
 class Multiplexer;
 
