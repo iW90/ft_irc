@@ -21,9 +21,6 @@ class Multiplexer
         int                     _epoll_fd;
         epoll_event             _events[MAX_EVENTS];
 
-        typedef void (Multiplexer::*EventHandler)(int fd);
-        std::map<int, EventHandler> _event_handlers;
-
     public:
         Multiplexer(int server_fd);
         ~Multiplexer();
@@ -39,6 +36,7 @@ class Multiplexer
         void    read_client_message(int client_fd);
 
 
+        // MÉTODOS AINDA NÃO UTILIZADOS
         void    handle_read_event(int fd);
         void    handle_write_event(int fd);
         void    handle_error_event(int fd);

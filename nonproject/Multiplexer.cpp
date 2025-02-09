@@ -13,12 +13,6 @@ Multiplexer::Multiplexer(int server_fd) {
             (no Linux, pode ser ignorado, mas deve ser fornecido).
         - Retorna um fd para o "monitor" de epoll. Se falhar, retorna -1.
     */
-
-    // Popula o dicionário "Event handlers"
-    _event_handlers[EPOLLIN] = &Multiplexer::handle_read_event;
-    _event_handlers[EPOLLOUT] = &Multiplexer::handle_write_event;
-    _event_handlers[EPOLLERR] = &Multiplexer::handle_error_event;
-    _event_handlers[EPOLLHUP] = &Multiplexer::handle_hangup_event;
 }
 
 Multiplexer::~Multiplexer() {
@@ -101,36 +95,22 @@ int Multiplexer::check_for_events() {
 void Multiplexer::handle_events(int total_events) {
     for (int i = 0; i < total_events; i++) {
 
-        // PRECISA AJUSTAR, AINDA NÃO ESTÁ FUNCIONANDO
-        // int event = _events[i].events;
-        // int fd = _events[i].data.fd;
-
-        // std::map<int, EventHandler>::iterator it = _event_handlers.find(event);
-        // if (it != _event_handlers.end())
-        //     (this->*(it->second))(fd);
-
-        /*
-            Itera pelo dicionário (map), onde a chave é o tipo de evento 
-            (EPOLLIN, EPOLLOUT, EPOLLERR, EPOLLHUP), e o valor é uma referência
-            para a função que trata sua chave. Esse dicionário é criado e
-            populado no construtor.
-        
-        */
-
-
-        // Se o evento for de desconexão ou erro do client
-        if ((_events[i].events & EPOLLHUP) or (_events[i].events & EPOLLERR))
-            disconnect_client(_events[i].data.fd);
-
-
-        if (_events[i].events & EPOLLIN) {
+        // Eventos do servidor
+        if (_events[i].data.fd == _server_fd) {
             // Nova conexão (novo client tentando conectar)
-            if (_events[i].data.fd == _server_fd) {
+            if (_events[i].events & EPOLLIN)
                 connect_client(_events[i].data.fd);
-            }
-            // Mensagem a ser lida
-            else
+
+
+        // Eventos do client
+        } else {
+            // Se o evento for de desconexão ou erro do client
+            if ((_events[i].events & (EPOLLHUP | EPOLLERR)))
+                disconnect_client(_events[i].data.fd);
+
+            if (_events[i].events & EPOLLIN)
                 read_client_message(_events[i].data.fd);
+
         }
     }
 }
@@ -205,7 +185,11 @@ void Multiplexer::read_client_message(int client_fd) {
 
 
 
-// Métodos auxiliares para eventos específicos
+
+
+
+
+// MÉTODOS AINDA NÃO UTILIZADOS
 void Multiplexer::handle_read_event(int fd) {
     if (fd != _server_fd)
         read_client_message(fd);
@@ -219,6 +203,7 @@ void Multiplexer::handle_error_event(int fd) {
 }
 
 void Multiplexer::handle_hangup_event(int fd) {
+
     if (fd != _server_fd)
         disconnect_client(fd);
 }
