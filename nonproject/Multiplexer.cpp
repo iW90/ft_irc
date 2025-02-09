@@ -100,12 +100,14 @@ int Multiplexer::check_for_events() {
 // PARSER PARA GERENCIAR OS DIFERENTES EVENTOS
 void Multiplexer::handle_events(int total_events) {
     for (int i = 0; i < total_events; i++) {
-        int event = _events[i].events;
-        int fd = _events[i].data.fd;
 
-        std::map<int, EventHandler>::iterator it = _event_handlers.find(event);
-        if (it != _event_handlers.end())
-            (this->*(it->second))(fd);
+        // PRECISA AJUSTAR, AINDA NÃO ESTÁ FUNCIONANDO
+        // int event = _events[i].events;
+        // int fd = _events[i].data.fd;
+
+        // std::map<int, EventHandler>::iterator it = _event_handlers.find(event);
+        // if (it != _event_handlers.end())
+        //     (this->*(it->second))(fd);
 
         /*
             Itera pelo dicionário (map), onde a chave é o tipo de evento 
@@ -114,6 +116,22 @@ void Multiplexer::handle_events(int total_events) {
             populado no construtor.
         
         */
+
+
+        // Se o evento for de desconexão ou erro do client
+        if ((_events[i].events & EPOLLHUP) or (_events[i].events & EPOLLERR))
+            disconnect_client(_events[i].data.fd);
+
+
+        if (_events[i].events & EPOLLIN) {
+            // Nova conexão (novo client tentando conectar)
+            if (_events[i].data.fd == _server_fd) {
+                connect_client(_events[i].data.fd);
+            }
+            // Mensagem a ser lida
+            else
+                read_client_message(_events[i].data.fd);
+        }
     }
 }
 
