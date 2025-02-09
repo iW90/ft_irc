@@ -34,7 +34,7 @@ class Socket
         void    _set_listening();
 
     public:
-        Socket(const std::string& host, int port, int max_conn = MAX_CONNECTIONS);
+        Socket(const std::string& host, int port);
         ~Socket();
 };
 
