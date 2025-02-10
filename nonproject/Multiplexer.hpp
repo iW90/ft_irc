@@ -25,6 +25,8 @@ class Multiplexer
         Multiplexer(int server_fd);
         ~Multiplexer();
 
+        int     get_epoll_fd() const;
+
         void    subscribe_fd_for_monitoring(int fd);
         void    unsubscribe_fd_for_monitoring(int fd);
 

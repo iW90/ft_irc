@@ -2,14 +2,26 @@
 #include "Server.hpp"
 
 int main() {
-    // Cria uma instância de servidor e socket
-    Server server("127.0.0.1", 6667, "123");
-    server.turn_on();
+    std::string ip_address = "127.0.0.1";
+    std::string password = "123";
+    int         port = 6667;
+    Server      server(ip_address, port, password);
+    
+    int         server_fd = server.get_server_fd();
+    Multiplexer multiplexer(server_fd);
+    int         multiplexer_fd = multiplexer.get_epoll_fd();
 
-    std::cout << "Servidor iniciado. Pressione ENTER para parar o servidor..." << std::endl;
-    // std::cin.get();  // Espera o usuário pressionar ENTER
+    server.turn_on(multiplexer);
 
-    server.turn_off();
+
+
+
+
+
+
+
+
+    server.turn_off(multiplexer);
 
 
     return 0;

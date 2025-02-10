@@ -20,6 +20,7 @@ Multiplexer::~Multiplexer() {
         ::close(_epoll_fd);
 }
 
+int Multiplexer::get_epoll_fd() const { return _epoll_fd; }
 
 // ADICIONA UM NOVO FD PARA SER MONITORADO
 void Multiplexer::subscribe_fd_for_monitoring(int fd) {

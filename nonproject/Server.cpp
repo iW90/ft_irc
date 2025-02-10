@@ -4,24 +4,23 @@
 Server::Server(const std::string& host, int port, const std::string& pass) : 
     Socket(host, port),
     _running(false), 
-    _password(pass),
-    _multiplexer(this->Socket::_socket_fd) {}
+    _password(pass) {}
 
 Server::~Server() {}
 
 
 // INICIA O SERVER
-void Server::turn_on() {
+void Server::turn_on(Multiplexer multiplexer) {
     try {
         int total_events;
         _running = true;
         std::cout << "Server is now running." << std::endl;
 
-        _multiplexer.subscribe_fd_for_monitoring(Socket::_socket_fd);
+        multiplexer.subscribe_fd_for_monitoring(Socket::_socket_fd);
 
         while(_running) {
-            total_events = _multiplexer.check_for_events();
-            _multiplexer.handle_events(total_events);
+            total_events = multiplexer.check_for_events();
+            multiplexer.handle_events(total_events);
         }
 
     } catch (const std::exception& e) {
@@ -30,11 +29,11 @@ void Server::turn_on() {
 }
 
 // INTERROMPE O SERVER
-void Server::turn_off() {
+void Server::turn_off(Multiplexer multiplexer) {
     try {
         if (_running) {
             _running = false;
-            _multiplexer.unsubscribe_fd_for_monitoring(Socket::_socket_fd);
+            multiplexer.unsubscribe_fd_for_monitoring(Socket::_socket_fd);
         }
 
         std::cout << "Server has been shut down." << std::endl;
