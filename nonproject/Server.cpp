@@ -1,5 +1,5 @@
 #include "Server.hpp"
-
+#include "SignalManager.hpp"
 
 Server::Server(const std::string& host, int port, const std::string& pass) : 
     Socket(host, port),
@@ -18,6 +18,8 @@ void Server::turn_on() {
         std::cout << "Server is now running." << std::endl;
 
         _multiplexer.subscribe_fd_for_monitoring(Socket::_socket_fd);
+
+        SignalManager::initialize(&_running);
 
         while(_running) {
             total_events = _multiplexer.check_for_events();

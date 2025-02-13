@@ -4,6 +4,7 @@ FILES			:=	main.cpp \
 					Socket.cpp \
 					Server.cpp \
 					ServerException.cpp \
+					SignalManager.cpp \
 					Multiplexer.cpp
 
 all:
