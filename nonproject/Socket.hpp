@@ -13,7 +13,7 @@
 
 class Socket
 {
-    protected:
+    private:
         int                 _socket_fd;
         struct sockaddr_in  _address;
         int                 _max_connections;
@@ -36,6 +36,8 @@ class Socket
     public:
         Socket(const std::string& host, int port);
         ~Socket();
+
+        int     get_fd() const;
 };
 
 #endif // SOCKET_HPP

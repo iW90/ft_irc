@@ -33,7 +33,7 @@ class Multiplexer
         int     check_for_events();
         void    handle_events(int total_events);
 
-        void    connect_client(int server_fd);
+        int     connect_client(int server_fd);
         void    disconnect_client(int client_fd);
         void    read_client_message(int client_fd);
 

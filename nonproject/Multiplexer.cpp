@@ -124,7 +124,7 @@ void Multiplexer::disconnect_client(int client_fd) {
 }
 
 // CONECTA UM CLIENT AO SERVER
-void Multiplexer::connect_client(int server_fd) {
+int Multiplexer::connect_client(int server_fd) {
     sockaddr_in addr = {};
     socklen_t   size = sizeof(addr);
 
@@ -134,6 +134,8 @@ void Multiplexer::connect_client(int server_fd) {
 
     subscribe_fd_for_monitoring(client_fd);
     std::cout << "Client connected." << std::endl;
+
+    return client_fd;
 
     /*
         int ::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);

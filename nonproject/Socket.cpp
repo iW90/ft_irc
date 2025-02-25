@@ -14,6 +14,8 @@ Socket::~Socket() {
         ::close(_socket_fd); //::close() global, parte da unistd
 }
 
+int Socket::get_fd() const { return _socket_fd; }
+
 
 // CRIA UM SOCKET EM UM FD
 void Socket::_create_socket() {

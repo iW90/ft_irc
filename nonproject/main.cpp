@@ -2,16 +2,16 @@
 #include "Server.hpp"
 
 int main() {
-    std::string ip_address = "127.0.0.1";
-    std::string password = "123";
     int         port = 6667;
-    Server      server(ip_address, port, password);
+    std::string ip_address = "127.0.0.1";
+    Socket      server_socket(ip_address, port);
+    int         server_fd = server_socket.get_fd();
     
-    int         server_fd = server.get_server_fd();
     Multiplexer multiplexer(server_fd);
     int         multiplexer_fd = multiplexer.get_epoll_fd();
 
-    server.turn_on(multiplexer);
+    std::string password = "123";
+    Server      server(server_fd, password, multiplexer);
 
 
 
@@ -19,9 +19,17 @@ int main() {
 
 
 
+    server.turn_on();
+
+    (void)multiplexer_fd;
 
 
-    server.turn_off(multiplexer);
+
+
+
+
+
+    server.turn_off();
 
 
     return 0;

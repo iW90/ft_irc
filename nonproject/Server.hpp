@@ -12,23 +12,25 @@
 
 class Multiplexer;
 
-class Server : private Socket
+class Server
 {
     private:
+        int                     _fd;
         bool                    _running;
         const std::string       _password;
+        Multiplexer             _multiplexer;
 
     public:
-        Server(const std::string& host, int port, const std::string& pass);
+        Server(int socket_fd, const std::string& pass, Multiplexer multiplexer);
         ~Server();
         
-        bool    is_running() const;
-        int     get_server_fd() const;
-        const std::string get_password() const;
+        bool                is_running() const;
+        int                 get_server_fd() const;
+        const std::string   get_password() const;
         
 
-        void    turn_on(Multiplexer multiplexer);
-        void    turn_off(Multiplexer multiplexer);
+        void    turn_on();
+        void    turn_off();
 };
 
 #endif // SERVER_HPP
