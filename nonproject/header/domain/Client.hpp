@@ -36,8 +36,8 @@ class Client
         std::string get_username() const;
         std::string get_hostname() const;
 
-        bool is_registered() const;
-        Channel* get_channel() const;
+        bool        is_registered() const;
+        Channel*    get_channel() const;
 
         void set_nickname(const std::string &nickname);
         void set_username(const std::string &username);

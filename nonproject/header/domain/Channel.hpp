@@ -3,12 +3,11 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "Server.hpp"
 # include "Client.hpp"
 
 # include <vector>
 
-
+class Client;
 class Channel 
 {
     typedef std::vector<Client *>::iterator client_iterator;

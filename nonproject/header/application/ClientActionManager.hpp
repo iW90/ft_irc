@@ -3,7 +3,6 @@
 #ifndef CLIENT_ACTION_MANAGER_HPP
 # define CLIENT_ACTION_MANAGER_HPP
 
-# include "Server.hpp"
 # include "Client.hpp"
 # include "Channel.hpp"
 

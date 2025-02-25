@@ -1,5 +1,6 @@
 #include "Channel.hpp"
 
+
 Channel::Channel(const std::string& name, const std::string& key, Client* admin) :
     _name(name), 
     _admin(admin), 
