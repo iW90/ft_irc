@@ -10,7 +10,7 @@
 # include <vector>
 
 class Channel;
-class ChannelManagement
+class ChannelManager
 {
     public:
         // Envio de mensagens no canal

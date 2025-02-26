@@ -6,7 +6,6 @@
 #include "ServerException.hpp"
 
 
-
 void turn_off(bool& running, Multiplexer& multiplexer, int server_fd) {
     try {
         if (running) {
@@ -41,10 +40,10 @@ void turn_on(bool& running, Multiplexer& multiplexer, int server_fd) {
 
 int main() {
     bool        running = false;
-
-    // Serão informados como argumento na execução do server
-    int         port = 6667;
     std::string ip_address = "127.0.0.1";
+
+    // Mock (serão informados como argumento)
+    int         port = 6667;
     std::string password = "adminadmin123";
 
     // Instância do cofre
