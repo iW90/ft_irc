@@ -169,6 +169,19 @@ void Multiplexer::read_client_message(int client_fd) {
             } else
                 message.append(buffer);
         }
+            /*
+                ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+                - sockfd é o fd do client de quem está vindo a mensagem.
+                - buf é o ponteiro para o buffer, o bloco de memória com os dados a 
+                    serem lidos.
+                - len é o tamanho do buffer, definido o tamanhno máximo através 
+                    da constante BUFFER_SIZE.
+                - flags permite especificar algumas opções adicionais, mas 0 significa 
+                    que nenhuma foi definida.
+                - Se retornar -1, significa erro. Se retornar 0, significa que a
+                    conexão foi encerrada por parte do client. E o valor positivo 
+                    corresponde ao número de bytes recebidos.
+            */ 
 
         // Apaga a última quebra de linha
         if (!message.empty() && message[message.size() - 1] == '\n')
@@ -186,7 +199,24 @@ void Multiplexer::read_client_message(int client_fd) {
     }
 }
 
-
+void Multiplexer::send_client_message(int client_fd, const std::string& message) {
+    std::string buffer = message + "\r\n";
+    if (send(client_fd, buffer.c_str(), buffer.length(), 0) == -1)
+        throw std::runtime_error("Error while sending a message to a client!");
+    /*
+        ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+        Enquanto o recv lê mensagens, o send envia dados através de um 
+        socket.
+        - sockfd é o fd do client que está enviando a mensagem.
+        - buf é o ponteiro para o buffer, o bloco de memória com os dados a 
+            serem enviados. Foi convertido para c-string.
+        - len é o tamanho do buffer.
+        - flags permite especificar algumas opções adicionais, mas 0 significa 
+            que nenhuma foi definida.
+        - Se retornar -1, significa erro. E o valor positivo corresponde ao
+            número de bytes enviados.
+    */
+}
 
 
 

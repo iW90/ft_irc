@@ -36,6 +36,8 @@ class Multiplexer
         int     connect_client(int server_fd);
         void    disconnect_client(int client_fd);
         void    read_client_message(int client_fd);
+        
+        static void    send_client_message(int client_fd, const std::string& message);
 
 
         // MÉTODOS AINDA NÃO UTILIZADOS

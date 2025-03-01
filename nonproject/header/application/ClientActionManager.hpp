@@ -6,6 +6,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "ChannelManager.hpp"
+# include "Multiplexer.hpp"
 
 # include <vector>
 
