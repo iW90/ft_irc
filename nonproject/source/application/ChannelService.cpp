@@ -5,7 +5,7 @@ void ChannelService::broadcast(Channel* channel, const std::string& message) {
     std::vector<Client*>& clients = channel->get_clients();
 
     for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        ClientActionService::send_message(*it, message);
+        ClientService::send_message(*it, message);
     }
 }
 
@@ -14,7 +14,7 @@ void ChannelService::broadcast(Channel* channel, const std::string& message, Cli
 
     for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
         if (*it != exclude)
-            ClientActionService::send_message(*it, message);
+            ClientService::send_message(*it, message);
     }
 }
 
