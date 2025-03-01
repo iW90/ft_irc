@@ -1,29 +1,29 @@
-#include "ChannelManager.hpp"
+#include "ChannelService.hpp"
 
 
-void ChannelManager::broadcast(Channel* channel, const std::string& message) {
+void ChannelService::broadcast(Channel* channel, const std::string& message) {
     std::vector<Client*>& clients = channel->get_clients();
 
     for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        ClientActionManager::send_message(*it, message);
+        ClientActionService::send_message(*it, message);
     }
 }
 
-void ChannelManager::broadcast(Channel* channel, const std::string& message, Client* exclude) {
+void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
     std::vector<Client*>& clients = channel->get_clients();
 
     for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
         if (*it != exclude)
-            ClientActionManager::send_message(*it, message);
+            ClientActionService::send_message(*it, message);
     }
 }
 
-void ChannelManager::add_client(Channel* channel, Client* client) {
+void ChannelService::add_client(Channel* channel, Client* client) {
     std::vector<Client*>& clients = channel->get_clients();
     clients.push_back(client);
 }
 
-void ChannelManager::remove_client(Channel* channel, Client* client) {
+void ChannelService::remove_client(Channel* channel, Client* client) {
     std::vector<Client*>& clients = channel->get_clients();
     
     for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -44,7 +44,7 @@ void ChannelManager::remove_client(Channel* channel, Client* client) {
     }
 }
 
-void ChannelManager::kick_client(Channel* channel, Client* client, Client* target, const std::string& reason) {
+void ChannelService::kick_client(Channel* channel, Client* client, Client* target, const std::string& reason) {
     broadcast(channel, client->get_nickname() + " kicked " + target->get_nickname() + " from channel " + channel->get_name() + " for reason: " + reason);
     // validar se é admin para garantir que somente ele possa banir
     // criar uma lista de ban

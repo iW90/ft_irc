@@ -5,14 +5,14 @@
 
 # include "Client.hpp"
 # include "Channel.hpp"
-# include "ChannelManager.hpp"
+# include "ChannelService.hpp"
 # include "Multiplexer.hpp"
 
 # include <vector>
 
 class Channel;
 class Client;
-class ClientActionManager
+class ClientActionService
 {
     public:
         static void send_message(Client* client, const std::string& message);

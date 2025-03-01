@@ -5,12 +5,12 @@
 
 # include "Client.hpp"
 # include "Channel.hpp"
-# include "ClientActionManager.hpp"
+# include "ClientActionService.hpp"
 
 # include <vector>
 
 class Channel;
-class ChannelManager
+class ChannelService
 {
     public:
         // Envio de mensagens no canal
