@@ -11,7 +11,7 @@ class ServerException : public std::exception {
         std::string original_message_;  // Variável para armazenar a mensagem da exceção original
 
     public:
-        explicit ServerException(const std::exception& e, const std::string& message);
+        ServerException(const std::exception& e, const std::string& message);
 
         virtual ~ServerException() throw();
 

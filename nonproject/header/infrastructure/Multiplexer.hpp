@@ -11,8 +11,7 @@
 # include <cstring>         // Necessário para strstr() e bzero()
 # include <map>             // Necessário para map<x,y>()
 
-# define MAX_EVENTS 20
-# define BUFFER_SIZE 100
+# include "Constants.hpp"
 
 class Multiplexer
 {
@@ -46,7 +45,5 @@ class Multiplexer
         void    handle_error_event(int fd);
         void    handle_hangup_event(int fd);
 };
-
-
 
 #endif //MULTIPLEXER_HPP

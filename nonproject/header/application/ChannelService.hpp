@@ -6,6 +6,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "ClientService.hpp"
+# include "Constants.hpp"
 
 # include <set>
 
@@ -20,7 +21,7 @@ class ChannelService
         static void    broadcast(Channel* channel, const std::string& message, Client* exclude = NULL);
 
         // Gerenciamento de Clients no canal
-        static void    add_client(Channel* channel, Client* client);
+        static int     add_client(Channel* channel, Client* client);
         static void    remove_client(Channel* channel, Client* client);
         static void    kick_client(Channel* channel, Client* client, Client* target, const std::string& reason);
 };

@@ -3,72 +3,25 @@
 #include "Vault.hpp"
 #include "Socket.hpp"
 #include "Multiplexer.hpp"
-#include "ServerException.hpp"
-#include "Channel.hpp"
-#include "Client.hpp"
-#include "ChannelService.hpp"
-#include "ClientService.hpp"
-#include "SignalManager.hpp"
-
-
-void turn_off(bool& running, Multiplexer& multiplexer, int server_fd) {
-    try {
-        if (running) {
-            running = false;
-            multiplexer.unsubscribe_fd_for_monitoring(server_fd);
-        }
-
-        std::cout << "Server has been shut down." << std::endl;
-    } catch (const std::exception& e) {
-        throw ServerException(e, "Unable to turn off the server.");
-    }
-}
-
-void turn_on(bool& running, Multiplexer& multiplexer, int server_fd) {
-    try {
-        int total_events;
-        running = true;
-        std::cout << "Server is now running." << std::endl;
-
-        multiplexer.subscribe_fd_for_monitoring(server_fd);
-
-        while(running) {
-            total_events = multiplexer.check_for_events();
-            multiplexer.handle_events(total_events);
-        }
-
-    } catch (const std::exception& e) {
-        throw ServerException(e, "Unable to turn on the server.");
-    }
-}
+#include "Server.hpp"
 
 
 int main() {
-    // Instância do Signal
-    bool        running = false;
-    SignalManager::initialize(&running);
-
-    
-    std::string ip_address = "127.0.0.1";
+    const std::string IP_ADDRESS = "127.0.0.1";
 
     // Mock (serão informados como argumento)
     int         port = 6667;
     std::string password = "adminadmin123";
 
-    // Instância do cofre
+    // Injeções de dependência
     Vault       vault(password);
+    Socket      server_socket(IP_ADDRESS, port);   
+    Multiplexer multiplexer(server_socket.get_fd());
 
-    // Instância do socket do servidor
-    Socket      server_socket(ip_address, port);
-    int         server_fd = server_socket.get_fd();
-
-    // Instância do multiplexador    
-    Multiplexer multiplexer(server_fd);
+    Server      server(vault, server_socket, multiplexer);
 
     // Iniciando servidor
-    turn_on(running, multiplexer, server_fd);
-
-
+    server.start();
 
     return 0;
 }

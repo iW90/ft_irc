@@ -20,7 +20,6 @@ class ClientService
 
         static void join_channel(Client* client, Channel *channel);
         static void leave_channel(Client* client);
-
 };
 
 #endif // CLIENT_ACTION_MANAGER_HPP

@@ -9,7 +9,6 @@
 # include <stdexcept>       // Necessário para exceções
 # include <string>
 
-# define MAX_CONNECTIONS 20
 
 class Channel;
 class Client

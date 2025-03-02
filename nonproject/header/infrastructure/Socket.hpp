@@ -9,7 +9,7 @@
 # include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 # include <stdexcept>       // Necessário para exceções
 
-# define MAX_CONNECTIONS 20
+# include "Constants.hpp"
 
 class Socket
 {
