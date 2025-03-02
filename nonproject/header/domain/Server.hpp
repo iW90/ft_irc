@@ -19,9 +19,9 @@
 class Server {
     private:
         bool                _running;
-        IVault&              _vault;
-        ISocket&             _socket;
-        IMultiplexer&        _multiplexer;
+        IVault&             _vault;
+        ISocket&            _socket;
+        IMultiplexer&       _multiplexer;
         std::set<Channel *> _channels;
         std::set<Client *>  _clients;
 
