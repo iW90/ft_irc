@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-Server::Server(Vault& vault, Socket& socket, Multiplexer& multiplexer) :
+Server::Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer) :
       _running(false),
       _vault(vault), 
       _socket(socket), 
@@ -22,13 +22,18 @@ Server::~Server() {
         delete channel;
     }
     _channels.clear();
+
+    // Destruir outros recursos
+    delete &_vault;
+    delete &_socket;
+    delete &_multiplexer;
 }
 
 
 // Getters
-const Vault& Server::get_vault() const { return _vault; }
-const Socket& Server::get_socket() const { return _socket; }
-const Multiplexer& Server::get_multiplexer() const { return _multiplexer; }
+const IVault& Server::get_vault() const { return _vault; }
+const ISocket& Server::get_socket() const { return _socket; }
+const IMultiplexer& Server::get_multiplexer() const { return _multiplexer; }
 const std::set<Channel*>& Server::get_channels() const { return _channels; }
 const std::set<Client*>& Server::get_clients() const { return _clients; }
 

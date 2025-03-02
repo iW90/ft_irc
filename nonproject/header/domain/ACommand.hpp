@@ -9,8 +9,7 @@
 # include "Server.hpp"
 
 class Client;
-class ACommand
-{
+class ACommand {
     protected:
         bool    _auth;
         Server  _server;

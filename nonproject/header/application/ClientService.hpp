@@ -12,8 +12,7 @@
 
 class Channel;
 class Client;
-class ClientService
-{
+class ClientService {
     public:
         static void send_message(Client* client, const std::string& message);
         static void reply_message(Client* client, const std::string& reply);

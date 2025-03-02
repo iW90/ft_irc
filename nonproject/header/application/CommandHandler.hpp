@@ -7,13 +7,12 @@
 # include <vector>
 # include <map>
 
-#include "Command.hpp"
+#include "ACommand.hpp"
 
 
-class CommandHandler
-{
+class CommandHandler {
     private:
-        std::map<std::string, Command *>    _commands;
+        std::map<std::string, ACommand *>    _commands;
 
         std::string     _trim(const std::string& str);
 

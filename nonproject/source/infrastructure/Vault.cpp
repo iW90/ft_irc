@@ -12,11 +12,11 @@ Vault::Vault(const std::string& password) {
 Vault::~Vault() {}
 
 
-bool Vault::validatePassword(const std::string& passwordToValidate) const {
-    std::string encryptedInput = passwordToValidate;
+bool Vault::validate_password(const std::string& pass_to_validate) const {
+    std::string encryptedInput = pass_to_validate;
 
-    for (size_t i = 0; i < passwordToValidate.length(); ++i)
-        encryptedInput[i] = passwordToValidate[i] ^ 0xAA;
+    for (size_t i = 0; i < pass_to_validate.length(); ++i)
+        encryptedInput[i] = pass_to_validate[i] ^ 0xAA;
 
     return encryptedInput == _password;
 }

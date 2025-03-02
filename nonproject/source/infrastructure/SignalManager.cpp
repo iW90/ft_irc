@@ -10,7 +10,7 @@ void SignalManager::initialize(bool* running) {
 
     struct sigaction sa;
     memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = signalHandler;
+    sa.sa_handler = _signal_handler;
     sa.sa_flags = SA_RESTART;
 
     sigaction(SIGINT, &sa, NULL);   // Ctrl+C
@@ -19,7 +19,7 @@ void SignalManager::initialize(bool* running) {
     sigaction(SIGHUP, &sa, NULL);   // Terminal disconnect
 }
 
-void SignalManager::signalHandler(int signum) {
+void SignalManager::_signal_handler(int signum) {
     (void)signum;
     if (_running)
         *_running = false;

@@ -14,11 +14,11 @@ int main() {
     std::string password = "adminadmin123";
 
     // Injeções de dependência
-    Vault       vault(password);
-    Socket      server_socket(IP_ADDRESS, port);   
-    Multiplexer multiplexer(server_socket.get_fd());
+    IVault* vault = new Vault(password);
+    ISocket* server_socket = new Socket(IP_ADDRESS, port);
+    IMultiplexer* multiplexer = new Multiplexer(server_socket->get_fd());
 
-    Server      server(vault, server_socket, multiplexer);
+    Server      server(*vault, *server_socket, *multiplexer);
 
     // Iniciando servidor
     server.start();

@@ -12,8 +12,7 @@
 
 
 class Client;
-class Channel 
-{
+class Channel {
     typedef std::vector<Client *>::iterator client_iterator;
 
     private:

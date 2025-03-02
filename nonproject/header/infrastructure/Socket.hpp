@@ -9,10 +9,10 @@
 # include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 # include <stdexcept>       // Necessário para exceções
 
+# include "interfaces/ISocket.hpp"
 # include "Constants.hpp"
 
-class Socket
-{
+class Socket : public ISocket {
     private:
         int                 _socket_fd;
         struct sockaddr_in  _address;

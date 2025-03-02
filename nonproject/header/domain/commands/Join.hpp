@@ -10,8 +10,7 @@
 #define ERR_CHANNELISFULL(source, channel)              "471 " + source + " " + channel + " :Cannot join channel (+l)"
 #define ERR_BADCHANNELKEY(source, channel)              "475 " + source + " " + channel + " :Cannot join channel (+k)"
 
-class Join : public ACommand
-{
+class Join : public ACommand {
     private:
         bool        _is_already_in_channel(Client* client);
         bool        _is_channel_full(Channel* channel);

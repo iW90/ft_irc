@@ -11,10 +11,10 @@
 # include <cstring>         // Necessário para strstr() e bzero()
 # include <map>             // Necessário para map<x,y>()
 
+# include "interfaces/IMultiplexer.hpp"
 # include "Constants.hpp"
 
-class Multiplexer
-{
+class Multiplexer : public IMultiplexer {
     private:
         int                     _server_fd;
         int                     _epoll_fd;

@@ -3,7 +3,9 @@
 
 # include <string>
 
-class Vault {
+# include "interfaces/IVault.hpp"
+
+class Vault : public IVault {
     private:
         std::string _password;
 
@@ -11,7 +13,7 @@ class Vault {
         Vault(const std::string& password);
         ~Vault();
 
-        bool validatePassword(const std::string& passwordToValidate) const;
+        bool validate_password(const std::string& pass_to_validate) const;
 };
 
 #endif // VAULT_HPP

@@ -3,18 +3,18 @@
 #ifndef SIGNALMANAGER_HPP
 # define SIGNALMANAGER_HPP
 
-#include <csignal>
-#include <cstring>
-#include <stdexcept>
+# include <csignal>
+# include <cstring>
+# include <stdexcept>
 
 class SignalManager {
     private:
-        static bool* _running;
+        static bool*   _running;
 
-        static void signalHandler(int signum);
+        static void    _signal_handler(int signum);
 
     public:
-        static void initialize(bool* running);
+        static void    initialize(bool* running);
 };
 
 #endif

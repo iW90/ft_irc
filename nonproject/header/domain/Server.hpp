@@ -6,9 +6,9 @@
 # include <string>
 # include <set>
 
-# include "Vault.hpp"
-# include "Socket.hpp"
-# include "Multiplexer.hpp"
+# include "interfaces/IVault.hpp"
+# include "interfaces/ISocket.hpp"
+# include "interfaces/IMultiplexer.hpp"
 # include "SignalManager.hpp"
 # include "ServerException.hpp"
 # include "Channel.hpp"
@@ -16,25 +16,24 @@
 # include "Constants.hpp"
 
 
-class Server
-{
+class Server {
     private:
         bool                _running;
-        Vault&              _vault;
-        Socket&             _socket;
-        Multiplexer&        _multiplexer;
+        IVault&              _vault;
+        ISocket&             _socket;
+        IMultiplexer&        _multiplexer;
         std::set<Channel *> _channels;
         std::set<Client *>  _clients;
 
 
     public:
-        Server(Vault& vault, Socket& socket, Multiplexer& multiplexer);
+        Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer);
         ~Server();
 
         // Getters
-        const Vault& get_vault() const;
-        const Socket& get_socket() const;
-        const Multiplexer& get_multiplexer() const;
+        const IVault& get_vault() const;
+        const ISocket& get_socket() const;
+        const IMultiplexer& get_multiplexer() const;
         const std::set<Channel*>& get_channels() const;
         const std::set<Client*>& get_clients() const;
 

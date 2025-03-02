@@ -11,8 +11,7 @@
 
 
 class Channel;
-class Client
-{
+class Client {
     private:
         int                 _fd;
         struct sockaddr_in  _address;

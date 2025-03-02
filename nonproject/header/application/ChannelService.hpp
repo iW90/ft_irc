@@ -11,8 +11,7 @@
 # include <set>
 
 class Channel;
-class ChannelService
-{
+class ChannelService {
     private:
         static void    _change_admin_if_needed(Channel* channel, Client* client);
 

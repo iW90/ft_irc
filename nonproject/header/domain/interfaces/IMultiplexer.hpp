@@ -1,0 +1,31 @@
+#ifndef IMULTIPLEXER_HPP
+# define IMULTIPLEXER_HPP
+
+# include <string>
+
+class IMultiplexer
+{
+    public:
+        virtual ~IMultiplexer() {}
+
+        virtual int     get_epoll_fd() const = 0;
+
+        virtual void    subscribe_fd_for_monitoring(int fd) = 0;
+        virtual void    unsubscribe_fd_for_monitoring(int fd) = 0;
+
+        virtual int     check_for_events() = 0;
+        virtual void    handle_events(int total_events) = 0;
+
+        virtual int     connect_client(int server_fd) = 0;
+        virtual void    disconnect_client(int client_fd) = 0;
+        virtual void    read_client_message(int client_fd) = 0;
+        
+
+        // Métodos não utilizados
+        virtual void    handle_read_event(int fd) = 0;
+        virtual void    handle_write_event(int fd) = 0;
+        virtual void    handle_error_event(int fd) = 0;
+        virtual void    handle_hangup_event(int fd) = 0;
+};
+
+#endif // IMULTIPLEXER_HPP
