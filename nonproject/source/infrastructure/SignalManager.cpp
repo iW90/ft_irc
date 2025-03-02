@@ -3,9 +3,8 @@
 bool* SignalManager::_running = NULL;
 
 void SignalManager::initialize(bool* running) {
-    if (!running) {
+    if (!running)
       throw std::invalid_argument("Signal Manager invalid usage - argument cannot be NULL");
-    }
     
     _running = running;
 
@@ -22,7 +21,6 @@ void SignalManager::initialize(bool* running) {
 
 void SignalManager::signalHandler(int signum) {
     (void)signum;
-    if (_running) {
+    if (_running)
         *_running = false;
-    }
 }

@@ -5,7 +5,11 @@
 
 # include "Client.hpp"
 
+# include <set>         // Necessário para std::set
+# include <map>         // Necessário para std::map
+# include <algorithm>   // Necessário para std::find
 # include <vector>
+
 
 class Client;
 class Channel 
@@ -16,7 +20,8 @@ class Channel
 
         std::string             _name;
         Client*                 _admin;
-        std::vector<Client *>   _clients;
+        std::set<Client *>      _clients;
+        std::map<Client *, int> _black_list;
 
         /* Modes */
         std::string             _key;               // channel key
@@ -29,7 +34,9 @@ class Channel
 
         std::string                 get_name() const;
         Client*                     get_admin() const;
-        std::vector<Client*>&       get_clients();
+        std::set<Client*>&          get_clients();
+        std::map<Client*, int>&     get_black_list();
+
         
         std::string                 get_key() const;
         size_t                      get_limit() const;
@@ -45,6 +52,8 @@ class Channel
         void                        set_limit(size_t limit);
         void                        set_external_messages_allowed(bool flag);
 
+        void                        add_to_black_list(Client* client);
+        void                        add_to_clients(Client* client);
 
 };
 

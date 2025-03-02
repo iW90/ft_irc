@@ -4,6 +4,11 @@
 #include "Socket.hpp"
 #include "Multiplexer.hpp"
 #include "ServerException.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "SignalManager.hpp"
 
 
 void turn_off(bool& running, Multiplexer& multiplexer, int server_fd) {
@@ -39,7 +44,11 @@ void turn_on(bool& running, Multiplexer& multiplexer, int server_fd) {
 
 
 int main() {
+    // Instância do Signal
     bool        running = false;
+    SignalManager::initialize(&running);
+
+    
     std::string ip_address = "127.0.0.1";
 
     // Mock (serão informados como argumento)
@@ -75,4 +84,10 @@ ou
 netstat -tuln | grep 6667
 Se o servidor estiver rodando, o comando retornará uma linha mostrando que ele está escutando na porta 6667.
 Se não houver saída, o servidor não está rodando ou não está escutando na porta especificada.
+*/
+
+
+/* CONECTANDO AO SERVIDOR
+nc 127.0.0.1 6667
+Para desconectar, necessário o uso do ctrl+C.
 */
