@@ -11,8 +11,8 @@ int main(int ac, char** av) {
     //     throw std::runtime_error("Usage: ./ircserv <port> <password>");
     (void) ac;
     (void) av;
-    int         port        = 6667;     // av[1]
-    std::string password    = "123";    // av[2]
+    int         port        = 6667;         // av[1]
+    std::string password    = "123456";     // av[2]
 
 
     // Injeções de dependência

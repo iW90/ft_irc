@@ -5,6 +5,45 @@ Join::Join(Server& server) : ACommand(server, true) {}
 Join::~Join() {}
 
 
+// syntax: JOIN <channel> <key>
+void Join::execute(Client* client, std::vector<std::string> args) {
+    if (!_has_valid_parameters(client, args))
+        return;
+
+    std::string name = args[0];
+    std::string pass = args.size() > 1 ? args[1] : "";
+
+    if (_is_already_in_channel(client)) {
+        ClientService::reply_message(client, ERR_TOOMANYCHANNELS(client->get_nickname(), name));
+        return;
+    }
+
+    Channel* channel = _get_or_create_channel(name, pass, client);
+
+    if (_is_channel_full(channel)) {
+        ClientService::reply_message(client, ERR_CHANNELISFULL(client->get_nickname(), name));
+        return;
+    }
+
+    if (!_is_channel_key_valid(channel, pass)) {
+        ClientService::reply_message(client, ERR_BADCHANNELKEY(client->get_nickname(), name));
+        return;
+    }
+
+    ClientService::join_channel(client, channel);
+}
+
+
+// Funções auxiliares
+
+bool Join::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    if (args.size() < 1) {
+        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "JOIN"));
+        return false;
+    }
+    return true;
+}
+
 bool Join::_is_already_in_channel(Client* client) {
     return client->get_channel() != NULL;
 }
@@ -23,41 +62,4 @@ bool Join::_is_channel_full(Channel* channel) {
 
 bool Join::_is_channel_key_valid(Channel* channel, const std::string& pass) {
     return channel->get_key() == pass;
-}
-
-
-// syntax: JOIN <channel> [<key>]
-void Join::execute(Client* client, std::vector<std::string> args)
-{
-    if (args.empty()) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "JOIN"));
-        return;
-    }
-
-    std::string name = args[0];
-    std::string pass = args.size() > 1 ? args[1] : "";
-
-    // Verifica se o cliente já está em um canal
-    if (_is_already_in_channel(client)) {
-        ClientService::reply_message(client, ERR_TOOMANYCHANNELS(client->get_nickname(), name));
-        return;
-    }
-
-    // Recupera ou cria o canal
-    Channel* channel = _get_or_create_channel(name, pass, client);
-
-    // Verifica se o canal está cheio
-    if (_is_channel_full(channel)) {
-        ClientService::reply_message(client, ERR_CHANNELISFULL(client->get_nickname(), name));
-        return;
-    }
-
-    // Verifica se a senha do canal está correta
-    if (!_is_channel_key_valid(channel, pass)) {
-        ClientService::reply_message(client, ERR_BADCHANNELKEY(client->get_nickname(), name));
-        return;
-    }
-
-    // Se todas as verificações passarem, o cliente entra no canal
-    ClientService::join_channel(client, channel);
 }

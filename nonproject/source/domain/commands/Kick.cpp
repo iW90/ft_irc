@@ -5,17 +5,15 @@ Kick::Kick(Server& server) : ACommand(server, true) {}
 Kick::~Kick() {}
 
 
-// syntax: KICK <channel> <client> :[<message>]
+// syntax: KICK <channel> <client> :<message>
 void Kick::execute(Client* client, std::vector<std::string> args) {
-    // Verificar se os parâmetros são válidos
-    if (!_has_valid_parameters(client, args)) return;
+    if (!_has_valid_parameters(client, args))
+        return;
 
-    // Extrair os dados necessários
     std::string name = args[0];
     std::string target = args[1];
     std::string reason = _extract_reason(args);
 
-    // Verificar se o cliente está no canal e tem permissões suficientes
     Channel* channel = client->get_channel();
     if (!_is_valid_channel(client, channel, name))
         return;
@@ -23,12 +21,10 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     if (!_has_channel_privileges(client, channel))
         return;
 
-    // Verificar se o destinatário está no canal
     Client* dest = _server.get_client(target);
     if (!_is_valid_recipient(client, dest, channel, name))
         return;
 
-    // Executar o comando de kick
     ChannelService::kick_client(channel, client, dest, reason);
 }
 

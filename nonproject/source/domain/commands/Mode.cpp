@@ -5,8 +5,8 @@ Mode::Mode(Server& server) : ACommand(server, true) {}
 Mode::~Mode() {}
 
 
-// syntax:  MODE <nickname> <flags> (user)
-//          MODE <channel> <flags> [<args>]
+// syntax:  MODE <nickname> <flags>
+//          MODE <channel> <flags> <args>
 void Mode::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;

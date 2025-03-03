@@ -9,6 +9,7 @@
 
 class Join : public ACommand {
     private:
+        bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
         bool        _is_already_in_channel(Client* client);
         bool        _is_channel_full(Channel* channel);
         bool        _is_channel_key_valid(Channel* channel, const std::string& pass);

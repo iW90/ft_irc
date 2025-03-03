@@ -8,7 +8,10 @@
 
 class User : public ACommand {
     private:
-        
+        bool            _has_valid_parameters(Client* client, const std::vector<std::string>& args);
+        bool            _is_already_registered(Client* client);
+        std::string     _get_realname(std::vector<std::string>& args);
+        void            _set_client_state(Client* client);
 
     public:
         User(Server& server);
