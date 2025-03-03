@@ -2,7 +2,6 @@
 # define JOIN_HPP
 
 # include "ACommand.hpp"
-# include "Client.hpp"
 # include "ClientService.hpp"
 # include "Macros.hpp"
 

@@ -1,4 +1,4 @@
-#include "commands/Mode.hpp"
+#include "commands/operator/Mode.hpp"
 
 
 Mode::Mode(Server& server) : ACommand(server, true) {}
