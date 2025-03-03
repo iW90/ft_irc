@@ -3,6 +3,15 @@
 #ifndef MACROS_HPP
 # define MACROS_HPP
 
+
+/* Broadcast messages */
+
+# define MESSAGE_CLIENT_JOIN(channel, client)                    client + " joined the channel " + channel
+# define MESSAGE_CLIENT_LEAVE(channel, client)                   client + " left " + client + " from channel " + channel
+# define MESSAGE_ADMIN_CHANGE(channel, client)                   client + " is now the admin of the channel " + channel
+# define MESSAGE_CLIENT_KICK(channel, client, target, reason)    client + " kicked " + target + " from channel " + channel + " for reason: " + reason
+
+
 /* Error Responses */
 
 # define ERR_NOTREGISTERED(source)                       "451 " + source + " :You have not registered"

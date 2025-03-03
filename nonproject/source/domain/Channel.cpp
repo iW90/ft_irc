@@ -20,7 +20,7 @@ std::string                 Channel::get_key() const { return _key; }
 size_t                      Channel::get_limit() const { return _limit; }
 bool                        Channel::is_external_messages_allowed() const { return _external_messages; }
 
-size_t                      Channel::get_size() const { return _clients.size(); }
+size_t                      Channel::get_total_clients() const { return _clients.size(); }
 
 std::vector<std::string>    Channel::get_nicknames() {
     std::vector<std::string> nicknames;

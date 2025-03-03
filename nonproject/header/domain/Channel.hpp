@@ -41,7 +41,7 @@ class Channel {
         size_t                      get_limit() const;
         bool                        is_external_messages_allowed() const;
 
-        size_t                      get_size() const;
+        size_t                      get_total_clients() const;
         std::vector<std::string>    get_nicknames();
 
         void                        set_admin(Client* admin);

@@ -29,10 +29,9 @@ std::string Client::get_prefix() const {
     return _nickname + username + hostname;
 }
 
-bool Client::is_registered() const { return false; } //implementar
 Channel* Client::get_channel() const { return _channel; }
 
 void Client::set_nickname(const std::string &nickname) { _nickname = nickname; }
 void Client::set_username(const std::string &username) { _username = username; }
-void Client::set_state(std::string state) { _state = state; }
+void Client::set_realname(const std::string &realname) { _realname = realname; }
 void Client::set_channel(Channel *channel) { _channel = channel; }

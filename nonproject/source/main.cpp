@@ -6,24 +6,29 @@
 #include "Server.hpp"
 
 
-int main() {
-    const std::string IP_ADDRESS = "127.0.0.1";
+int main(int ac, char** av) {
+    // if (ac != 3)
+    //     throw std::runtime_error("Usage: ./ircserv <port> <password>");
+    int         port        = 6667;     // av[1]
+    std::string password    = "123";    // av[2]
 
-    // Mock (serão informados como argumento)
-    int         port = 6667;
-    std::string password = "adminadmin123";
 
     // Injeções de dependência
-    IVault* vault = new Vault(password);
-    ISocket* server_socket = new Socket(IP_ADDRESS, port);
-    IMultiplexer* multiplexer = new Multiplexer(server_socket->get_fd());
+    const std::string   IP_ADDRESS      = "127.0.0.1";
+    IVault*             vault           = new Vault(password);
+    ISocket*            server_socket   = new Socket(IP_ADDRESS, port);
+    IMultiplexer*       multiplexer     = new Multiplexer(server_socket->get_fd());
 
     Server      server(*vault, *server_socket, *multiplexer);
 
     // Iniciando servidor
-    server.start();
-
-    return 0;
+    try {
+        server.start();
+        return 0;
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
 }
 
 

@@ -18,7 +18,7 @@ Channel* Join::_get_or_create_channel(const std::string& name, const std::string
 }
 
 bool Join::_is_channel_full(Channel* channel) {
-    return channel->get_limit() > 0 && channel->get_size() >= channel->get_limit();
+    return channel->get_limit() > 0 && channel->get_total_clients() >= channel->get_limit();
 }
 
 bool Join::_is_channel_key_valid(Channel* channel, const std::string& pass) {

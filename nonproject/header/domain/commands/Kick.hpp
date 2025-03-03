@@ -9,11 +9,11 @@
 
 class Kick : public ACommand {
     private:
-        bool _has_valid_parameters(Client* client, const std::vector<std::string>& args);
+        bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
         std::string _extract_reason(const std::vector<std::string>& args);
-        bool _is_valid_channel(Client* client, Channel* channel, const std::string& name);
-        bool _has_channel_privileges(Client* client, Channel* channel);
-        bool _is_valid_recipient(Client* client, Client* dest, Channel* channel, const std::string& name);
+        bool        _is_valid_channel(Client* client, Channel* channel, const std::string& name);
+        bool        _has_channel_privileges(Client* client, Channel* channel);
+        bool        _is_valid_recipient(Client* client, Client* dest, Channel* channel, const std::string& name);
 
     public:
         Kick(Server& server);
