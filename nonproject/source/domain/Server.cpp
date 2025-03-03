@@ -45,6 +45,18 @@ Channel* Server::get_channel(const std::string& name) {
     return NULL; 
 }
 
+Client* Server::get_client(const std::string& target) {
+    std::set<Client*>::iterator it;
+    
+    for (it = _clients.begin(); it != _clients.end(); ++it) {
+        Client* client = *it;
+
+        if (client->get_nickname() == target)
+            return client;
+    }
+    
+    return NULL;
+}
 
 
 // Métodos

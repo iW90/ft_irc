@@ -31,13 +31,14 @@ class Server {
         ~Server();
 
         // Getters
-        const IVault& get_vault() const;
-        const ISocket& get_socket() const;
-        const IMultiplexer& get_multiplexer() const;
-        const std::set<Channel*>& get_channels() const;
-        const std::set<Client*>& get_clients() const;
+        const IVault&               get_vault() const;
+        const ISocket&              get_socket() const;
+        const IMultiplexer&         get_multiplexer() const;
+        const std::set<Channel*>&   get_channels() const;
+        const std::set<Client*>&    get_clients() const;
 
-        Channel* get_channel(const std::string& name);
+        Channel*                    get_channel(const std::string& name);
+        Client*                     get_client(const std::string& name);
 
         // Métodos
         void start();

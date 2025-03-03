@@ -26,7 +26,7 @@ bool Join::_is_channel_key_valid(Channel* channel, const std::string& pass) {
 }
 
 
-// syntax: JOIN <channels> [<keys>]
+// syntax: JOIN <channel> [<key>]
 void Join::execute(Client* client, std::vector<std::string> args)
 {
     if (args.empty()) {

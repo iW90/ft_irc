@@ -57,3 +57,30 @@ class Channel {
 };
 
 #endif // CHANNEL_HPP
+
+/*
+    No IRC (Internet Relay Chat), os canais podem ter senhas.
+    Isso é feito para restringir o acesso ao canal e garantir 
+    que apenas usuários autorizados possam participar. Essas 
+    senhas são configuradas pelos administradores ou opers 
+    (operadores) do canal.
+
+    A senha de um canal no IRC é definida com o comando
+        /set #canal +k senha
+    onde:
+
+        - #canal é o nome do canal.
+        - +k ativa a proteção por senha.
+        - senha é a senha que os usuários precisam fornecer para 
+            entrar no canal.
+
+    Quando a proteção por senha está ativa, os usuários que tentam 
+    entrar no canal precisam informar a senha usando o comando 
+        /join #canal senha.
+
+    Se você tentar entrar em um canal protegido sem fornecer a 
+    senha, não conseguirá acessar o canal.
+
+    Vale notar que nem todos os canais IRC usam senhas, e muitas 
+    vezes os canais públicos não exigem nenhuma senha para acesso.
+*/

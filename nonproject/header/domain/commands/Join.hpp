@@ -1,14 +1,11 @@
-#ifndef IRC_JOIN_HPP
-# define IRC_JOIN_HPP
+#ifndef JOIN_HPP
+# define JOIN_HPP
 
 # include "ACommand.hpp"
 # include "Client.hpp"
 # include "ClientService.hpp"
+# include "Macros.hpp"
 
-#define ERR_NEEDMOREPARAMS(source, command)             "461 " + source + " " + command + " :Not enough parameters"
-#define ERR_TOOMANYCHANNELS(source, channel)            "405 " + source + " " + channel + " :You have joined too many channels"
-#define ERR_CHANNELISFULL(source, channel)              "471 " + source + " " + channel + " :Cannot join channel (+l)"
-#define ERR_BADCHANNELKEY(source, channel)              "475 " + source + " " + channel + " :Cannot join channel (+k)"
 
 class Join : public ACommand {
     private:
@@ -18,11 +15,10 @@ class Join : public ACommand {
         Channel*    _get_or_create_channel(const std::string& name, const std::string& pass, Client* client);
 
     public:
-
         Join(Server& server);
         ~Join();
 
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif
+#endif // JOIN_HPP

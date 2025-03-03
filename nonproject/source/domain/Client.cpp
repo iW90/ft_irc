@@ -22,6 +22,13 @@ std::string Client::get_nickname() const { return _nickname; }
 std::string Client::get_username() const { return _username; }
 std::string Client::get_hostname() const { return _hostname; }
 
+std::string Client::get_prefix() const {
+    std::string username = _username.empty() ? "" : "!" + _username;
+    std::string hostname = _hostname.empty() ? "" : "@" + _hostname;
+
+    return _nickname + username + hostname;
+}
+
 bool Client::is_registered() const { return false; } //implementar
 Channel* Client::get_channel() const { return _channel; }
 

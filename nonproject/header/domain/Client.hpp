@@ -33,6 +33,7 @@ class Client {
         std::string get_nickname() const;
         std::string get_username() const;
         std::string get_hostname() const;
+        std::string get_prefix() const;
 
         bool        is_registered() const;
         Channel*    get_channel() const;
