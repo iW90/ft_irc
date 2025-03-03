@@ -23,6 +23,7 @@ std::string Client::get_port() const { return "_address"; } //implementar
 std::string Client::get_nickname() const { return _nickname; }
 std::string Client::get_username() const { return _username; }
 std::string Client::get_hostname() const { return _hostname; }
+std::string Client::get_realname() const { return _realname; }
 ClientState Client::get_state() const { return _state; }
 
 
