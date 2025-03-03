@@ -9,6 +9,8 @@
 # include <stdexcept>       // Necessário para exceções
 # include <string>          // Necessário para std::string
 
+# include "Enums.hpp"
+
 
 class Channel;
 class Client {
@@ -20,6 +22,8 @@ class Client {
         std::string         _username;
         std::string         _hostname;
         std::string         _realname;
+
+        ClientState         _state;
 
         Channel*            _channel;
 
@@ -35,6 +39,7 @@ class Client {
         std::string get_hostname() const;
         std::string get_realname() const;
         std::string get_prefix() const;
+        ClientState get_state() const;
 
         Channel*    get_channel() const;
 
@@ -42,6 +47,7 @@ class Client {
         void set_username(const std::string &username);
         void set_realname(const std::string &nickname);
         void set_channel(Channel *channel);
+        void set_state(ClientState state);
 };
 
 #endif // CLIENT_HPP

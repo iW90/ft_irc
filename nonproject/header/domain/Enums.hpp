@@ -11,4 +11,11 @@ enum ChannelMode {
     LIMIT               = 'l'       // Limite de usuários no canal
 };
 
-#endif ENUMS_HPP
+enum ClientState {
+    CONNECTED,
+    LOGGED_IN,
+    REGISTERED,
+    DISCONNECTED
+};
+
+#endif // ENUMS_HPP

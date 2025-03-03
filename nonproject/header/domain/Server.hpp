@@ -41,6 +41,8 @@ class Server {
         const std::map<int, Client*>&   get_clients() const;
         Client*                         get_client(const std::string& name);
 
+        bool                            is_valid_pass(std::string pass);
+
         // Métodos
         void start();
         void stop();

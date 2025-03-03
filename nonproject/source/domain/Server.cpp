@@ -84,3 +84,7 @@ Channel* Server::create_channel(const std::string& name, const std::string& key,
 
     return channel;
 }
+
+bool Server::is_valid_pass(std::string pass) {
+    return _vault.validate_password(pass);
+}
