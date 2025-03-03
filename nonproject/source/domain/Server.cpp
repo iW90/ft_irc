@@ -7,14 +7,6 @@ Server::Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer) :
       _multiplexer(multiplexer) {}
 
 Server::~Server() {
-    // Destruir todos os clients
-    std::set<Client*>::iterator client_it;
-    for (client_it = _clients.begin(); client_it != _clients.end(); ++client_it) {
-        Client* client = *client_it;
-        delete client;
-    }
-    _clients.clear();
-
     // Destruir todos os channels
     std::set<Channel*>::iterator channel_it;
     for (channel_it = _channels.begin(); channel_it != _channels.end(); ++channel_it) {
@@ -31,11 +23,11 @@ Server::~Server() {
 
 
 // Getters
-const IVault& Server::get_vault() const { return _vault; }
-const ISocket& Server::get_socket() const { return _socket; }
+// const IVault& Server::get_vault() const { return _vault; }
+// const ISocket& Server::get_socket() const { return _socket; }
 const IMultiplexer& Server::get_multiplexer() const { return _multiplexer; }
 const std::set<Channel*>& Server::get_channels() const { return _channels; }
-const std::set<Client*>& Server::get_clients() const { return _clients; }
+const std::map<int, Client*>& Server::get_clients() const { return _multiplexer.get_clients(); }
 
 Channel* Server::get_channel(const std::string& name) {
     for (std::set<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
@@ -45,19 +37,10 @@ Channel* Server::get_channel(const std::string& name) {
     return NULL; 
 }
 
+
 Client* Server::get_client(const std::string& target) {
-    std::set<Client*>::iterator it;
-    
-    for (it = _clients.begin(); it != _clients.end(); ++it) {
-        Client* client = *it;
-
-        if (client->get_nickname() == target)
-            return client;
-    }
-    
-    return NULL;
+    return _multiplexer.get_client(target);
 }
-
 
 // Métodos
 void Server::start() {

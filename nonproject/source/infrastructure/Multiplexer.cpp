@@ -18,9 +18,37 @@ Multiplexer::Multiplexer(int server_fd) {
 Multiplexer::~Multiplexer() {
     if (_epoll_fd != -1)
         ::close(_epoll_fd);
+
+    // Destruir todos os clients
+    std::map<int, Client*>::iterator client_it;
+    for (client_it = _clients.begin(); client_it != _clients.end(); ++client_it) {
+        Client* client = client_it->second;
+        delete client;
+    }
+    _clients.clear();
 }
 
-int Multiplexer::get_epoll_fd() const { return _epoll_fd; }
+
+// Getters
+
+int                         Multiplexer::get_epoll_fd() const { return _epoll_fd; }
+
+std::map<int, Client *>&    Multiplexer::get_clients() { return _clients; }
+
+Client*                     Multiplexer::get_client(std::string target) {
+    std::map<int, Client*>::iterator it;
+
+    for (it = _clients.begin(); it != _clients.end(); ++it) {
+        Client* client = it->second;
+        if (client->get_nickname() == target)
+            return client;
+    }
+
+    return NULL;
+}
+
+
+// Métodos
 
 // ADICIONA UM NOVO FD PARA SER MONITORADO
 void Multiplexer::subscribe_fd_for_monitoring(int fd) {
@@ -119,7 +147,16 @@ void Multiplexer::handle_events(int total_events) {
 // DISCONECTA O CLIENT DO SERVER
 void Multiplexer::disconnect_client(int client_fd) {
     unsubscribe_fd_for_monitoring(client_fd);
+
+    std::map<int, Client*>::iterator it = _clients.find(client_fd);
+    if (it != _clients.end()) {
+        Client* client = it->second;
+        _clients.erase(it);
+        delete client;
+    }
+
     ::close(client_fd);
+
     std::cout << "Client disconnected." << std::endl;
 }
 
@@ -128,27 +165,16 @@ int Multiplexer::connect_client(int server_fd) {
     sockaddr_in addr = {};
     socklen_t   size = sizeof(addr);
 
-    int client_fd = ::accept(server_fd, (sockaddr*)&addr, &size);
-    if (client_fd == -1)
-        throw std::runtime_error("Error to accept connection");
+    int client_fd = _accept_connection(server_fd, &addr, &size);
+    Client* client = _create_client(client_fd, addr);
 
+    _clients.insert(std::make_pair(client_fd, client));
     subscribe_fd_for_monitoring(client_fd);
+
     std::cout << "Client connected." << std::endl;
-
     return client_fd;
-
-    /*
-        int ::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
-        - sockfd é o socket do servidor.
-        - addr é um ponteiro para uma estrutura sockaddr onde as informações 
-            sobre o endereço do cliente serão armazenadas (como o IP e a 
-            porta de onde a conexão foi feita).
-        - addrlen é um ponteiro para a variável que contém o tamanho da 
-            estrutura sockaddr. Quando accept() for bem-sucedido, ele 
-            preencherá essa estrutura com o endereço do cliente.
-        - retorna o fd do client.
-    */    
 }
+
 
 // MINI GNL
 void Multiplexer::read_client_message(int client_fd) {
@@ -219,9 +245,6 @@ void Multiplexer::send_client_message(int client_fd, const std::string& message)
 }
 
 
-
-
-
 // MÉTODOS AINDA NÃO UTILIZADOS
 void Multiplexer::handle_read_event(int fd) {
     if (fd != _server_fd)
@@ -245,4 +268,37 @@ void Multiplexer::handle_write_event(int fd) {
     // send_message_to_client(fd);
     (void)fd;
     return ;
+}
+
+
+// Funções auxiliares
+
+int Multiplexer::_accept_connection(int server_fd, sockaddr_in* addr, socklen_t* size) {
+    int client_fd = ::accept(server_fd, (sockaddr*)addr, size);
+    if (client_fd == -1)
+        throw std::runtime_error("Error to accept connection");
+    return client_fd;
+    /*
+        int ::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+        - sockfd é o socket do servidor.
+        - addr é um ponteiro para uma estrutura sockaddr onde as informações 
+            sobre o endereço do cliente serão armazenadas (como o IP e a 
+            porta de onde a conexão foi feita).
+        - addrlen é um ponteiro para a variável que contém o tamanho da 
+            estrutura sockaddr. Quando accept() for bem-sucedido, ele 
+            preencherá essa estrutura com o endereço do cliente.
+        - retorna o fd do client.
+    */   
+}
+
+Client* Multiplexer::_create_client(int client_fd, const sockaddr_in& addr) {
+    char* client_ip = inet_ntoa(addr.sin_addr);
+    int client_port = ntohs(addr.sin_port);
+
+    // std::cout << "Creating client:" << std::endl;
+    // std::cout << "Client FD: " << client_fd << std::endl;
+    // std::cout << "Client IP: " << client_ip << std::endl;
+    // std::cout << "Client Port: " << client_port << std::endl;
+
+    return new Client(client_fd, client_ip, client_port);
 }

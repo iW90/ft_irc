@@ -13,18 +13,30 @@
 
 # include "interfaces/IMultiplexer.hpp"
 # include "Constants.hpp"
+# include "Client.hpp"
 
 class Multiplexer : public IMultiplexer {
     private:
-        int                     _server_fd;
-        int                     _epoll_fd;
-        epoll_event             _events[MAX_EVENTS];
+        int                         _server_fd;
+        int                         _epoll_fd;
+        epoll_event                 _events[MAX_EVENTS];
+        std::map<int, Client *>     _clients;
+
+        int     _accept_connection(int server_fd, sockaddr_in* addr, socklen_t* size);
+        Client* _create_client(int client_fd, const sockaddr_in& addr);
 
     public:
         Multiplexer(int server_fd);
         ~Multiplexer();
 
-        int     get_epoll_fd() const;
+        // Getters
+
+        int                         get_epoll_fd() const;
+        Client*                     get_client(std::string target);
+        std::map<int, Client *>&    get_clients();
+
+
+        // Métodos
 
         void    subscribe_fd_for_monitoring(int fd);
         void    unsubscribe_fd_for_monitoring(int fd);
