@@ -1,4 +1,4 @@
-#include "ACommand.hpp"
+#include "commands/ACommand.hpp"
 
 ACommand::ACommand(Server& server, bool auth) : _auth(auth), _server(server) {}
 

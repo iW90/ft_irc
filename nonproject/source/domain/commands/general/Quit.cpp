@@ -5,9 +5,8 @@ Quit::Quit(Server& server) : ACommand(server, true) {}
 Quit::~Quit() {}
 
 
-// syntax: QUIT [<message>]
-void    Quit::execute(Client* client, std::vector<std::string> args)
-{
+// syntax: QUIT :<message>
+void    Quit::execute(Client* client, std::vector<std::string> args) {
     std::string reason = args.empty() ? "Leaving server..." : args.at(0);
 
     if (reason.at(0) == ':')
