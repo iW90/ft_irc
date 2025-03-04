@@ -21,9 +21,12 @@ class Channel {
         Client*                 _admin;
         std::set<Client *>      _clients;
         std::map<Client *, int> _black_list;
-        std::string             _topic;
+        
 
         /* Modes */
+        std::string             _topic;             // channel description
+        std::set<Client *>      _invited_clients;   // invited clients
+        std::set<Client *>      _operators;         // channel operators
         std::string             _key;               // channel key
         size_t                  _limit;             // limit of channel members
         bool                    _external_messages; // yes/no external messages
@@ -37,6 +40,7 @@ class Channel {
         std::set<Client*>&          get_clients();
         std::map<Client*, int>&     get_black_list();
         std::string                 get_topic() const;
+        Client*                     get_operator(Client* target) const;
         
         std::string                 get_key() const;
         size_t                      get_limit() const;
@@ -55,7 +59,8 @@ class Channel {
 
         void                        add_to_black_list(Client* client);
         void                        add_to_clients(Client* client);
-
+        void                        add_to_invited_clients(Client* client);
+        void                        add_to_operators(Client* client);
 };
 
 #endif // CHANNEL_HPP

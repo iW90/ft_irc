@@ -24,19 +24,17 @@ void    Nick::execute(Client* client, std::vector<std::string> args) {
 // Funções auxiliares
 
 bool Nick::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    if (args.size() != 1) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "NICK"));
-        return false;
-    }
-    return true;
+    if (args.size() == 1)
+        return true;
+    ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "NICK"));
+    return false;
 }
 
 bool Nick::_is_nickname_taken(const std::string& nickname, Client* client) {
-    if (_server.get_client(nickname)) {
-        ClientService::reply_message(client, ERR_NICKNAMEINUSE(client->get_nickname()));
-        return true;
-    }
-    return false;
+    if (!_server.get_client(nickname))
+        return false;
+    ClientService::reply_message(client, ERR_NICKNAMEINUSE(client->get_nickname()));
+    return true;
 }
 
 void Nick::_set_client_state(Client* client) {

@@ -23,17 +23,16 @@ void    Part::execute(Client* client, std::vector<std::string> args) {
 // Funções auxiliares
 
 bool Part::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    if (args.size() < 1) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PART"));
-        return false;
-    }
-    return true;
+    if (args.size() > 0)
+        return true;
+    ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PART"));
+    return false;
 }
 
 bool Part::_is_client_in_channel(Client* client, Channel* channel, const std::string& name) {
-    if (!channel || !client->get_channel() || client->get_channel()->get_name() != name) {
-        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), name));
-        return false;
-    }
-    return true;
+    if (channel && client->get_channel() && client->get_channel()->get_name() == name)
+        return true;
+
+    ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), name));
+    return false;
 }

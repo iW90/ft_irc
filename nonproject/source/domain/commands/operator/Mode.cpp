@@ -13,7 +13,7 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
 
     std::string target = args.at(0);
     Channel* channel = _server.get_channel(target);
-    if (!_has_valid_channel(client, channel, target))
+    if (!_is_valid_channel(client, channel, target))
         return;
 
     // Verifica as permissões do canal
@@ -25,37 +25,22 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
 }
 
 
+// Funções auxiliares
+
 bool Mode::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    if (args.size() < 2) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "MODE"));
-        return false;
-    }
-    return true;
-}
-
-bool Mode::_has_valid_channel(Client* client, Channel* channel, const std::string& target) {
-    if (!channel) {
-        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), target));
-        return false;
-    }
-    return true;
-}
-
-bool Mode::_has_channel_privileges(Client* client, Channel* channel, const std::string& target) {
-    if (channel->get_admin() != client) {
-        ClientService::reply_message(client, ERR_CHANOPRIVSNEEDED(client->get_nickname(), target));
-        return false;
-    }
-    return true;
+    if (args.size() > 1)
+        return true;
+    ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "MODE"));
+    return false;
 }
 
 void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel* channel) {
-    int i = 0, p = 2;
-    char c;
+    int p = 2;
+    char prev_c = '\0';
 
-    while ((c = args[1][i])) {
-        char prev_c = i > 0 ? args[1][i - 1] : '\0';
-        bool active = prev_c == '+';
+    for (int i = 0; args[1][i]; ++i) {
+        char c = args[1][i];
+        bool active = (prev_c == '+');
 
         switch (c) {
             case 'n':
@@ -70,9 +55,11 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
             default:
                 break;
         }
-        i++;
+
+        prev_c = c;
     }
 }
+
 
 // Modes
 void Mode::_set_mode_n(Client* client, Channel* channel, bool active) {

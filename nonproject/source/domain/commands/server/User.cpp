@@ -23,18 +23,9 @@ void    User::execute(Client* client, std::vector<std::string> args) {
 // Funções auxiliares
 
 bool User::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    if (args.size() < 4) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "USER"));
-        return false;
-    }
-    return true;
-}
-
-bool User::_is_already_registered(Client* client) {
-    if (client->get_state() == REGISTERED) {
-        ClientService::reply_message(client, ERR_ALREADYREGISTERED(client->get_nickname()));
+    if (args.size() > 3)
         return true;
-    }
+    ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "USER"));
     return false;
 }
 

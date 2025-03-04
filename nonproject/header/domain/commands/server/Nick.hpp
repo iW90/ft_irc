@@ -2,8 +2,6 @@
 # define NICK_HPP
 
 # include "ACommand.hpp"
-# include "Macros.hpp"
-# include "ClientService.hpp"
 
 
 class Nick : public ACommand {

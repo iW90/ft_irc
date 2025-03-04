@@ -44,6 +44,7 @@
 # define RPL_KICK(source, channel, target, reason)       ":" + source + " KICK " + channel + " " + target + " :" + reason
 # define RPL_MODE(source, channel, modes, args)          ":" + source + " MODE " + channel + " " + modes + " " + args
 # define RPL_TOPIC(source, channel, topic)               ":" + source + " TOPIC " + channel + " :" + topic
+# define RPL_INVITE(source, target, channel)             ":" + source + " INVITE " + target + " to " + channel
 
 
 /* Numeric Responses */

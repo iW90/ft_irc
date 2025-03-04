@@ -2,13 +2,11 @@
 # define QUIT_HPP
 
 # include "ACommand.hpp"
-# include "ClientService.hpp"
-# include "Macros.hpp"
 
 
 class Quit : public ACommand {
     private:
-        
+        bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
 
     public:
         Quit(Server& server);

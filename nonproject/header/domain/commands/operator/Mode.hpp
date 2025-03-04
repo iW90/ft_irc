@@ -2,16 +2,11 @@
 # define MODE_HPP
 
 # include "ACommand.hpp"
-# include "Macros.hpp"
-# include "ClientService.hpp"
-# include "ChannelService.hpp"
 
 
 class Mode : public ACommand {
     private:
         bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
-        bool        _has_valid_channel(Client* client, Channel* channel, const std::string& target);
-        bool        _has_channel_privileges(Client* client, Channel* channel, const std::string& target);
         void        _process_modes(Client* client, std::vector<std::string> args, Channel* channel);
         void        _set_mode_n(Client* client, Channel* channel, bool active);
         void        _set_mode_l(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p);

@@ -13,7 +13,7 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
 
     std::string target = args.at(0);
     Channel* channel = _server.get_channel(target);
-    if (!_has_valid_channel(client, channel, target))
+    if (!_is_valid_channel(client, channel, target))
         return;
     
     if (args.size() == 1) {
@@ -21,11 +21,14 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
         return;
     }
 
-    if (!_has_channel_privileges(client, channel))
+    if (!_has_channel_privileges(client, channel, target))
         return;
     
     _set_new_topic(client, channel, args);
 }
+
+
+// Funções auxiliares
 
 void Topic::_send_current_topic(Client* client, Channel* channel) {
     ClientService::reply_message(client, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic()));
@@ -54,20 +57,4 @@ std::string Topic::_extract_topic(const std::vector<std::string>& args) {
         }
     }
     return topic;
-}
-
-bool Topic::_has_channel_privileges(Client* client, Channel* channel) {
-    if (channel->get_admin() != client) {
-        ClientService::reply_message(client, ERR_CHANOPRIVSNEEDED(client->get_nickname(), channel->get_name()));
-        return false;
-    }
-    return true;
-}
-
-bool Topic::_has_valid_channel(Client* client, Channel* channel, const std::string& target) {
-    if (!channel) {
-        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), target));
-        return false;
-    }
-    return true;
 }

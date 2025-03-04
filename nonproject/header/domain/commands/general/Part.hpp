@@ -2,8 +2,6 @@
 # define PART_HPP
 
 # include "ACommand.hpp"
-# include "ClientService.hpp"
-# include "Macros.hpp"
 
 
 class Part : public ACommand {

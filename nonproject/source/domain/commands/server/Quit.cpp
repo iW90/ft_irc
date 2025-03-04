@@ -16,3 +16,12 @@ void    Quit::execute(Client* client, std::vector<std::string> args) {
     IMultiplexer& multiplexer = _server.get_multiplexer();
     multiplexer.disconnect_client(client->get_fd());
 }
+
+
+// Funções auxiliares
+
+bool Quit::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    (void)client;
+    (void)args;
+    return true;
+}

@@ -36,6 +36,14 @@ std::vector<std::string>    Channel::get_nicknames() {
     return nicknames;
 }
 
+Client* Channel::get_operator(Client* target) const {
+    for (std::set<Client*>::iterator it = _operators.begin(); it != _operators.end(); ++it) {
+        if (target == *it)
+            return *it;
+    }
+    return NULL;
+}
+
 // Setters
 void Channel::set_key(const std::string& key) { _key = key; }
 void Channel::set_limit(size_t limit) { _limit = limit; }
@@ -45,6 +53,8 @@ void Channel::set_name(const std::string& name) { _name = name; }
 void Channel::set_topic(const std::string& topic) { _topic = topic; }
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
+void Channel::add_to_invited_clients(Client* client) { _invited_clients.insert(client); }
+void Channel::add_to_operators(Client* client) { _operators.insert(client); }
 void Channel::add_to_black_list(Client* client)
 {
     if (_black_list.find(client) != _black_list.end())
