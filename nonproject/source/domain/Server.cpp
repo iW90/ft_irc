@@ -25,9 +25,9 @@ Server::~Server() {
 // Getters
 // const IVault& Server::get_vault() const { return _vault; }
 // const ISocket& Server::get_socket() const { return _socket; }
-const IMultiplexer& Server::get_multiplexer() const { return _multiplexer; }
-const std::set<Channel*>& Server::get_channels() const { return _channels; }
-const std::map<int, Client*>& Server::get_clients() const { return _multiplexer.get_clients(); }
+IMultiplexer&                   Server::get_multiplexer() const { return _multiplexer; }
+const std::set<Channel*>&       Server::get_channels() const { return _channels; }
+const std::map<int, Client*>&   Server::get_clients() const { return _multiplexer.get_clients(); }
 
 Channel* Server::get_channel(const std::string& name) {
     for (std::set<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {

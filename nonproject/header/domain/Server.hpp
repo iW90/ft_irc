@@ -33,7 +33,7 @@ class Server {
         ~Server();
 
         // Getters
-        const IMultiplexer&             get_multiplexer() const;
+        IMultiplexer&                   get_multiplexer() const;
 
         const std::set<Channel*>&       get_channels() const;
         Channel*                        get_channel(const std::string& name);
