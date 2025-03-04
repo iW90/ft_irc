@@ -1,4 +1,4 @@
-#include "commands/Join.hpp"
+#include "commands/general/Join.hpp"
 
 
 Join::Join(Server& server) : ACommand(server, true) {}
