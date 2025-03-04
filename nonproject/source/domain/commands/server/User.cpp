@@ -1,7 +1,7 @@
-#include "commands/authentication/User.hpp"
+#include "commands/server/User.hpp"
 
 
-User::User(Server& server) : ACommand(server, true) {}
+User::User(Server& server) : ACommand(server, false) {}
 User::~User() {}
 
 

@@ -1,7 +1,7 @@
-#include "commands/general/Quit.hpp"
+#include "commands/server/Quit.hpp"
 
 
-Quit::Quit(Server& server) : ACommand(server, true) {}
+Quit::Quit(Server& server) : ACommand(server, false) {}
 Quit::~Quit() {}
 
 

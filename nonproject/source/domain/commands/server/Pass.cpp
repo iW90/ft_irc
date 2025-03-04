@@ -1,7 +1,7 @@
-#include "commands/authentication/Pass.hpp"
+#include "commands/server/Pass.hpp"
 
 
-Pass::Pass(Server& server) : ACommand(server, true) {}
+Pass::Pass(Server& server) : ACommand(server, false) {}
 Pass::~Pass() {}
 
 

@@ -1,7 +1,7 @@
-#include "commands/authentication/Nick.hpp"
+#include "commands/server/Nick.hpp"
 
 
-Nick::Nick(Server& server) : ACommand(server, true) {}
+Nick::Nick(Server& server) : ACommand(server, false) {}
 Nick::~Nick() {}
 
 
