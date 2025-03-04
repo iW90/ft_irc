@@ -71,28 +71,51 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
 void Mode::_set_mode_o(Client* client, Channel* channel, bool active) {
     // channel->set_external_messages_allowed(active);
     // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+n" : "-n"), ""));
+    (void)client;
+    (void)channel;
+    (void)active;
 }
 
 void Mode::_set_mode_l(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
     // channel->set_limit(active ? atoi(args[p].c_str()) : 0);
     // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+l" : "-l"), (active ? args[p] : "")));
     // p += active ? 1 : 0;
+    (void)client;
+    (void)channel;
+    (void)active;
+    (void)args;
+    (void)p;
 }
 
 void Mode::_set_mode_k(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
     // channel->set_key(active ? args[p] : "");
     // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
     // p += active ? 1 : 0;
+    (void)client;
+    (void)channel;
+    (void)active;
+    (void)args;
+    (void)p;
 }
 
 void Mode::_set_mode_t(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
     // channel->set_key(active ? args[p] : "");
     // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
     // p += active ? 1 : 0;
+    (void)client;
+    (void)channel;
+    (void)active;
+    (void)args;
+    (void)p;
 }
 
 void Mode::_set_mode_i(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
     // channel->set_key(active ? args[p] : "");
     // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
     // p += active ? 1 : 0;
+    (void)client;
+    (void)channel;
+    (void)active;
+    (void)args;
+    (void)p;
 }
