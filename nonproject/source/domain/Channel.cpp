@@ -15,6 +15,7 @@ std::string                 Channel::get_name() const { return _name; }
 Client*                     Channel::get_admin() const { return _admin; }
 std::set<Client*>&          Channel::get_clients() { return _clients; }
 std::map<Client*, int>&     Channel::get_black_list() { return _black_list; }
+std::string                 Channel::get_topic() const { return _topic; }
 
 std::string                 Channel::get_key() const { return _key; }
 size_t                      Channel::get_limit() const { return _limit; }
@@ -41,6 +42,7 @@ void Channel::set_limit(size_t limit) { _limit = limit; }
 void Channel::set_external_messages_allowed(bool flag) { _external_messages = flag; }
 void Channel::set_admin(Client* admin) { _admin = admin; }
 void Channel::set_name(const std::string& name) { _name = name; }
+void Channel::set_topic(const std::string& topic) { _topic = topic; }
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
 void Channel::add_to_black_list(Client* client)

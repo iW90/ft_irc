@@ -21,6 +21,7 @@ class Channel {
         Client*                 _admin;
         std::set<Client *>      _clients;
         std::map<Client *, int> _black_list;
+        std::string             _topic;
 
         /* Modes */
         std::string             _key;               // channel key
@@ -35,7 +36,7 @@ class Channel {
         Client*                     get_admin() const;
         std::set<Client*>&          get_clients();
         std::map<Client*, int>&     get_black_list();
-
+        std::string                 get_topic() const;
         
         std::string                 get_key() const;
         size_t                      get_limit() const;
@@ -46,6 +47,7 @@ class Channel {
 
         void                        set_admin(Client* admin);
         void                        set_name(const std::string& name);
+        void                        set_topic(const std::string& topic);
 
         void                        set_key(const std::string& key);
         void                        set_limit(size_t limit);
