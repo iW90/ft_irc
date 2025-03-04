@@ -11,7 +11,7 @@ void ChannelService::broadcast(Channel* channel, const std::string& message, Cli
 }
 
 int ChannelService::add_client(Channel* channel, Client* client) {
-    if (_can_add_client(channel, client)) {
+    if (_is_client_banned(channel, client)) {
         channel->add_to_clients(client);
         _announce_client_join(channel, client);
         return 0;
@@ -41,10 +41,28 @@ void ChannelService::kick_client(Channel* channel, Client* client, Client* targe
     _announce_client_kick(channel, client, target, reason);
 }
 
+std::vector<std::string>    ChannelService::get_nicknames(Channel* channel) {
+    std::set<Client*>       clients = channel->get_clients();
+
+    std::vector<std::string> nicknames;
+    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        Client* client = *it;
+
+        std::string nick = (client == channel->get_admin() ? "admin: " : "user: ") + client->get_nickname();
+        nicknames.push_back(nick);
+    }
+
+    return nicknames;
+}
+
+int ChannelService::get_total_clients(Channel* channel) {
+    std::set<Client*>       clients = channel->get_clients();
+    return clients.size(); 
+}
 
 // Funções auxiliares
 
-bool ChannelService::_can_add_client(Channel* channel, Client* client) {
+bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
     std::map<Client*, int>& black_list = channel->get_black_list();
     std::map<Client*, int>::iterator it = black_list.find(client);
 

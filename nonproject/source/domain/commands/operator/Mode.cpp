@@ -43,14 +43,20 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
         bool active = (prev_c == '+');
 
         switch (c) {
-            case 'n':
-                _set_mode_n(client, channel, active);
+            case 'o':
+                _set_mode_o(client, channel, active);
                 break;
             case 'l':
                 _set_mode_l(client, channel, active, args, p);
                 break;
             case 'k':
                 _set_mode_k(client, channel, active, args, p);
+                break;
+            case 't':
+                _set_mode_t(client, channel, active, args, p);
+                break;
+            case 'i':
+                _set_mode_i(client, channel, active, args, p);
                 break;
             default:
                 break;
@@ -62,19 +68,31 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
 
 
 // Modes
-void Mode::_set_mode_n(Client* client, Channel* channel, bool active) {
-    channel->set_external_messages_allowed(active);
-    ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+n" : "-n"), ""));
+void Mode::_set_mode_o(Client* client, Channel* channel, bool active) {
+    // channel->set_external_messages_allowed(active);
+    // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+n" : "-n"), ""));
 }
 
 void Mode::_set_mode_l(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
-    channel->set_limit(active ? atoi(args[p].c_str()) : 0);
-    ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+l" : "-l"), (active ? args[p] : "")));
-    p += active ? 1 : 0;
+    // channel->set_limit(active ? atoi(args[p].c_str()) : 0);
+    // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+l" : "-l"), (active ? args[p] : "")));
+    // p += active ? 1 : 0;
 }
 
 void Mode::_set_mode_k(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
-    channel->set_key(active ? args[p] : "");
-    ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
-    p += active ? 1 : 0;
+    // channel->set_key(active ? args[p] : "");
+    // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
+    // p += active ? 1 : 0;
+}
+
+void Mode::_set_mode_t(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
+    // channel->set_key(active ? args[p] : "");
+    // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
+    // p += active ? 1 : 0;
+}
+
+void Mode::_set_mode_i(Client* client, Channel* channel, bool active, std::vector<std::string>& args, int& p) {
+    // channel->set_key(active ? args[p] : "");
+    // ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (active ? "+k" : "-k"), (active ? args[p] : "")));
+    // p += active ? 1 : 0;
 }

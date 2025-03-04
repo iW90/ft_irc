@@ -42,11 +42,17 @@ Client* Server::get_client(const std::string& target) {
     return _multiplexer.get_client(target);
 }
 
+// Setters
+void Server::set_command_handler(CommandHandler* handler) { _command_handler = handler; }
+
 // Métodos
 void Server::start() {
     try {
         _running = true;
         SignalManager::initialize(&_running);
+
+        CommandHandler handler = CommandHandler(this);
+        set_command_handler(&handler);
 
         int total_events;
 
@@ -56,7 +62,7 @@ void Server::start() {
 
         while(_running) {
             total_events = _multiplexer.check_for_events();
-            _multiplexer.handle_events(total_events);
+            _multiplexer.handle_events(total_events, &handler);
         }
 
     } catch (const std::exception& e) {
@@ -79,7 +85,8 @@ void Server::stop() {
 
 
 Channel* Server::create_channel(const std::string& name, const std::string& key, Client* client) {
-    Channel *channel = new Channel(name, key, client);
+    (void)key;
+    Channel* channel = new Channel(client, name);
     _channels.insert(channel);
 
     return channel;

@@ -6,6 +6,7 @@ Join::~Join() {}
 
 
 // syntax: JOIN <channel> <key>
+//         JOIN <channel>
 void Join::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
@@ -52,7 +53,8 @@ Channel* Join::_get_or_create_channel(const std::string& name, const std::string
 }
 
 bool Join::_is_channel_full(Channel* channel, Client* client, const std::string& name) {
-    if (channel->get_limit() <= 0 || channel->get_total_clients() < channel->get_limit())
+
+    if (channel->get_limit().first && ChannelService::get_total_clients(channel) < channel->get_limit().second)
         return false;
 
     ClientService::reply_message(client, ERR_CHANNELISFULL(client->get_nickname(), name));
@@ -60,7 +62,7 @@ bool Join::_is_channel_full(Channel* channel, Client* client, const std::string&
 }
 
 bool Join::_is_channel_key_valid(Channel* channel, Client* client, const std::string& pass, std::string name) {
-    if (channel->get_key() == pass)
+    if (channel->get_key().first && channel->get_key().second == pass)
         return true;
     ClientService::reply_message(client, ERR_BADCHANNELKEY(client->get_nickname(), name));
     return false;

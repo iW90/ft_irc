@@ -31,13 +31,16 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
 // Funções auxiliares
 
 void Topic::_send_current_topic(Client* client, Channel* channel) {
-    ClientService::reply_message(client, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic()));
+    ClientService::reply_message(client, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic().second));
 }
 
 void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args) {
-    std::string topic = _extract_topic(args);
-    channel->set_topic(topic);
-    ChannelService::broadcast(channel, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic()));
+    if ((!channel->get_operators().first) || \
+        (channel->get_operators().first && client == channel->get_operator(client))) {
+        std::string topic = _extract_topic(args);
+        channel->set_topic(true, topic);
+        ChannelService::broadcast(channel, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic().second));
+    }
 }
 
 bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {

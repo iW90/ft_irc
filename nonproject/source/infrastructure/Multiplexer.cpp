@@ -33,7 +33,7 @@ Multiplexer::~Multiplexer() {
 
 int                         Multiplexer::get_epoll_fd() const { return _epoll_fd; }
 
-std::map<int, Client *>&    Multiplexer::get_clients() { return _clients; }
+std::map<int, Client*>&    Multiplexer::get_clients() { return _clients; }
 
 Client*                     Multiplexer::get_client(std::string target) {
     std::map<int, Client*>::iterator it;
@@ -121,7 +121,7 @@ int Multiplexer::check_for_events() {
 }
 
 // PARSER PARA GERENCIAR OS DIFERENTES EVENTOS
-void Multiplexer::handle_events(int total_events) {
+void Multiplexer::handle_events(int total_events, CommandHandler* handler) {
     for (int i = 0; i < total_events; i++) {
 
         // Eventos do servidor
@@ -138,7 +138,7 @@ void Multiplexer::handle_events(int total_events) {
                 disconnect_client(_events[i].data.fd);
 
             if (_events[i].events & EPOLLIN)
-                read_client_message(_events[i].data.fd);
+                handle_client(_events[i].data.fd, handler);
 
         }
     }
@@ -176,10 +176,23 @@ int Multiplexer::connect_client(int server_fd) {
 }
 
 
-// MINI GNL
-void Multiplexer::read_client_message(int client_fd) {
+// HANDLE CLIENTS
+void Multiplexer::handle_client(int client_fd, CommandHandler* handler) {
     try {
-        std::string message;
+        Client*     client = _clients.at(client_fd);
+        std::string message = read_client_message(client_fd);
+        
+        handler->invoke(client, message);
+    } catch (const std::exception& e) {
+        std::cout << "Error while handling the client message! " << e.what() << std::endl;
+    }
+}
+
+
+// MINI GNL
+std::string Multiplexer::read_client_message(int client_fd) {
+    std::string message;
+    try {
         
         char buffer[BUFFER_SIZE];
         bzero(buffer, BUFFER_SIZE);
@@ -191,10 +204,9 @@ void Multiplexer::read_client_message(int client_fd) {
 
             if ((recv(client_fd, buffer, BUFFER_SIZE, 0) <= 0) and (errno != EWOULDBLOCK)) {
                 disconnect_client(client_fd);
-                return ;
-            } else
-                message.append(buffer);
-        }
+                return "";
+            }
+            
             /*
                 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
                 - sockfd é o fd do client de quem está vindo a mensagem.
@@ -209,19 +221,22 @@ void Multiplexer::read_client_message(int client_fd) {
                     corresponde ao número de bytes recebidos.
             */ 
 
+            message.append(buffer);
+        }
+
+        return message;
         // Apaga a última quebra de linha
-        if (!message.empty() && message[message.size() - 1] == '\n')
-            message.erase(message.size() - 1);
+        // if (!message.empty() && message[message.size() - 1] == '\n')
+        //     message.erase(message.size() - 1);
 
         // Imprime a mensagem do terminal, identificada pelo FD do usuário
-        std::cout << client_fd << ": " << message << std::endl;
+        // std::cout << client_fd << ": " << message << std::endl;
 
         // Apenas para testar. Se o usuário escreve exit(), é removido
-        if (message == "exit()")
-            disconnect_client(client_fd);
 
     } catch (const std::exception& e) {
         std::cout << "Error processing the message: " << e.what() << std::endl;
+        return message;
     }
 }
 

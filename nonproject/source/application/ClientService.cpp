@@ -42,7 +42,7 @@ void ClientService::_update_client_channel(Client* client, Channel* channel) {
 
 std::string ClientService::_gather_channel_users(Channel* channel) {
     std::string users = "";
-    std::vector<std::string> nicknames = channel->get_nicknames();
+    std::vector<std::string> nicknames = ChannelService::get_nicknames(channel);
     for (std::vector<std::string>::iterator it = nicknames.begin(); it != nicknames.end(); ++it) {
         users.append(*it + " ");
     }

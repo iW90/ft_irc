@@ -24,7 +24,7 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     if (!_has_channel_privileges(client, channel, name))
         return;
 
-    channel->add_to_invited_clients(dest);
+    channel->add_to_inviteds(dest);
 
     ClientService::send_message(dest, RPL_INVITE(client->get_prefix(), target, name));
 }

@@ -25,7 +25,7 @@ class ClientService {
         static void send_message(Client* client, const std::string& message);
         static void reply_message(Client* client, const std::string& reply);
 
-        static void join_channel(Client* client, Channel *channel);
+        static void join_channel(Client* client, Channel* channel);
         static void leave_channel(Client* client);
 };
 

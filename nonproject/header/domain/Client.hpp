@@ -43,10 +43,10 @@ class Client {
 
         Channel*    get_channel() const;
 
-        void set_nickname(const std::string &nickname);
-        void set_username(const std::string &username);
-        void set_realname(const std::string &nickname);
-        void set_channel(Channel *channel);
+        void set_nickname(const std::string& nickname);
+        void set_username(const std::string& username);
+        void set_realname(const std::string& nickname);
+        void set_channel(Channel* channel);
         void set_state(ClientState state);
 };
 

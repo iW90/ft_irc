@@ -1,12 +1,14 @@
 #include "Channel.hpp"
 
 
-Channel::Channel(const std::string& name, const std::string& key, Client* admin) :
-    _name(name), 
-    _admin(admin), 
-    _key(key), 
-    _limit(0), 
-    _external_messages(false) {}
+Channel::Channel(Client* admin, const std::string& name) :
+        _name(name),
+        _admin(admin),
+        _operators(std::make_pair(false, std::set<Client*>())),
+        _inviteds(std::make_pair(false, std::set<Client*>())),
+        _topic(std::make_pair(false, "")),
+        _key(std::make_pair(false, "")),
+        _limit(std::make_pair(false, 0)) {}
 
 Channel::~Channel() {}
 
@@ -15,50 +17,51 @@ std::string                 Channel::get_name() const { return _name; }
 Client*                     Channel::get_admin() const { return _admin; }
 std::set<Client*>&          Channel::get_clients() { return _clients; }
 std::map<Client*, int>&     Channel::get_black_list() { return _black_list; }
-std::string                 Channel::get_topic() const { return _topic; }
 
-std::string                 Channel::get_key() const { return _key; }
-size_t                      Channel::get_limit() const { return _limit; }
-bool                        Channel::is_external_messages_allowed() const { return _external_messages; }
 
-size_t                      Channel::get_total_clients() const { return _clients.size(); }
+std::pair<bool, std::set<Client*> >&     Channel::get_operators() { return _operators; }
+std::pair<bool, std::set<Client*> >&     Channel::get_inviteds() { return _inviteds; }
+std::pair<bool, std::string>&            Channel::get_topic() { return _topic; }
+std::pair<bool, std::string>&            Channel::get_key() { return _key; }
+std::pair<bool, int>&                    Channel::get_limit() { return _limit; }
 
-std::vector<std::string>    Channel::get_nicknames() {
-    std::vector<std::string> nicknames;
 
-    for (std::set<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
-        Client* client = *it;
+// Setters
 
-        std::string nick = (client == _admin ? "admin: " : "user: ") + client->get_nickname();
-        nicknames.push_back(nick);
-    }
+void Channel::set_admin(Client* admin) { _admin = admin; }
+void Channel::set_name(const std::string& name) { _name = name; }
 
-    return nicknames;
-}
+void Channel::set_operators(bool state) { _operators.first = state; }
+void Channel::set_inviteds(bool state) { _inviteds.first = state; }
+void Channel::set_topic(bool state, const std::string& topic) { _topic.first = state; _topic.second = topic; }
+void Channel::set_key(bool state, const std::string& key) { _key.first = state; _key.second = key; }
+void Channel::set_limit(bool state, int limit) { _limit.first = state; _limit.second = limit; }
 
-Client* Channel::get_operator(Client* target) const {
-    for (std::set<Client*>::iterator it = _operators.begin(); it != _operators.end(); ++it) {
-        if (target == *it)
-            return *it;
-    }
+
+// Métodos
+
+Client* Channel::get_operator(Client* target) {
+    if (_operators.first && _operators.second.find(target) != _operators.second.end())
+        return target;
     return NULL;
 }
 
-// Setters
-void Channel::set_key(const std::string& key) { _key = key; }
-void Channel::set_limit(size_t limit) { _limit = limit; }
-void Channel::set_external_messages_allowed(bool flag) { _external_messages = flag; }
-void Channel::set_admin(Client* admin) { _admin = admin; }
-void Channel::set_name(const std::string& name) { _name = name; }
-void Channel::set_topic(const std::string& topic) { _topic = topic; }
+Client* Channel::get_invited(Client* target) {
+    if (_inviteds.first && _inviteds.second.find(target) != _inviteds.second.end())
+        return target;
+    return NULL;
+}
+
+void Channel::add_to_black_list(Client* client) {
+    _black_list.find(client) != _black_list.end() 
+        ? _black_list[client] += 1 
+        : _black_list[client] = 1;
+}
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
-void Channel::add_to_invited_clients(Client* client) { _invited_clients.insert(client); }
-void Channel::add_to_operators(Client* client) { _operators.insert(client); }
-void Channel::add_to_black_list(Client* client)
-{
-    if (_black_list.find(client) != _black_list.end())
-        _black_list[client] += 1;
-    else
-        _black_list[client] = 1;
-}
+void Channel::add_to_inviteds(Client* client) { _inviteds.second.insert(client); }
+void Channel::add_to_operators(Client* client) { _operators.second.insert(client); }
+
+void Channel::remove_from_clients(Client* client) { _clients.erase(client); }
+void Channel::remove_from_inviteds(Client* client) { _inviteds.second.erase(client); }
+void Channel::remove_from_operators(Client* client) { _operators.second.erase(client); }

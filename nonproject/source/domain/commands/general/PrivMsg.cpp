@@ -54,8 +54,8 @@ void PrivMsg::_handle_channel_message(Client* client, const std::string& target,
 }
 
 bool PrivMsg::_is_channel_accessible(Client* client, Channel* channel) {
-    if (!channel->is_external_messages_allowed()) {
-        std::vector<std::string> nicknames = channel->get_nicknames();
+    if (client->get_channel() == channel) {
+        std::vector<std::string> nicknames = ChannelService::get_nicknames(channel);
 
         std::vector<std::string>::iterator it = std::find(nicknames.begin(), nicknames.end(), client->get_nickname());
 

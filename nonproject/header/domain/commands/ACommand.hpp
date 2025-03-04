@@ -6,7 +6,6 @@
 # include <vector>
 # include <string>
 
-# include "Server.hpp"
 # include "Macros.hpp"
 # include "ChannelService.hpp"
 # include "ClientService.hpp"

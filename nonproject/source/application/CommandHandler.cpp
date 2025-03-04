@@ -3,21 +3,21 @@
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
     // Server
-    _commands["PASS"] = new Pass(*_server);
-    _commands["NICK"] = new Nick(*_server);
-    _commands["USER"] = new User(*_server);
-    _commands["QUIT"] = new Quit(*_server);
+    // _commands["PASS"] = new Pass(*_server);
+    // _commands["NICK"] = new Nick(*_server);
+    // _commands["USER"] = new User(*_server);
+    // _commands["QUIT"] = new Quit(*_server);
 
-    // General
-    _commands["JOIN"] = new Join(*_server);
-    _commands["PART"] = new Part(*_server);
-	_commands["PRIVMSG"] = new PrivMsg(*_server);
+    // // General
+    // _commands["JOIN"] = new Join(*_server);
+    // _commands["PART"] = new Part(*_server);
+	// _commands["PRIVMSG"] = new PrivMsg(*_server);
 
-    // Operator
-    _commands["MODE"] = new Mode(*_server);
-    _commands["KICK"] = new Kick(*_server);
-	_commands["TOPIC"] = new Topic(*_server);
-    _commands["INVITE"] = new Invite(*_server);
+    // // Operator
+    // _commands["MODE"] = new Mode(*_server);
+    // _commands["KICK"] = new Kick(*_server);
+	// _commands["TOPIC"] = new Topic(*_server);
+    // _commands["INVITE"] = new Invite(*_server);
 }
 
 CommandHandler::~CommandHandler () {
@@ -43,7 +43,7 @@ std::string     CommandHandler::_trim(const std::string& str) {
     return result;
 }
 
-void            CommandHandler::invoke(Client* client, const std::string& message) {
+void CommandHandler::invoke(Client* client, const std::string& message) {
     std::stringstream   ss(message);
     std::string         syntax;
     

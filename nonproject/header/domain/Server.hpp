@@ -15,19 +15,20 @@
 # include "Channel.hpp"
 # include "Client.hpp"
 # include "Constants.hpp"
-// # include "CommandHandler.hpp"
+# include "CommandHandler.hpp"
 
 
+class CommandHandler;
+class IMultiplexer;
 class Server {
     private:
         bool                        _running;
         IVault&                     _vault;
         ISocket&                    _socket;
         IMultiplexer&               _multiplexer;
-        std::set<Channel *>         _channels;
+        std::set<Channel* >         _channels;
+        CommandHandler*             _command_handler;
         
-
-
     public:
         Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer);
         ~Server();
@@ -43,11 +44,14 @@ class Server {
 
         bool                            is_valid_pass(std::string pass);
 
+        // Setters
+        void                            set_command_handler(CommandHandler* handler);
+
         // Métodos
         void start();
         void stop();
 
-        Channel*    create_channel(const std::string &name, const std::string &key, Client *client);
+        Channel*    create_channel(const std::string& name, const std::string& key, Client* client);
 };
 
 #endif // SERVER_HPP
