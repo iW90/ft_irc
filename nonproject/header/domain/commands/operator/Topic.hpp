@@ -12,7 +12,9 @@ class Topic : public ACommand {
         bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
         std::string _extract_topic(const std::vector<std::string>& args);
         bool        _has_channel_privileges(Client* client, Channel* channel);
-        bool        _has_valid_channel(Client* client, Channel* channel);
+        bool        _has_valid_channel(Client* client, Channel* channel, const std::string& target);
+        void        _set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args);
+        void        _send_current_topic(Client* client, Channel* channel);
 
     public:
         Topic(Server& server);

@@ -17,7 +17,7 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
     - [ ] `PART <channels> :<message>`: Sai de um canal
     - [ ] `QUIT :<message>`: Desconecta-se do servidor
     - [ ] `PRIVMSG <msgtarget> :<message>`: Envia uma mensagem particular a um usuário
-    - [ ] `TOPIC <channel>` ou `TOPIC <channel> :<new_topic>`: Lê ou redefine o tópico de um canal
+    - [x] `TOPIC <channel>` ou `TOPIC <channel> :<new_topic>`: Lê ou redefine o tópico de um canal
     - [ ] `INVITE <nickname> <channel>`: Envia um invite para um canal a um usuário
     - [x] `KICK <channel> <client> :<message>`: Expulsa um usuário de um canal
     - [x] `MODE <nickname> <flags>` ou `MODE <channel> <flags> <args>`: Altera modos de um usuário ou canal

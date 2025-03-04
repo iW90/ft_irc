@@ -11,26 +11,31 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    Channel* channel = _server.get_channel(args[0]);
-    if (!_has_valid_channel(client, channel))
+    std::string target = args.at(0);
+    Channel* channel = _server.get_channel(target);
+    if (!_has_valid_channel(client, channel, target))
         return;
     
-    
     if (args.size() == 1) {
-        // VALIDAR QUAL DESSAS DUAS OPÇÕES DE ENVIO, BROADCAST OU REPLY
-        ClientService::reply_message(client, channel->get_topic());
-        ChannelService::broadcast(channel, channel->get_topic()); // LEMBRAR DE CONSTRUIR A MENSAGEM COM MACRO
+        _send_current_topic(client, channel);
         return;
     }
 
     if (!_has_channel_privileges(client, channel))
         return;
     
-    std::string topic = _extract_topic(args);
-    channel->set_topic(topic);
-    ChannelService::broadcast(channel, topic); // LEMBRAR DE CONSTRUIR A MENSAGEM COM MACRO
+    _set_new_topic(client, channel, args);
 }
 
+void Topic::_send_current_topic(Client* client, Channel* channel) {
+    ClientService::reply_message(client, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic()));
+}
+
+void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args) {
+    std::string topic = _extract_topic(args);
+    channel->set_topic(topic);
+    ChannelService::broadcast(channel, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic()));
+}
 
 bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     if (args.empty()) {
@@ -59,10 +64,9 @@ bool Topic::_has_channel_privileges(Client* client, Channel* channel) {
     return true;
 }
 
-bool Topic::_has_valid_channel(Client* client, Channel* channel) {
+bool Topic::_has_valid_channel(Client* client, Channel* channel, const std::string& target) {
     if (!channel) {
-        // LEMBRAR DE CONSTRUIR A MENSAGEM COM MACRO
-        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), ""));
+        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), target));
         return false;
     }
     return true;
