@@ -10,7 +10,6 @@
 # include "ACommand.hpp"
 # include "Macros.hpp"
 # include "ClientService.hpp"
-# include "Server.hpp"
 
 // # include "commands/server/Pass.hpp"
 // # include "commands/server/Nick.hpp"

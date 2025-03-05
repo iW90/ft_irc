@@ -11,7 +11,7 @@
 
 # include <set>
 
-class Channel;
+
 class ChannelService {
     private:
         static void     _change_admin_if_needed(Channel* channel, Client* client);
@@ -22,14 +22,12 @@ class ChannelService {
         static void     _announce_client_kick(Channel* channel, Client* client, Client* target, const std::string& reason);
 
     public:
-        // Envio de mensagens no canal
-        static void    broadcast(Channel* channel, const std::string& message, Client* exclude = NULL);
+        // Send messages to channel
+        static void     broadcast(Channel* channel, const std::string& message, Client* exclude = NULL);
 
-        // Gerenciamento de Clients no canal
-        static int                      add_client(Channel* channel, Client* client);
-        static void                     remove_client(Channel* channel, Client* client);
-        static void                     kick_client(Channel* channel, Client* client, Client* target, const std::string& reason);
-
+        static int      add_client(Channel* channel, Client* client);
+        static void     remove_client(Channel* channel, Client* client);
+        static void     kick_client(Channel* channel, Client* client, Client* target, const std::string& reason);
 
         static std::vector<std::string> get_nicknames(Channel* channel);
         static int                      get_total_clients(Channel* channel);

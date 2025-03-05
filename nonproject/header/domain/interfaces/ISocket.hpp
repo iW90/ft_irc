@@ -4,8 +4,6 @@
 class ISocket {
     public:
         virtual ~ISocket() {}
-
-        // Método para obter o descritor de arquivo do socket
         virtual int get_fd() const = 0;
 };
 

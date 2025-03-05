@@ -12,7 +12,6 @@
 # include <vector>
 
 
-class Client;
 class Channel {
     typedef std::vector<Client*>::iterator client_iterator;
 
@@ -33,16 +32,16 @@ class Channel {
         Channel(Client* admin, const std::string& name);
         ~Channel();
 
-        std::string                 get_name() const;
-        Client*                     get_admin() const;
-        std::set<Client*>&          get_clients();
-        std::map<Client*, int>&     get_black_list();
-
         std::pair<bool, std::set<Client*> >&     get_operators();
         std::pair<bool, std::set<Client*> >&     get_inviteds();
         std::pair<bool, std::string>&            get_topic();
         std::pair<bool, std::string>&            get_key();
         std::pair<bool, int>&                    get_limit();
+
+        std::string                 get_name() const;
+        Client*                     get_admin() const;
+        std::set<Client*>&          get_clients();
+        std::map<Client*, int>&     get_black_list();
 
         // setters
         void                        set_name(const std::string& name);
@@ -55,7 +54,6 @@ class Channel {
         void                        set_limit(bool state, int limit);
 
         // others
-
         Client*                     get_operator(Client* target);
         Client*                     get_invited(Client* target);
 

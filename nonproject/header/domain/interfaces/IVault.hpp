@@ -7,8 +7,6 @@
 class IVault {
     public:
         virtual ~IVault() {}
-
-        // Método para validar a senha
         virtual bool validate_password(const std::string& pass_to_validate) const = 0;
 };
 

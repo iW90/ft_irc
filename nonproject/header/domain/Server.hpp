@@ -15,7 +15,6 @@
 # include "Channel.hpp"
 # include "Client.hpp"
 # include "Constants.hpp"
-# include "CommandHandler.hpp"
 
 
 class CommandHandler;
@@ -42,8 +41,6 @@ class Server {
         const std::map<int, Client*>&   get_clients() const;
         Client*                         get_client(const std::string& name);
 
-        bool                            is_valid_pass(std::string pass);
-
         // Setters
         void                            set_command_handler(CommandHandler* handler);
 
@@ -52,6 +49,7 @@ class Server {
         void stop();
 
         Channel*    create_channel(const std::string& name, const std::string& key, Client* client);
+        bool        is_valid_pass(std::string pass);
 };
 
 #endif // SERVER_HPP

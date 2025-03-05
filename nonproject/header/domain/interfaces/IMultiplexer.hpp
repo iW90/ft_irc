@@ -14,7 +14,7 @@ class IMultiplexer
 
         virtual int                         get_epoll_fd() const = 0;
         virtual Client*                     get_client(std::string target) = 0;
-        virtual std::map<int, Client*>&    get_clients() = 0;
+        virtual std::map<int, Client*>&     get_clients() = 0;
 
         virtual void    subscribe_fd_for_monitoring(int fd) = 0;
         virtual void    unsubscribe_fd_for_monitoring(int fd) = 0;

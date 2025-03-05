@@ -6,8 +6,25 @@ ACommand::ACommand(Server& server, bool auth) : _auth(auth), _server(server) {}
 
 ACommand::~ACommand() {}
 
+
 bool    ACommand::auth_required() const { return _auth; }
 
+
+// Funções auxiliares
+
+bool ACommand::_has_channel_privileges(Client* client, Channel* channel, const std::string& name) {
+    if (channel == client->get_channel())
+        return true;
+    ClientService::reply_message(client, ERR_NOTONCHANNEL(client->get_nickname(), name));
+    return false;
+}
+
+bool ACommand::_is_already_registered(Client* client) {
+    if (client->get_state() != REGISTERED)
+        return false;
+    ClientService::reply_message(client, ERR_ALREADYREGISTERED(client->get_nickname()));
+    return true;
+}
 
 bool ACommand::_is_valid_channel(Client* client, Channel* channel, const std::string& target) {
     if (channel)
@@ -27,19 +44,5 @@ bool ACommand::_is_valid_client(Client* client, Client* dest, Channel* channel, 
         return false;
     }
     
-    return true;
-}
-
-bool ACommand::_has_channel_privileges(Client* client, Channel* channel, const std::string& name) {
-    if (channel == client->get_channel())
-        return true;
-    ClientService::reply_message(client, ERR_NOTONCHANNEL(client->get_nickname(), name));
-    return false;
-}
-
-bool ACommand::_is_already_registered(Client* client) {
-    if (client->get_state() != REGISTERED)
-        return false;
-    ClientService::reply_message(client, ERR_ALREADYREGISTERED(client->get_nickname()));
     return true;
 }

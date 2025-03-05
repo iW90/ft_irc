@@ -23,13 +23,12 @@ Server::~Server() {
 
 
 // Getters
-// const IVault& Server::get_vault() const { return _vault; }
-// const ISocket& Server::get_socket() const { return _socket; }
+
 IMultiplexer&                   Server::get_multiplexer() const { return _multiplexer; }
 const std::set<Channel*>&       Server::get_channels() const { return _channels; }
 const std::map<int, Client*>&   Server::get_clients() const { return _multiplexer.get_clients(); }
 
-Channel* Server::get_channel(const std::string& name) {
+Channel*                        Server::get_channel(const std::string& name) {
     for (std::set<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
         if ((*it)->get_name() == name)
             return *it;
@@ -42,10 +41,14 @@ Client* Server::get_client(const std::string& target) {
     return _multiplexer.get_client(target);
 }
 
+
 // Setters
+
 void Server::set_command_handler(CommandHandler* handler) { _command_handler = handler; }
 
+
 // Métodos
+
 void Server::start() {
     try {
         _running = true;
@@ -82,7 +85,6 @@ void Server::stop() {
         throw ServerException(e, "Unable to turn off the server.");
     }
 }
-
 
 Channel* Server::create_channel(const std::string& name, const std::string& key, Client* client) {
     (void)key;
