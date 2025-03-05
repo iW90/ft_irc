@@ -15,13 +15,13 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
     Channel* channel = _server.get_channel(target);
     if (!_is_valid_channel(client, channel, target))
         return;
-    
+
     if (args.size() == 1) {
         _send_current_topic(client, channel);
         return;
     }
 
-    if (!_has_channel_privileges(client, channel, target))
+    if (!_has_channel_privileges(client, channel))
         return;
     
     _set_new_topic(client, channel, args);

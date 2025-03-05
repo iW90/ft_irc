@@ -20,11 +20,13 @@ class ACommand {
 
         virtual bool    _has_valid_parameters(Client* client, const std::vector<std::string>& args) = 0;
 
+        bool            _has_channel_privileges(Client* client, Channel* channel);
+
         bool            _is_valid_channel(Client* client, Channel* channel, const std::string& target);
         bool            _is_valid_client(Client* client, Client* dest, Channel* channel, const std::string& name);
-        bool            _has_channel_privileges(Client* client, Channel* channel, const std::string& name);
 
         bool            _is_already_registered(Client* client);
+        bool            _is_on_channel(Client* client, Channel* channel, const std::string& name);
         
     public:
         ACommand(Server& server, bool auth = true);

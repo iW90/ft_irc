@@ -31,10 +31,10 @@ void ChannelService::remove_client(Channel* channel, Client* client) {
 }
 
 void ChannelService::kick_client(Channel* channel, Client* client, Client* target, const std::string& reason) {
-    if (channel->get_admin() != client)
-        return;
-
     channel->add_to_black_list(target);
+    channel->remove_from_clients(target);
+    channel->remove_from_inviteds(target);
+    channel->remove_from_operators(target);
     remove_client(channel, target);
     target->set_channel(NULL);
 
@@ -76,9 +76,9 @@ bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
 void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
     if (client != channel->get_admin())
         return;
-
     std::set<Client*>& clients = channel->get_clients();
 
+    // #ALTERAR - Substituto operator, e se não, user. Se canal zerar, apagar.
     if (!clients.empty()) {
         std::set<Client*>::iterator it = clients.begin();
         channel->set_admin(*it);

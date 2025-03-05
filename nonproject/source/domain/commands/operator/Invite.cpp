@@ -21,7 +21,7 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     if (!_is_valid_client(client, dest, channel, name))
         return;
 
-    if (!_has_channel_privileges(client, channel, name))
+    if (!_has_channel_privileges(client, channel))
         return;
 
     channel->add_to_inviteds(dest);

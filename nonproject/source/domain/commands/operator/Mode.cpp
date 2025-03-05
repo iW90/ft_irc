@@ -16,11 +16,9 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
     if (!_is_valid_channel(client, channel, target))
         return;
 
-    // Verifica as permissões do canal
-    if (!_has_channel_privileges(client, channel, target))
+    if (!_has_channel_privileges(client, channel))
         return;
 
-    // Processa os modos
     _process_modes(client, args, channel);
 }
 

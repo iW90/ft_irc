@@ -11,11 +11,20 @@ bool    ACommand::auth_required() const { return _auth; }
 
 // Funções auxiliares
 
-bool ACommand::_has_channel_privileges(Client* client, Channel* channel, const std::string& name) {
+bool ACommand::_is_on_channel(Client* client, Channel* channel, const std::string& name) {
     if (channel == client->get_channel())
         return true;
     ClientService::reply_message(client, ERR_NOTONCHANNEL(client->get_nickname(), name));
     return false;
+}
+
+bool ACommand::_has_channel_privileges(Client* client, Channel* channel) {
+    Client* admin = channel->get_admin();
+    if (client != admin && (channel->get_operators().first && !channel->get_operator(client))) {
+        ClientService::reply_message(client, ERR_NOPRIVILEGES(client->get_nickname()));
+        return false;
+    }
+    return true;
 }
 
 bool ACommand::_is_already_registered(Client* client) {
