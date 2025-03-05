@@ -33,7 +33,7 @@ Multiplexer::~Multiplexer() {
 
 int                         Multiplexer::get_epoll_fd() const { return _epoll_fd; }
 
-std::map<int, Client*>&    Multiplexer::get_clients() { return _clients; }
+std::map<int, Client*>&     Multiplexer::get_clients() { return _clients; }
 
 Client*                     Multiplexer::get_client(std::string target) {
     std::map<int, Client*>::iterator it;

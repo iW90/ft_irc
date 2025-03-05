@@ -9,12 +9,12 @@
 
 # include "interfaces/IVault.hpp"
 # include "interfaces/ISocket.hpp"
-# include "interfaces/IMultiplexer.hpp"
 # include "SignalManager.hpp"
 # include "ServerException.hpp"
 # include "Channel.hpp"
 # include "Client.hpp"
 # include "Constants.hpp"
+# include "Multiplexer.hpp"
 
 
 class CommandHandler;
