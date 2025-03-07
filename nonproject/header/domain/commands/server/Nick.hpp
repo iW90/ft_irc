@@ -11,7 +11,7 @@ class Nick : public ACommand {
         void        _set_client_state(Client* client);
 
     public:
-        Nick(Server& server);
+        Nick(Server* server);
         ~Nick();
 
         void execute(Client* client, std::vector<std::string> args);

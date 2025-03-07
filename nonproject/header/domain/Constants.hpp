@@ -3,6 +3,8 @@
 #ifndef CONSTANTS_HPP
 # define CONSTANTS_HPP
 
+#include <string>
+
 // ChannelService
 const int MAX_BLACKLIST_VIOLATIONS = 3;     // Máximo de violações da black list
 

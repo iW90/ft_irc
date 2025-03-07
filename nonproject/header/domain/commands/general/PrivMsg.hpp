@@ -1,5 +1,5 @@
-#ifndef PRIV_MSG_HPP
-# define PRIV_MSG_HPP
+#ifndef PRIVMSG_HPP
+# define PRIVMSG_HPP
 
 # include "ACommand.hpp"
 
@@ -13,7 +13,7 @@ class PrivMsg : public ACommand {
         void        _handle_client_message(Client* client, const std::string& target, const std::string& message);
 
     public:
-        PrivMsg(Server& server);
+        PrivMsg(Server* server);
         ~PrivMsg();
 
         void execute(Client* client, std::vector<std::string> args);

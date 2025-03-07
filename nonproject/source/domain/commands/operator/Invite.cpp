@@ -1,7 +1,9 @@
 #include "commands/operator/Invite.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Invite::Invite(Server& server) : ACommand(server, true) {}
+Invite::Invite(Server* server) : ACommand(server, true) {}
 Invite::~Invite() {}
 
 

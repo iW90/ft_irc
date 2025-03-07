@@ -13,7 +13,7 @@ class Join : public ACommand {
         Channel*    _get_or_create_channel(const std::string& name, const std::string& pass, Client* client);
 
     public:
-        Join(Server& server);
+        Join(Server* server);
         ~Join();
 
         void execute(Client* client, std::vector<std::string> args);

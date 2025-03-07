@@ -12,7 +12,7 @@ class Topic : public ACommand {
         void        _send_current_topic(Client* client, Channel* channel);
 
     public:
-        Topic(Server& server);
+        Topic(Server* server);
         ~Topic();
 
         void execute(Client* client, std::vector<std::string> args);

@@ -1,5 +1,5 @@
-#ifndef COMMAND_HANDLER_HPP
-# define COMMAND_HANDLER_HPP
+#ifndef COMMANDHANDLER_HPP
+# define COMMANDHANDLER_HPP
 
 # include <iostream>
 # include <sstream>
@@ -7,9 +7,10 @@
 # include <vector>
 # include <map>
 
-# include "ACommand.hpp"
-# include "Macros.hpp"
-# include "ClientService.hpp"
+//# include "ACommand.hpp"
+//# include "Macros.hpp"
+//# include "ClientService.hpp"
+//# include "Server.hpp"
 
 // # include "commands/server/Pass.hpp"
 // # include "commands/server/Nick.hpp"
@@ -27,6 +28,7 @@
 
 class Server;
 class ACommand;
+
 class CommandHandler {
     private:
         Server*                                 _server;

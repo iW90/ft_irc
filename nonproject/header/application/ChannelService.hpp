@@ -3,14 +3,18 @@
 #ifndef CHANNEL_SERVICE_HPP
 # define CHANNEL_SERVICE_HPP
 
-# include "Client.hpp"
-# include "Channel.hpp"
-# include "ClientService.hpp"
-# include "Constants.hpp"
-# include "Macros.hpp"
-
+//# include "Client.hpp"
+//# include "Channel.hpp"
+//# include "ClientService.hpp"
+//# include "Constants.hpp"
+//# include "Macros.hpp"
 # include <set>
+# include <vector>
+# include <cstddef>
+# include <string>
 
+class Channel;
+class Client;
 
 class ChannelService {
     private:

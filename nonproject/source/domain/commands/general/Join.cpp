@@ -1,7 +1,9 @@
 #include "commands/general/Join.hpp"
+#include "ClientService.hpp"
+#include "ChannelService.hpp"
+#include "Macros.hpp"
 
-
-Join::Join(Server& server) : ACommand(server, true) {}
+Join::Join(Server* server) : ACommand(server, true) {}
 Join::~Join() {}
 
 

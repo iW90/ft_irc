@@ -1,15 +1,13 @@
 #pragma once
 
-#ifndef CLIENT_ACTION_MANAGER_HPP
-# define CLIENT_ACTION_MANAGER_HPP
-
-# include "Client.hpp"
-# include "Channel.hpp"
-# include "ChannelService.hpp"
-# include "Multiplexer.hpp"
+#ifndef CLIENTSERVICE_HPP
+# define CLIENTSERVICE_HPP
 
 # include <vector>
+# include <string>
 
+class Channel;
+class Client;
 
 class ClientService {
     private:

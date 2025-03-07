@@ -3,7 +3,7 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "Client.hpp"
+//# include "Client.hpp"
 
 # include <set>         // Necessário para std::set
 # include <map>         // Necessário para std::map
@@ -11,6 +11,7 @@
 # include <algorithm>   // Necessário para std::find
 # include <vector>
 
+class Client;
 
 class Channel {
     typedef std::vector<Client*>::iterator client_iterator;

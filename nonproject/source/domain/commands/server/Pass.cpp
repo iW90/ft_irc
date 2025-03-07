@@ -1,7 +1,10 @@
 #include "commands/server/Pass.hpp"
+#include "ClientService.hpp"
+#include "ChannelService.hpp"
+#include "Macros.hpp"
 
 
-Pass::Pass(Server& server) : ACommand(server, false) {}
+Pass::Pass(Server* server) : ACommand(server, false) {}
 Pass::~Pass() {}
 
 

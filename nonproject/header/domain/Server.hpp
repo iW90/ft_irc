@@ -19,6 +19,7 @@
 
 class CommandHandler;
 class IMultiplexer;
+
 class Server {
     private:
         bool                        _running;
@@ -27,7 +28,7 @@ class Server {
         IMultiplexer&               _multiplexer;
         std::set<Channel* >         _channels;
         CommandHandler*             _command_handler;
-        
+ 
     public:
         Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer);
         ~Server();

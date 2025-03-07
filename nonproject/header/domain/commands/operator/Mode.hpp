@@ -16,7 +16,7 @@ class Mode : public ACommand {
 
 
     public:
-        Mode(Server& server);
+        Mode(Server* server);
         ~Mode();
 
         void execute(Client* client, std::vector<std::string> args);

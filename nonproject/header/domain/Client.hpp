@@ -9,10 +9,10 @@
 # include <stdexcept>       // Necessário para exceções
 # include <string>          // Necessário para std::string
 
-# include "Enums.hpp"
-
+#include "Enums.hpp"
 
 class Channel;
+
 class Client {
     private:
         int                 _fd;

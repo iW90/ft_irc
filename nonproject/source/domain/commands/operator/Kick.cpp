@@ -1,7 +1,9 @@
 #include "commands/operator/Kick.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Kick::Kick(Server& server) : ACommand(server, true) {}
+Kick::Kick(Server* server) : ACommand(server, true) {}
 Kick::~Kick() {}
 
 

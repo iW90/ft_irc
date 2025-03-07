@@ -1,5 +1,8 @@
 #include "ClientService.hpp"
-
+# include "Client.hpp"
+# include "Channel.hpp"
+# include "ChannelService.hpp"
+# include "Multiplexer.hpp"
 
 void ClientService::send_message(Client* client, const std::string& message) {
     Multiplexer::send_client_message(client->get_fd(), message);

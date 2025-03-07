@@ -10,7 +10,7 @@ class Kick : public ACommand {
         std::string _extract_reason(const std::vector<std::string>& args);
 
     public:
-        Kick(Server& server);
+        Kick(Server* server);
         ~Kick();
 
         void execute(Client* client, std::vector<std::string> args);

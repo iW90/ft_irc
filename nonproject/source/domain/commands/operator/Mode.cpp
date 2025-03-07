@@ -1,7 +1,9 @@
 #include "commands/operator/Mode.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Mode::Mode(Server& server) : ACommand(server, true) {}
+Mode::Mode(Server* server) : ACommand(server, true) {}
 Mode::~Mode() {}
 
 

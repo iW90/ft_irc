@@ -1,7 +1,9 @@
 #include "commands/operator/Topic.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Topic::Topic(Server& server) : ACommand(server, true) {}
+Topic::Topic(Server* server) : ACommand(server, true) {}
 Topic::~Topic() {}
 
 

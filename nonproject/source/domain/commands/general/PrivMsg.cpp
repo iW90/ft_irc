@@ -1,7 +1,9 @@
 #include "commands/general/PrivMsg.hpp"
+#include "Macros.hpp"
+#include "ClientService.hpp"
+#include "ChannelService.hpp"
 
-
-PrivMsg::PrivMsg(Server& server) : ACommand(server, true) {}
+PrivMsg::PrivMsg(Server* server) : ACommand(server, true) {}
 PrivMsg::~PrivMsg() {}
 
 

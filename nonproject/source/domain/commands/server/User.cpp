@@ -1,7 +1,9 @@
 #include "commands/server/User.hpp"
+#include "ClientService.hpp"
+#include "ChannelService.hpp"
+#include "Macros.hpp"
 
-
-User::User(Server& server) : ACommand(server, false) {}
+User::User(Server* server) : ACommand(server, false) {}
 User::~User() {}
 
 

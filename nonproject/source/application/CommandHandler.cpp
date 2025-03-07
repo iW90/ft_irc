@@ -1,5 +1,8 @@
 #include "CommandHandler.hpp"
-
+#include "ACommand.hpp"
+#include "Macros.hpp"
+#include "ClientService.hpp"
+#include "Server.hpp"
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
     // Server

@@ -1,7 +1,9 @@
 #include "commands/general/Part.hpp"
+#include "Server.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Part::Part(Server& server) : ACommand(server, true) {}
+Part::Part(Server* server) : ACommand(server, true) {}
 Part::~Part() {}
 
 

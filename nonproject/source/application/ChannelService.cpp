@@ -1,5 +1,9 @@
 #include "ChannelService.hpp"
-
+#include "Channel.hpp"
+#include "Client.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
+#include "Constants.hpp"
 
 void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
     std::set<Client*>& clients = channel->get_clients();

@@ -1,7 +1,9 @@
 #include "commands/server/Nick.hpp"
+#include "ChannelService.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
-
-Nick::Nick(Server& server) : ACommand(server, false) {}
+Nick::Nick(Server* server) : ACommand(server, false) {}
 Nick::~Nick() {}
 
 

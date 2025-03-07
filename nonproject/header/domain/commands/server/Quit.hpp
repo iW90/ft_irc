@@ -9,7 +9,7 @@ class Quit : public ACommand {
         bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
 
     public:
-        Quit(Server& server);
+        Quit(Server* server);
         ~Quit();
 
         void execute(Client* client, std::vector<std::string> args);

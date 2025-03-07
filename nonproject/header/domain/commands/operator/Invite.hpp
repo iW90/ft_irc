@@ -9,7 +9,7 @@ class Invite : public ACommand {
         bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);
 
     public:
-        Invite(Server& server);
+        Invite(Server* server);
         ~Invite();
 
         void execute(Client* client, std::vector<std::string> args);

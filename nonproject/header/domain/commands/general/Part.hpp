@@ -10,7 +10,7 @@ class Part : public ACommand {
         bool        _is_client_in_channel(Client* client, Channel* channel, const std::string& name);
 
     public:
-        Part(Server& server);
+        Part(Server* server);
         ~Part();
 
         void execute(Client* client, std::vector<std::string> args);

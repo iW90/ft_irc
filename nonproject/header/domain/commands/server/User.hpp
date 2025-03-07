@@ -11,7 +11,7 @@ class User : public ACommand {
         void            _set_client_state(Client* client);
 
     public:
-        User(Server& server);
+        User(Server* server);
         ~User();
 
         void execute(Client* client, std::vector<std::string> args);

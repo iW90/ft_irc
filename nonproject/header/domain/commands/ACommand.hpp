@@ -1,22 +1,24 @@
 #pragma once
 
-#ifndef COMMAND_HPP
-# define COMMAND_HPP
+#ifndef ACOMMAND_HPP
+# define ACOMMAND_HPP
 
 # include <vector>
 # include <string>
 
-# include "Macros.hpp"
-# include "ChannelService.hpp"
-# include "ClientService.hpp"
-# include "Server.hpp"
+//# include "Macros.hpp"
+//# include "ChannelService.hpp"
+//# include "ClientService.hpp"
+//# include "Server.hpp"
 
 
 class Client;
+class Server;
+
 class ACommand {
     protected:
         bool    _auth;
-        Server  _server;
+        Server*  _server;
 
         virtual bool    _has_valid_parameters(Client* client, const std::vector<std::string>& args) = 0;
 
@@ -29,7 +31,7 @@ class ACommand {
         bool            _is_on_channel(Client* client, Channel* channel, const std::string& name);
         
     public:
-        ACommand(Server& server, bool auth = true);
+        ACommand(Server* server, bool auth = true);
         virtual ~ACommand();
 
         bool auth_required() const;

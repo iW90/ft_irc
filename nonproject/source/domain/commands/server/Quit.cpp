@@ -1,7 +1,9 @@
 #include "commands/server/Quit.hpp"
+#include "ClientService.hpp"
+#include "ChannelService.hpp"
+#include "Macros.hpp"
 
-
-Quit::Quit(Server& server) : ACommand(server, false) {}
+Quit::Quit(Server* server) : ACommand(server, false) {}
 Quit::~Quit() {}
 
 

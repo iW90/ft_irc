@@ -10,7 +10,7 @@ class Pass : public ACommand {
         bool        _is_password_valid(const std::string& password);
 
     public:
-        Pass(Server& server);
+        Pass(Server* server);
         ~Pass();
 
         void execute(Client* client, std::vector<std::string> args);
