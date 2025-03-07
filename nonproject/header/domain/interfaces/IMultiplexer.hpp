@@ -2,11 +2,13 @@
 # define IMULTIPLEXER_HPP
 
 # include <string>
-# include "Client.hpp"
-# include "CommandHandler.hpp"
+//# include "Client.hpp"
+//# include "CommandHandler.hpp"
 
 
 class CommandHandler;
+class Client;
+
 class IMultiplexer
 {
     public:

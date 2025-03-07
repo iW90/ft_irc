@@ -1,4 +1,6 @@
 #include "Multiplexer.hpp"
+#include "Client.hpp"
+#include "CommandHandler.hpp"
 
 Multiplexer::Multiplexer(int server_fd) {
     _server_fd = server_fd;

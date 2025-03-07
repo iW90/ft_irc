@@ -4,6 +4,7 @@
 #include "SignalManager.hpp"
 #include "ServerException.hpp"
 #include "Channel.hpp"
+#include "CommandHandler.hpp"
 #include "Client.hpp"
 #include "Constants.hpp"
 #include "Multiplexer.hpp"
