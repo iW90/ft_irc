@@ -26,7 +26,7 @@ class IMultiplexer
 
         virtual int     connect_client(int server_fd) = 0;
         virtual void    disconnect_client(int client_fd) = 0;
-        virtual void    handle_client(int client_fd, CommandHandler* handler);
+        virtual void    handle_client(int client_fd, CommandHandler* handler) = 0;
 
         virtual std::string    read_client_message(int client_fd) = 0;
 
