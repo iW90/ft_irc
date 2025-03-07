@@ -10,6 +10,7 @@
 # include <utility>     // Necessário para pair
 # include <algorithm>   // Necessário para std::find
 # include <vector>
+# include <string>
 
 class Client;
 

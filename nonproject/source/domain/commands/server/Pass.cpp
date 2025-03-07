@@ -1,7 +1,10 @@
 #include "commands/server/Pass.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
 #include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 
 Pass::Pass(Server* server) : ACommand(server, false) {}
@@ -37,5 +40,5 @@ bool Pass::_has_valid_parameters(Client* client, const std::vector<std::string>&
 
 
 bool Pass::_is_password_valid(const std::string& password) {
-    return _server.is_valid_pass(password);
+    return _server->is_valid_pass(password);
 }

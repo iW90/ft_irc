@@ -1,7 +1,10 @@
 #include "commands/operator/Topic.hpp"
-#include "ChannelService.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
+#include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Topic::Topic(Server* server) : ACommand(server, true) {}
 Topic::~Topic() {}
@@ -14,7 +17,7 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
         return;
 
     std::string target = args.at(0);
-    Channel* channel = _server.get_channel(target);
+    Channel* channel = _server->get_channel(target);
     if (!_is_valid_channel(client, channel, target))
         return;
 

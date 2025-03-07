@@ -3,7 +3,6 @@
 
 # include "ACommand.hpp"
 
-
 class Join : public ACommand {
     private:
         bool        _has_valid_parameters(Client* client, const std::vector<std::string>& args);

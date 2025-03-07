@@ -1,7 +1,10 @@
 #include "commands/operator/Invite.hpp"
-#include "ChannelService.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
+#include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Invite::Invite(Server* server) : ACommand(server, true) {}
 Invite::~Invite() {}
@@ -15,11 +18,11 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     std::string target = args[0];
     std::string name = args[1];
 
-    Channel* channel = _server.get_channel(name);
+    Channel* channel = _server->get_channel(name);
     if (!_is_valid_channel(client, channel, name))
         return;
 
-    Client* dest = _server.get_client(target);
+    Client* dest = _server->get_client(target);
     if (!_is_valid_client(client, dest, channel, name))
         return;
 

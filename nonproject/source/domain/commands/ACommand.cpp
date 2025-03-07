@@ -1,9 +1,9 @@
 #include "commands/ACommand.hpp"
-#include "Macros.hpp"
-#include "ChannelService.hpp"
-#include "ClientService.hpp"
-#include "Client.hpp"
 #include "Channel.hpp"
+#include "ChannelService.hpp"
+#include "Client.hpp"
+#include "ClientService.hpp"
+#include "Macros.hpp"
 
 ACommand::ACommand(Server* server, bool auth) : _auth(auth), _server(server) {}
 

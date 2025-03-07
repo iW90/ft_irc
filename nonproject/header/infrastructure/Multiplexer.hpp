@@ -12,11 +12,11 @@
 # include <map>             // Necessário para map<x,y>()
 
 # include "interfaces/IMultiplexer.hpp"
-# include "Constants.hpp"
-
+#include "Constants.hpp"
 
 class Client;
 class CommandHandler;
+
 class Multiplexer : public IMultiplexer {
     private:
         int                         _server_fd;

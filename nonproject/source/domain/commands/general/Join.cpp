@@ -1,7 +1,10 @@
 #include "commands/general/Join.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
 #include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Join::Join(Server* server) : ACommand(server, true) {}
 Join::~Join() {}
@@ -48,9 +51,9 @@ bool Join::_is_already_in_channel(Client* client, std::string name) {
 }
 
 Channel* Join::_get_or_create_channel(const std::string& name, const std::string& pass, Client* client) {
-    Channel* channel = _server.get_channel(name);
+    Channel* channel = _server->get_channel(name);
     if (channel == NULL)
-        channel = _server.create_channel(name, pass, client);
+        channel = _server->create_channel(name, pass, client);
     return channel;
 }
 

@@ -21,7 +21,7 @@ int main(int ac, char** av) {
     ISocket*            server_socket   = new Socket(IP_ADDRESS, port);
     IMultiplexer*       multiplexer     = new Multiplexer(server_socket->get_fd());
 
-    Server      server(*vault, *server_socket, *multiplexer);
+    Server      server(vault, server_socket, multiplexer);
 
     // Iniciando servidor
     try {

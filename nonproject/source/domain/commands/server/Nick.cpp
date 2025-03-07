@@ -1,7 +1,10 @@
 #include "commands/server/Nick.hpp"
-#include "ChannelService.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
+#include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Nick::Nick(Server* server) : ACommand(server, false) {}
 Nick::~Nick() {}
@@ -33,7 +36,7 @@ bool Nick::_has_valid_parameters(Client* client, const std::vector<std::string>&
 }
 
 bool Nick::_is_nickname_taken(const std::string& nickname, Client* client) {
-    if (!_server.get_client(nickname))
+    if (!_server->get_client(nickname))
         return false;
     ClientService::reply_message(client, ERR_NICKNAMEINUSE(client->get_nickname()));
     return true;

@@ -1,7 +1,10 @@
 #include "commands/operator/Kick.hpp"
-#include "ChannelService.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
+#include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Kick::Kick(Server* server) : ACommand(server, true) {}
 Kick::~Kick() {}
@@ -23,7 +26,7 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     if (!_has_channel_privileges(client, channel))
         return;
 
-    Client* dest = _server.get_client(target);
+    Client* dest = _server->get_client(target);
     if (!_is_valid_client(client, dest, channel, name))
         return;
 

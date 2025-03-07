@@ -1,6 +1,8 @@
 #include "CommandHandler.hpp"
 #include "ACommand.hpp"
 #include "Macros.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
 #include "Server.hpp"
 

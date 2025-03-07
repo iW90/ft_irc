@@ -1,7 +1,10 @@
 #include "commands/general/PrivMsg.hpp"
-#include "Macros.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
 #include "ChannelService.hpp"
+#include "Macros.hpp"
+#include "Server.hpp"
 
 PrivMsg::PrivMsg(Server* server) : ACommand(server, true) {}
 PrivMsg::~PrivMsg() {}
@@ -70,7 +73,7 @@ bool PrivMsg::_is_channel_accessible(Client* client, Channel* channel) {
 }
 
 void PrivMsg::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
-    Client* dest = _server.get_client(target);
+    Client* dest = _server->get_client(target);
     if (!dest) {
         ClientService::reply_message(client, ERR_NOSUCHNICK(client->get_nickname(), target));
         return;

@@ -1,7 +1,10 @@
 #include "commands/general/Part.hpp"
-#include "Server.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
+#include "ChannelService.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Part::Part(Server* server) : ACommand(server, true) {}
 Part::~Part() {}
@@ -13,7 +16,7 @@ void    Part::execute(Client* client, std::vector<std::string> args) {
         return;
 
     std::string name = args[0];
-    Channel     *channel = _server.get_channel(name);
+    Channel     *channel = _server->get_channel(name);
 
     if (!_is_client_in_channel(client, channel, name))
         return;

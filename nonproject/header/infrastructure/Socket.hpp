@@ -10,7 +10,7 @@
 # include <stdexcept>       // Necessário para exceções
 
 # include "interfaces/ISocket.hpp"
-# include "Constants.hpp"
+
 
 class Socket : public ISocket {
     private:

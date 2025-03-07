@@ -1,6 +1,5 @@
 #include "Multiplexer.hpp"
 
-
 Multiplexer::Multiplexer(int server_fd) {
     _server_fd = server_fd;
     _epoll_fd = epoll_create1(0);

@@ -1,7 +1,11 @@
 #include "commands/server/Quit.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "ClientService.hpp"
 #include "ChannelService.hpp"
+#include "IMultiplexer.hpp"
 #include "Macros.hpp"
+#include "Server.hpp"
 
 Quit::Quit(Server* server) : ACommand(server, false) {}
 Quit::~Quit() {}
@@ -15,8 +19,8 @@ void    Quit::execute(Client* client, std::vector<std::string> args) {
         reason = reason.substr(1);
 
     ClientService::send_message(client, RPL_QUIT(client->get_prefix(), reason));
-    IMultiplexer& multiplexer = _server.get_multiplexer();
-    multiplexer.disconnect_client(client->get_fd());
+    IMultiplexer* multiplexer = _server->get_multiplexer();
+    multiplexer->disconnect_client(client->get_fd());
 }
 
 

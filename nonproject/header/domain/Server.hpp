@@ -7,34 +7,28 @@
 # include <set>
 # include <map>
 
-# include "interfaces/IVault.hpp"
-# include "interfaces/ISocket.hpp"
-# include "SignalManager.hpp"
-# include "ServerException.hpp"
-# include "Channel.hpp"
-# include "Client.hpp"
-# include "Constants.hpp"
-# include "Multiplexer.hpp"
-
-
 class CommandHandler;
 class IMultiplexer;
+class IVault;
+class ISocket;
+class Channel;
+class Client;
 
 class Server {
     private:
         bool                        _running;
-        IVault&                     _vault;
-        ISocket&                    _socket;
-        IMultiplexer&               _multiplexer;
+        IVault*                     _vault;
+        ISocket*                    _socket;
+        IMultiplexer*               _multiplexer;
         std::set<Channel* >         _channels;
         CommandHandler*             _command_handler;
  
     public:
-        Server(IVault& vault, ISocket& socket, IMultiplexer& multiplexer);
+        Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer);
         ~Server();
 
         // Getters
-        IMultiplexer&                   get_multiplexer() const;
+        IMultiplexer*                   get_multiplexer() const;
 
         const std::set<Channel*>&       get_channels() const;
         Channel*                        get_channel(const std::string& name);
