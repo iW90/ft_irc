@@ -12,19 +12,6 @@
 //# include "ClientService.hpp"
 //# include "Server.hpp"
 
-// # include "commands/server/Pass.hpp"
-// # include "commands/server/Nick.hpp"
-// # include "commands/server/User.hpp"
-// # include "commands/server/Quit.hpp"
-// # include "commands/operator/Invite.hpp"
-// # include "commands/operator/Kick.hpp"
-// # include "commands/operator/Mode.hpp"
-// # include "commands/operator/Topic.hpp"
-// # include "commands/operator/Invite.hpp"
-// # include "commands/general/Join.hpp"
-// # include "commands/general/Part.hpp"
-// # include "commands/general/PrivMsg.hpp"
-
 
 class Server;
 class Client;

@@ -6,6 +6,7 @@
 # include <string>
 # include <set>
 # include <map>
+# include <ctime>
 
 class CommandHandler;
 class IMultiplexer;
@@ -43,8 +44,10 @@ class Server {
         void start();
         void stop();
 
-        Channel*    create_channel(const std::string& name, const std::string& key, Client* client);
+        Channel*    create_channel(const std::string& name, Client* client);
         bool        is_valid_pass(std::string pass);
+
+        std::string get_time();
 };
 
 #endif // SERVER_HPP

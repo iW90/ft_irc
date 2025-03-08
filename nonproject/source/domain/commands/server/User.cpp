@@ -52,5 +52,7 @@ void User::_set_client_state(Client* client) {
         return;
 
     client->set_state(REGISTERED);
-    ClientService::reply_message(client, RPL_WELCOME(client->get_nickname()));
+    std::string server = "ft_irc";
+    ClientService::send_message(client, RPL_MYINFO(client->get_nickname()));
+    ClientService::send_message(client, RPL_WELCOME(server, client->get_nickname()));
 }

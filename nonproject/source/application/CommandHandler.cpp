@@ -6,15 +6,29 @@
 #include "ClientService.hpp"
 #include "Server.hpp"
 
+# include "commands/server/Pass.hpp"
+# include "commands/server/Nick.hpp"
+# include "commands/server/User.hpp"
+# include "commands/server/Quit.hpp"
+# include "commands/general/Join.hpp"
+// # include "commands/general/Part.hpp"
+// # include "commands/general/PrivMsg.hpp"
+// # include "commands/operator/Invite.hpp"
+// # include "commands/operator/Kick.hpp"
+// # include "commands/operator/Mode.hpp"
+// # include "commands/operator/Topic.hpp"
+// # include "commands/operator/Invite.hpp"
+
+
 CommandHandler::CommandHandler(Server* server) : _server(server) {
     // Server
-    // _commands["PASS"] = new Pass(*_server);
-    // _commands["NICK"] = new Nick(*_server);
-    // _commands["USER"] = new User(*_server);
-    // _commands["QUIT"] = new Quit(*_server);
+    _commands["PASS"] = new Pass(_server);
+    _commands["NICK"] = new Nick(_server);
+    _commands["USER"] = new User(_server);
+    _commands["QUIT"] = new Quit(_server);
 
     // // General
-    // _commands["JOIN"] = new Join(*_server);
+    _commands["JOIN"] = new Join(_server);
     // _commands["PART"] = new Part(*_server);
 	// _commands["PRIVMSG"] = new PrivMsg(*_server);
 
@@ -67,7 +81,7 @@ void CommandHandler::invoke(Client* client, const std::string& message) {
             while (line >> buf)
                 args.push_back(buf);
 
-            if (client->get_state() == REGISTERED && cmd->auth_required()) {
+            if (client->get_state() != REGISTERED && cmd->auth_required()) {
                 ClientService::reply_message(client, ERR_NOTREGISTERED(client->get_nickname()));
                 return;
             }

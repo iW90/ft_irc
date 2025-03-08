@@ -1,5 +1,7 @@
 #include "Client.hpp"
 
+# include <iostream>
+
 Client::Client(int fd, const std::string& host, int port) {
     _fd = fd;
     _state = CONNECTED;

@@ -9,7 +9,7 @@ class Join : public ACommand {
         bool        _is_already_in_channel(Client* client, std::string name);
         bool        _is_channel_full(Channel* channel, Client* client, const std::string& name);
         bool        _is_channel_key_valid(Channel* channel, Client* client, const std::string& pass, std::string name);
-        Channel*    _get_or_create_channel(const std::string& name, const std::string& pass, Client* client);
+        Channel*    _get_or_create_channel(const std::string& name, Client* client);
 
     public:
         Join(Server* server);
