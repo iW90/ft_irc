@@ -1,16 +1,11 @@
-#ifndef COMMANDHANDLER_HPP
-# define COMMANDHANDLER_HPP
+#ifndef COMMAND_HANDLER_HPP
+# define COMMAND_HANDLER_HPP
 
 # include <iostream>
 # include <sstream>
 # include <string>
 # include <vector>
 # include <map>
-
-//# include "ACommand.hpp"
-//# include "Macros.hpp"
-//# include "ClientService.hpp"
-//# include "Server.hpp"
 
 
 class Server;

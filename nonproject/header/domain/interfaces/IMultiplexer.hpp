@@ -2,8 +2,6 @@
 # define IMULTIPLEXER_HPP
 
 # include <string>
-//# include "Client.hpp"
-//# include "CommandHandler.hpp"
 
 
 class CommandHandler;

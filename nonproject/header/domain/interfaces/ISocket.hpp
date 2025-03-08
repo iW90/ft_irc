@@ -1,5 +1,6 @@
 #ifndef ISOCKET_HPP
-#define ISOCKET_HPP
+# define ISOCKET_HPP
+
 
 class ISocket {
     public:

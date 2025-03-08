@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 PrivMsg::PrivMsg(Server* server) : ACommand(server, true) {}
 PrivMsg::~PrivMsg() {}
 
@@ -18,16 +19,19 @@ void PrivMsg::execute(Client* client, std::vector<std::string> args) {
     std::string target = args.at(0);
     std::string message = _build_message(args);
 
+    std::cout << "PRIVMSG::Sending message..." << std::endl;
     if (target.at(0) == '#')
         _handle_channel_message(client, target, message);
     else
         _handle_client_message(client, target, message);
+    std::cout << "SUCCEDED PRIVMSG" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "PRIVMSG::Validate parameters..." << std::endl;
     if (args.size() < 2 || args[0].empty() || args[1].empty()) {
         ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PRIVMSG"));
         return false;
@@ -36,6 +40,7 @@ bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::strin
 }
 
 std::string PrivMsg::_build_message(const std::vector<std::string>& args) {
+    std::cout << "PRIVMSG::Building message..." << std::endl;
     std::string message;
     for (std::vector<std::string>::const_iterator it = args.begin() + 1; it != args.end(); ++it)
         message.append(*it + " ");
@@ -47,6 +52,7 @@ std::string PrivMsg::_build_message(const std::vector<std::string>& args) {
 }
 
 void PrivMsg::_handle_channel_message(Client* client, const std::string& target, const std::string& message) {
+    std::cout << "PRIVMSG::Handling channel message..." << std::endl;
     Channel* channel = client->get_channel();
 
     if (!_is_valid_channel(client, channel, target))
@@ -59,6 +65,7 @@ void PrivMsg::_handle_channel_message(Client* client, const std::string& target,
 }
 
 bool PrivMsg::_is_channel_accessible(Client* client, Channel* channel) {
+    std::cout << "PRIVMSG::Validate if channel is accessible..." << std::endl;
     if (client->get_channel() == channel) {
         std::vector<std::string> nicknames = ChannelService::get_nicknames(channel);
 
@@ -73,6 +80,7 @@ bool PrivMsg::_is_channel_accessible(Client* client, Channel* channel) {
 }
 
 void PrivMsg::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
+    std::cout << "PRIVMSG::Handling client message..." << std::endl;
     Client* dest = _server->get_client(target);
     if (!dest) {
         ClientService::reply_message(client, ERR_NOSUCHNICK(client->get_nickname(), target));

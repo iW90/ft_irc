@@ -21,6 +21,7 @@
 # define ERR_UNKNOWNMODE(source)                         /*472*/  source + " " + channel + " :is unknown mode char to me"
 # define ERR_CHANNELISFULL(source, channel)              /*471*/  source + " " + channel + " :Cannot join channel (+l)"
 # define ERR_INVITEONLYCHAN(source, channel)             /*473*/  source + " " + channel + " :Cannot join channel (+i)"
+# define ERR_BANNEDFROMCHAN(source, channel)             /*474*/  source + " " + channel + " :Cannot join channel (+b)"
 # define ERR_BADCHANNELKEY(source, channel)              /*475*/  source + " " + channel + " :Cannot join channel (+k)"
 # define ERR_CANNOTSENDTOCHAN(source, channel)           /*404*/  source + " " + channel + " :Cannot send to channel"
 # define ERR_CHANOPRIVSNEEDED(source, channel)           /*482*/  source + " " + channel + " :You're not channel operator"

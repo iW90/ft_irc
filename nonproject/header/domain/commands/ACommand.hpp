@@ -5,11 +5,7 @@
 
 # include <vector>
 # include <string>
-
-//# include "Macros.hpp"
-//# include "ChannelService.hpp"
-//# include "ClientService.hpp"
-//# include "Server.hpp"
+# include <iostream>
 
 
 class Channel;

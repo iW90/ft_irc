@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Kick::Kick(Server* server) : ACommand(server, true) {}
 Kick::~Kick() {}
 
@@ -30,13 +31,16 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     if (!_is_valid_client(client, dest, channel, name))
         return;
 
+    std::cout << "KICK::Kicking client..." << std::endl;
     ChannelService::kick_client(channel, client, dest, reason);
+    std::cout << "SUCCEDED KICK" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Kick::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "KICK::Validate parameters..." << std::endl;
     if (args.size() > 1)
         return true;
     ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "KICK"));
@@ -44,6 +48,7 @@ bool Kick::_has_valid_parameters(Client* client, const std::vector<std::string>&
 }
 
 std::string Kick::_extract_reason(const std::vector<std::string>& args) {
+    std::cout << "KICK::Extracting reason..." << std::endl;
     if (!(args.size() >= 3 && (args[2][0] != ':' || args[2].size() > 1)))
         return "No reason specified!";
 

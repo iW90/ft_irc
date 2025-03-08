@@ -26,12 +26,14 @@ void    Pass::execute(Client* client, std::vector<std::string> args) {
     }
 
     client->set_state(LOGGED_IN);
+    std::cout << "SUCCEDED PASS" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Pass::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "PASS::Validate parameters..." << std::endl;
     if (args.size() == 1)
         return true;
     ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PASS"));

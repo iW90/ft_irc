@@ -3,15 +3,12 @@
 #ifndef CHANNEL_SERVICE_HPP
 # define CHANNEL_SERVICE_HPP
 
-//# include "Client.hpp"
-//# include "Channel.hpp"
-//# include "ClientService.hpp"
-//# include "Constants.hpp"
-//# include "Macros.hpp"
 # include <set>
 # include <vector>
 # include <cstddef>
 # include <string>
+# include <iostream>
+
 
 class Channel;
 class Client;
@@ -29,7 +26,7 @@ class ChannelService {
         // Send messages to channel
         static void     broadcast(Channel* channel, const std::string& message, Client* exclude = NULL);
 
-        static int      add_client(Channel* channel, Client* client);
+        static bool     add_client(Channel* channel, Client* client);
         static void     remove_client(Channel* channel, Client* client);
         static void     kick_client(Channel* channel, Client* client, Client* target, const std::string& reason);
 

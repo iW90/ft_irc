@@ -1,6 +1,8 @@
 #include "Multiplexer.hpp"
 #include "Client.hpp"
 #include "CommandHandler.hpp"
+#include "Utils.hpp"
+
 
 Multiplexer::Multiplexer(int server_fd) {
     _server_fd = server_fd;
@@ -158,7 +160,8 @@ void Multiplexer::disconnect_client(int client_fd) {
 
     ::close(client_fd);
 
-    std::cout << "Client disconnected." << std::endl;
+    std::string datetime = Utils::get_time();
+    std::cout << "[" << datetime << "] Client disconnected." << std::endl;
 }
 
 // CONECTA UM CLIENT AO SERVER
@@ -172,7 +175,8 @@ int Multiplexer::connect_client(int server_fd) {
     _clients.insert(std::make_pair(client_fd, client));
     subscribe_fd_for_monitoring(client_fd);
 
-    std::cout << "Client connected." << std::endl;
+    std::string datetime = Utils::get_time();
+    std::cout << "[" << datetime << "] Client connected." << std::endl;
     return client_fd;
 }
 

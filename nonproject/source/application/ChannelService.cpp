@@ -5,26 +5,29 @@
 #include "Macros.hpp"
 #include "Constants.hpp"
 
+
 void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
+    std::cout << "ChannelService::Broadcast annoucing..." << std::endl;
     std::set<Client*>& clients = channel->get_clients();
 
-    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
         if (*it != exclude)
             ClientService::send_message(*it, message);
-    }
 }
 
-int ChannelService::add_client(Channel* channel, Client* client) {
-    if (_is_client_banned(channel, client)) {
-        channel->add_to_clients(client);
-        _announce_client_join(channel, client);
-        return 0;
-    }
+bool ChannelService::add_client(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Adding client..." << std::endl;
+    if (_is_client_banned(channel, client))
+        return false;
 
-    return -1;
+    channel->add_to_clients(client);
+    _announce_client_join(channel, client);
+    std::cout << "ChannelService::Client added." << std::endl;
+    return true;
 }
 
 void ChannelService::remove_client(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Removing client..." << std::endl;
     std::set<Client*>& clients = channel->get_clients();
     std::set<Client*>::iterator it = clients.find(client);
     if (it != clients.end())
@@ -32,17 +35,20 @@ void ChannelService::remove_client(Channel* channel, Client* client) {
 
     _change_admin_if_needed(channel, client);
     _announce_client_leave(channel, client);
+    std::cout << "ChannelService::Client removed." << std::endl;
 }
 
 void ChannelService::kick_client(Channel* channel, Client* client, Client* target, const std::string& reason) {
+    std::cout << "ChannelService::Kicking client..." << std::endl;
     channel->add_to_black_list(target);
     channel->remove_from_clients(target);
     channel->remove_from_inviteds(target);
     channel->remove_from_operators(target);
     remove_client(channel, target);
-    target->set_channel(NULL);
+    target->set_channel(NULL); //TRANSFERIR PARA COMANDO
 
     _announce_client_kick(channel, client, target, reason);
+    std::cout << "ChannelService::Client kicked." << std::endl;
 }
 
 std::vector<std::string>    ChannelService::get_nicknames(Channel* channel) {
@@ -67,10 +73,15 @@ int ChannelService::get_total_clients(Channel* channel) {
 // Funções auxiliares
 
 bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Validate if client is banned..." << std::endl;
     std::map<Client*, int>& black_list = channel->get_black_list();
     std::map<Client*, int>::iterator it = black_list.find(client);
 
-    return (it == black_list.end() || it->second < MAX_BLACKLIST_VIOLATIONS);
+    if (it == black_list.end() || it->second < MAX_BLACKLIST_VIOLATIONS)
+        return false;
+
+    ClientService::send_message(client, ERR_BANNEDFROMCHAN(client->get_nickname(), channel->get_name()));
+    return true;
     /* O Client só será adicionado ao canal se:
         - Não estiver na black list, ou;
         - Tiver valor menor que três na black list.
@@ -78,10 +89,12 @@ bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
 }
 
 void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Validate if change admin is needed..." << std::endl;
     if (client != channel->get_admin())
         return;
 
     if (channel->get_operators().first) {
+        std::cout << "ChannelService::Searching for operator to set new admin..." << std::endl;
         std::set<Client*>& operators = channel->get_operators().second;
         if (!operators.empty()) {
             Client* new_admin = *operators.begin();
@@ -94,6 +107,7 @@ void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
 
     std::set<Client*>& clients = channel->get_clients();
     if (!clients.empty()) {
+        std::cout << "ChannelService::Searching for client to set new admin..." << std::endl;
         std::set<Client*>::iterator it = clients.begin();
         Client* new_admin = *it;
         channel->set_admin(new_admin);
@@ -101,6 +115,7 @@ void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
         return;
     }
 
+    std::cout << "ChannelService::Channel is empty." << std::endl;
     channel->set_admin(NULL);
 }
 

@@ -3,14 +3,13 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-//# include "Client.hpp"
-
 # include <set>         // Necessário para std::set
 # include <map>         // Necessário para std::map
 # include <utility>     // Necessário para pair
 # include <algorithm>   // Necessário para std::find
 # include <vector>
 # include <string>
+
 
 class Client;
 

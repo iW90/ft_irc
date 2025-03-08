@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Mode::Mode(Server* server) : ACommand(server, true) {}
 Mode::~Mode() {}
 
@@ -25,12 +26,14 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
         return;
 
     _process_modes(client, args, channel);
+    std::cout << "SUCCEDED MODE" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Mode::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "MODE::Validate parameters..." << std::endl;
     if (args.size() > 1)
         return true;
     ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "MODE"));
@@ -38,6 +41,7 @@ bool Mode::_has_valid_parameters(Client* client, const std::vector<std::string>&
 }
 
 void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel* channel) {
+    std::cout << "MODE::Parsing modes..." << std::endl;
     int p = 2;
     char prev_c = '\0';
 

@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Topic::Topic(Server* server) : ACommand(server, true) {}
 Topic::~Topic() {}
 
@@ -23,6 +24,7 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
 
     if (args.size() == 1) {
         _send_current_topic(client, channel);
+        std::cout << "SUCCEDED PART" << std::endl;
         return;
     }
 
@@ -30,16 +32,27 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
         return;
     
     _set_new_topic(client, channel, args);
+    std::cout << "SUCCEDED TOPIC" << std::endl;
 }
 
 
 // Funções auxiliares
+
+bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "TOPIC::Validate parameters..." << std::endl;
+    if (args.empty()) {
+        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "TOPIC"));
+        return false;
+    }
+    return true;
+}
 
 void Topic::_send_current_topic(Client* client, Channel* channel) {
     ClientService::reply_message(client, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic().second));
 }
 
 void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args) {
+    std::cout << "TOPIC::Defining new topic description..." << std::endl;
     if ((!channel->get_operators().first) || \
         (channel->get_operators().first && client == channel->get_operator(client))) {
         std::string topic = _extract_topic(args);
@@ -48,15 +61,8 @@ void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<s
     }
 }
 
-bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    if (args.empty()) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "TOPIC"));
-        return false;
-    }
-    return true;
-}
-
 std::string Topic::_extract_topic(const std::vector<std::string>& args) {
+    std::cout << "TOPIC::Extracting topic description..." << std::endl;
     std::string topic = "";
     if (args.size() >= 2 && (args[1][0] != ':' || args[1].size() > 1)) {
         for (size_t i = 2; i < args.size(); ++i) {

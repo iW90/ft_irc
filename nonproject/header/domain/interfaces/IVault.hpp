@@ -4,6 +4,7 @@
 
 # include <string>
 
+
 class IVault {
     public:
         virtual ~IVault() {}

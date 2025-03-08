@@ -11,7 +11,7 @@
 # include "commands/server/User.hpp"
 # include "commands/server/Quit.hpp"
 # include "commands/general/Join.hpp"
-// # include "commands/general/Part.hpp"
+# include "commands/general/Part.hpp"
 // # include "commands/general/PrivMsg.hpp"
 // # include "commands/operator/Invite.hpp"
 // # include "commands/operator/Kick.hpp"
@@ -27,16 +27,16 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
     _commands["USER"] = new User(_server);
     _commands["QUIT"] = new Quit(_server);
 
-    // // General
+    // General
     _commands["JOIN"] = new Join(_server);
-    // _commands["PART"] = new Part(*_server);
-	// _commands["PRIVMSG"] = new PrivMsg(*_server);
+    _commands["PART"] = new Part(_server);
+	// _commands["PRIVMSG"] = new PrivMsg(_server);
 
-    // // Operator
-    // _commands["MODE"] = new Mode(*_server);
-    // _commands["KICK"] = new Kick(*_server);
-	// _commands["TOPIC"] = new Topic(*_server);
-    // _commands["INVITE"] = new Invite(*_server);
+    // Operator
+    // _commands["MODE"] = new Mode(_server);
+    // _commands["KICK"] = new Kick(_server);
+	// _commands["TOPIC"] = new Topic(_server);
+    // _commands["INVITE"] = new Invite(_server);
 }
 
 CommandHandler::~CommandHandler () {

@@ -1,5 +1,6 @@
 #include "SignalManager.hpp"
 
+
 bool* SignalManager::_running = NULL;
 
 void SignalManager::initialize(bool* running) {

@@ -5,6 +5,7 @@
 #include "ClientService.hpp"
 #include "Macros.hpp"
 
+
 ACommand::ACommand(Server* server, bool auth) : _auth(auth), _server(server) {}
 
 ACommand::~ACommand() {}

@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Part::Part(Server* server) : ACommand(server, true) {}
 Part::~Part() {}
 
@@ -21,13 +22,17 @@ void    Part::execute(Client* client, std::vector<std::string> args) {
     if (!_is_client_in_channel(client, channel, name))
         return;
 
-    ClientService::leave_channel(client);
+    std::cout << "PART::Remove client..." << std::endl;
+    ChannelService::remove_client(channel, client);
+    ClientService::leave_channel(client, channel);
+    std::cout << "SUCCEDED PART" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Part::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "PART::Validate parameters..." << std::endl;
     if (args.size() > 0)
         return true;
     ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PART"));
@@ -35,6 +40,7 @@ bool Part::_has_valid_parameters(Client* client, const std::vector<std::string>&
 }
 
 bool Part::_is_client_in_channel(Client* client, Channel* channel, const std::string& name) {
+    std::cout << "PART::Validate if client is in channel..." << std::endl;
     if (channel && client->get_channel() && client->get_channel()->get_name() == name)
         return true;
 

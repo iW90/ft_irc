@@ -9,6 +9,8 @@
 #include "Constants.hpp"
 #include "Multiplexer.hpp"
 #include "Macros.hpp"
+#include "Utils.hpp"
+
 
 Server::Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer) :
       _running(false),
@@ -70,7 +72,7 @@ void Server::start() {
         int total_events;
 
         std::string source = "ft_irc";
-        std::string datetime = get_time();
+        std::string datetime = Utils::get_time();
 
         std::cout << RPL_CREATED(source, datetime) << std::endl;
 
@@ -108,17 +110,4 @@ Channel* Server::create_channel(const std::string& name, Client* client) {
 
 bool Server::is_valid_pass(std::string pass) {
     return _vault->validate_password(pass);
-}
-
-std::string Server::get_time() {
-    time_t rawtime;
-    struct tm *timeinfo;
-    char time_string[80];
-
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-
-    strftime(time_string, sizeof(time_string), "%d-%m-%Y %H:%M:%S", timeinfo);
-
-    return std::string(time_string);
 }

@@ -7,6 +7,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Quit::Quit(Server* server) : ACommand(server, false) {}
 Quit::~Quit() {}
 
@@ -21,6 +22,7 @@ void    Quit::execute(Client* client, std::vector<std::string> args) {
     ClientService::send_message(client, RPL_QUIT(client->get_prefix(), reason));
     IMultiplexer* multiplexer = _server->get_multiplexer();
     multiplexer->disconnect_client(client->get_fd());
+    std::cout << "SUCCEDED QUIT" << std::endl;
 }
 
 

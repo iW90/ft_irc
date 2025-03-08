@@ -6,6 +6,7 @@
 #include "Macros.hpp"
 #include "Server.hpp"
 
+
 Invite::Invite(Server* server) : ACommand(server, true) {}
 Invite::~Invite() {}
 
@@ -29,15 +30,17 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     if (!_has_channel_privileges(client, channel))
         return;
 
+    std::cout << "INVITE::Sending invite..." << std::endl;
     channel->add_to_inviteds(dest);
-
     ClientService::send_message(dest, RPL_INVITE(client->get_prefix(), target, name));
+    std::cout << "SUCCEDED INVITE" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Invite::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "INVITE::Validate parameters..." << std::endl;
     if (args.size() == 2)
         return true;
     ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "KICK"));
