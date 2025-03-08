@@ -23,7 +23,7 @@ class CommandHandler {
         CommandHandler(Server* server);
         ~CommandHandler();
 
-        void    invoke(Client* client, const std::string& message);
+        void    handle_command(Client* client, const std::string& message);
 };
 
 #endif // COMMAND_HANDLER_HPP

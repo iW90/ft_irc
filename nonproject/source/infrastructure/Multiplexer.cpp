@@ -187,7 +187,7 @@ void Multiplexer::handle_client(int client_fd, CommandHandler* handler) {
         Client*     client = _clients.at(client_fd);
         std::string message = read_client_message(client_fd);
         
-        handler->invoke(client, message);
+        handler->handle_command(client, message);
     } catch (const std::exception& e) {
         std::cout << "Error while handling the client message! " << e.what() << std::endl;
     }

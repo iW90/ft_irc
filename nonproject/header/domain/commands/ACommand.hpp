@@ -25,7 +25,7 @@ class ACommand {
         bool            _is_valid_client(Client* client, Client* dest, Channel* channel, const std::string& name);
 
         bool            _is_already_registered(Client* client);
-        bool            _is_on_channel(Client* client, Channel* channel, const std::string& name);
+        bool            _is_on_channel(Client* client, Channel* channel);
         
     public:
         ACommand(Server* server, bool auth = true);

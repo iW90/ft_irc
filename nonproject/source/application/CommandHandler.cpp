@@ -12,7 +12,7 @@
 # include "commands/server/Quit.hpp"
 # include "commands/general/Join.hpp"
 # include "commands/general/Part.hpp"
-// # include "commands/general/PrivMsg.hpp"
+# include "commands/general/PrivMsg.hpp"
 // # include "commands/operator/Invite.hpp"
 // # include "commands/operator/Kick.hpp"
 // # include "commands/operator/Mode.hpp"
@@ -30,7 +30,7 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
     // General
     _commands["JOIN"] = new Join(_server);
     _commands["PART"] = new Part(_server);
-	// _commands["PRIVMSG"] = new PrivMsg(_server);
+	_commands["PRIVMSG"] = new PrivMsg(_server);
 
     // Operator
     // _commands["MODE"] = new Mode(_server);
@@ -62,7 +62,7 @@ std::string     CommandHandler::_trim(const std::string& str) {
     return result;
 }
 
-void CommandHandler::invoke(Client* client, const std::string& message) {
+void CommandHandler::handle_command(Client* client, const std::string& message) {
     std::stringstream   ss(message);
     std::string         syntax;
     
