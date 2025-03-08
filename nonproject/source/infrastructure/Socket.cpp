@@ -1,4 +1,5 @@
 #include "Socket.hpp"
+#include "Constants.hpp"
 
 Socket::Socket(const std::string& host, int port) : _max_connections(MAX_CONNECTIONS) {
     _create_socket();
@@ -13,6 +14,8 @@ Socket::~Socket() {
     if (_socket_fd != -1)
         ::close(_socket_fd); //::close() global, parte da unistd
 }
+
+int Socket::get_fd() const { return _socket_fd; }
 
 
 // CRIA UM SOCKET EM UM FD

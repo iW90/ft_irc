@@ -9,11 +9,11 @@
 # include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
 # include <stdexcept>       // Necessário para exceções
 
-# define MAX_CONNECTIONS 20
+# include "interfaces/ISocket.hpp"
 
-class Socket
-{
-    protected:
+
+class Socket : public ISocket {
+    private:
         int                 _socket_fd;
         struct sockaddr_in  _address;
         int                 _max_connections;
@@ -36,6 +36,8 @@ class Socket
     public:
         Socket(const std::string& host, int port);
         ~Socket();
+
+        int     get_fd() const;
 };
 
 #endif // SOCKET_HPP

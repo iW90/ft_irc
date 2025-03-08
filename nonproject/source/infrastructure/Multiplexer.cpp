@@ -1,5 +1,6 @@
 #include "Multiplexer.hpp"
-
+#include "Client.hpp"
+#include "CommandHandler.hpp"
 
 Multiplexer::Multiplexer(int server_fd) {
     _server_fd = server_fd;
@@ -18,8 +19,37 @@ Multiplexer::Multiplexer(int server_fd) {
 Multiplexer::~Multiplexer() {
     if (_epoll_fd != -1)
         ::close(_epoll_fd);
+
+    // Destruir todos os clients
+    std::map<int, Client*>::iterator client_it;
+    for (client_it = _clients.begin(); client_it != _clients.end(); ++client_it) {
+        Client* client = client_it->second;
+        delete client;
+    }
+    _clients.clear();
 }
 
+
+// Getters
+
+int                         Multiplexer::get_epoll_fd() const { return _epoll_fd; }
+
+std::map<int, Client*>&     Multiplexer::get_clients() { return _clients; }
+
+Client*                     Multiplexer::get_client(std::string target) {
+    std::map<int, Client*>::iterator it;
+
+    for (it = _clients.begin(); it != _clients.end(); ++it) {
+        Client* client = it->second;
+        if (client->get_nickname() == target)
+            return client;
+    }
+
+    return NULL;
+}
+
+
+// Métodos
 
 // ADICIONA UM NOVO FD PARA SER MONITORADO
 void Multiplexer::subscribe_fd_for_monitoring(int fd) {
@@ -92,7 +122,7 @@ int Multiplexer::check_for_events() {
 }
 
 // PARSER PARA GERENCIAR OS DIFERENTES EVENTOS
-void Multiplexer::handle_events(int total_events) {
+void Multiplexer::handle_events(int total_events, CommandHandler* handler) {
     for (int i = 0; i < total_events; i++) {
 
         // Eventos do servidor
@@ -109,7 +139,7 @@ void Multiplexer::handle_events(int total_events) {
                 disconnect_client(_events[i].data.fd);
 
             if (_events[i].events & EPOLLIN)
-                read_client_message(_events[i].data.fd);
+                handle_client(_events[i].data.fd, handler);
 
         }
     }
@@ -118,39 +148,52 @@ void Multiplexer::handle_events(int total_events) {
 // DISCONECTA O CLIENT DO SERVER
 void Multiplexer::disconnect_client(int client_fd) {
     unsubscribe_fd_for_monitoring(client_fd);
+
+    std::map<int, Client*>::iterator it = _clients.find(client_fd);
+    if (it != _clients.end()) {
+        Client* client = it->second;
+        _clients.erase(it);
+        delete client;
+    }
+
     ::close(client_fd);
+
     std::cout << "Client disconnected." << std::endl;
 }
 
 // CONECTA UM CLIENT AO SERVER
-void Multiplexer::connect_client(int server_fd) {
+int Multiplexer::connect_client(int server_fd) {
     sockaddr_in addr = {};
     socklen_t   size = sizeof(addr);
 
-    int client_fd = ::accept(server_fd, (sockaddr*)&addr, &size);
-    if (client_fd == -1)
-        throw std::runtime_error("Error to accept connection");
+    int client_fd = _accept_connection(server_fd, &addr, &size);
+    Client* client = _create_client(client_fd, addr);
 
+    _clients.insert(std::make_pair(client_fd, client));
     subscribe_fd_for_monitoring(client_fd);
-    std::cout << "Client connected." << std::endl;
 
-    /*
-        int ::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
-        - sockfd é o socket do servidor.
-        - addr é um ponteiro para uma estrutura sockaddr onde as informações 
-            sobre o endereço do cliente serão armazenadas (como o IP e a 
-            porta de onde a conexão foi feita).
-        - addrlen é um ponteiro para a variável que contém o tamanho da 
-            estrutura sockaddr. Quando accept() for bem-sucedido, ele 
-            preencherá essa estrutura com o endereço do cliente.
-        - retorna o fd do client.
-    */    
+    std::cout << "Client connected." << std::endl;
+    return client_fd;
 }
 
-// MINI GNL
-void Multiplexer::read_client_message(int client_fd) {
+
+// HANDLE CLIENTS
+void Multiplexer::handle_client(int client_fd, CommandHandler* handler) {
     try {
-        std::string message;
+        Client*     client = _clients.at(client_fd);
+        std::string message = read_client_message(client_fd);
+        
+        handler->invoke(client, message);
+    } catch (const std::exception& e) {
+        std::cout << "Error while handling the client message! " << e.what() << std::endl;
+    }
+}
+
+
+// MINI GNL
+std::string Multiplexer::read_client_message(int client_fd) {
+    std::string message;
+    try {
         
         char buffer[BUFFER_SIZE];
         bzero(buffer, BUFFER_SIZE);
@@ -162,31 +205,60 @@ void Multiplexer::read_client_message(int client_fd) {
 
             if ((recv(client_fd, buffer, BUFFER_SIZE, 0) <= 0) and (errno != EWOULDBLOCK)) {
                 disconnect_client(client_fd);
-                return ;
-            } else
-                message.append(buffer);
+                return "";
+            }
+            
+            /*
+                ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+                - sockfd é o fd do client de quem está vindo a mensagem.
+                - buf é o ponteiro para o buffer, o bloco de memória com os dados a 
+                    serem lidos.
+                - len é o tamanho do buffer, definido o tamanhno máximo através 
+                    da constante BUFFER_SIZE.
+                - flags permite especificar algumas opções adicionais, mas 0 significa 
+                    que nenhuma foi definida.
+                - Se retornar -1, significa erro. Se retornar 0, significa que a
+                    conexão foi encerrada por parte do client. E o valor positivo 
+                    corresponde ao número de bytes recebidos.
+            */ 
+
+            message.append(buffer);
         }
 
+        return message;
         // Apaga a última quebra de linha
-        if (!message.empty() && message[message.size() - 1] == '\n')
-            message.erase(message.size() - 1);
+        // if (!message.empty() && message[message.size() - 1] == '\n')
+        //     message.erase(message.size() - 1);
 
         // Imprime a mensagem do terminal, identificada pelo FD do usuário
-        std::cout << client_fd << ": " << message << std::endl;
+        // std::cout << client_fd << ": " << message << std::endl;
 
         // Apenas para testar. Se o usuário escreve exit(), é removido
-        if (message == "exit()")
-            disconnect_client(client_fd);
 
     } catch (const std::exception& e) {
         std::cout << "Error processing the message: " << e.what() << std::endl;
+        return message;
     }
 }
 
-
-
-
-
+void Multiplexer::send_client_message(int client_fd, const std::string& message) {
+    std::string buffer = message + "\r\n";
+    if (send(client_fd, buffer.c_str(), buffer.length(), 0) == -1)
+        throw std::runtime_error("Error while sending a message to a client!");
+    /*
+        ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+        Enquanto o recv lê mensagens, o send envia dados através de um 
+        socket.
+        - sockfd é o fd do client que está enviando a mensagem.
+        - buf é o ponteiro para o buffer, o bloco de memória com os dados a 
+            serem enviados. Foi convertido para c-string.
+        - len é o tamanho do buffer.
+        - flags permite especificar algumas opções adicionais, mas 0 significa 
+            que nenhuma foi definida.
+        - Se retornar -1, significa erro. E o valor positivo corresponde ao
+            número de bytes enviados.
+    */
+}
 
 
 // MÉTODOS AINDA NÃO UTILIZADOS
@@ -212,4 +284,37 @@ void Multiplexer::handle_write_event(int fd) {
     // send_message_to_client(fd);
     (void)fd;
     return ;
+}
+
+
+// Funções auxiliares
+
+int Multiplexer::_accept_connection(int server_fd, sockaddr_in* addr, socklen_t* size) {
+    int client_fd = ::accept(server_fd, (sockaddr*)addr, size);
+    if (client_fd == -1)
+        throw std::runtime_error("Error to accept connection");
+    return client_fd;
+    /*
+        int ::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+        - sockfd é o socket do servidor.
+        - addr é um ponteiro para uma estrutura sockaddr onde as informações 
+            sobre o endereço do cliente serão armazenadas (como o IP e a 
+            porta de onde a conexão foi feita).
+        - addrlen é um ponteiro para a variável que contém o tamanho da 
+            estrutura sockaddr. Quando accept() for bem-sucedido, ele 
+            preencherá essa estrutura com o endereço do cliente.
+        - retorna o fd do client.
+    */   
+}
+
+Client* Multiplexer::_create_client(int client_fd, const sockaddr_in& addr) {
+    char* client_ip = inet_ntoa(addr.sin_addr);
+    int client_port = ntohs(addr.sin_port);
+
+    // std::cout << "Creating client:" << std::endl;
+    // std::cout << "Client FD: " << client_fd << std::endl;
+    // std::cout << "Client IP: " << client_ip << std::endl;
+    // std::cout << "Client Port: " << client_port << std::endl;
+
+    return new Client(client_fd, client_ip, client_port);
 }
