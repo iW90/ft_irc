@@ -28,10 +28,9 @@ bool ChannelService::add_client(Channel* channel, Client* client) {
 
 void ChannelService::remove_client(Channel* channel, Client* client) {
     std::cout << "ChannelService::Removing client..." << std::endl;
-    std::set<Client*>& clients = channel->get_clients();
-    std::set<Client*>::iterator it = clients.find(client);
-    if (it != clients.end())
-        clients.erase(it);
+    channel->remove_from_clients(client);
+    channel->remove_from_inviteds(client);
+    channel->remove_from_operators(client);
 
     _change_admin_if_needed(channel, client);
     _announce_client_leave(channel, client);
@@ -45,7 +44,6 @@ void ChannelService::kick_client(Channel* channel, Client* client, Client* targe
     channel->remove_from_inviteds(target);
     channel->remove_from_operators(target);
     remove_client(channel, target);
-    target->set_channel(NULL); //TRANSFERIR PARA COMANDO
 
     _announce_client_kick(channel, client, target, reason);
     std::cout << "ChannelService::Client kicked." << std::endl;

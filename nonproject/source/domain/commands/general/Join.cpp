@@ -64,6 +64,9 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
     if (!_is_channel_key_valid(channel, client, pass, channel_name))
         return;
 
+    if (!_is_invited(channel, client, channel_name))
+        return;
+
     if (channel->get_admin() == NULL)
         channel->set_admin(client);
 
@@ -71,11 +74,11 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
     if (ChannelService::add_client(channel, client))
         ClientService::join_channel(client, channel);
 
-        // MOSTRANDO USERS
+    // MOSTRANDO USERS
     std::set<Client*> clients = channel->get_clients();
     std::cout << "Clients in the channel: ";
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        std::cout << (*it)->get_nickname() << " ";  // Obtém e imprime o nickname do cliente
+        std::cout << (*it)->get_nickname() << " ";
     }
     std::cout << std::endl;
     std::cout << "SUCCEDED JOIN" << std::endl;
@@ -113,5 +116,13 @@ bool Join::_is_channel_key_valid(Channel* channel, Client* client, const std::st
     if (!channel->get_key().first || (channel->get_key().first && channel->get_key().second == pass))
         return true;
     ClientService::reply_message(client, ERR_BADCHANNELKEY(client->get_nickname(), name));
+    return false;
+}
+
+bool Join::_is_invited(Channel* channel, Client* client, const std::string& name) {
+    std::cout << "JOIN::Validate if client is invited..." << std::endl;
+    if (!channel->get_inviteds().first || (channel->get_inviteds().first && channel->get_invited(client)))
+        return true;
+    ClientService::reply_message(client, ERR_CHANNELISFULL(client->get_nickname(), name));
     return false;
 }
