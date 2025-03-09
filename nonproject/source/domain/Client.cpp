@@ -5,15 +5,8 @@
 
 Client::Client(int fd, const std::string& host, int port) {
     _fd = fd;
-    // _state = CONNECTED;
+    _state = CONNECTED;
     _channel = NULL;
-
-    // TEMP TO TEST
-    _state = REGISTERED;
-    _nickname = "Indy";
-    _username = "Ingrid";
-    // TEMP TO TEST
-
 
     memset(&_address, 0, sizeof(_address));   // Limpa a estrutura sockaddr_in
     _address.sin_family = AF_INET;            // Define o tipo de família de endereço (default: IPv4)
