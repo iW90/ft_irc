@@ -123,6 +123,6 @@ bool Join::_is_invited(Channel* channel, Client* client, const std::string& name
     std::cout << "JOIN::Validate if client is invited..." << std::endl;
     if (!channel->get_inviteds().first || (channel->get_inviteds().first && channel->get_invited(client)))
         return true;
-    ClientService::reply_message(client, ERR_CHANNELISFULL(client->get_nickname(), name));
+    ClientService::reply_message(client, ERR_INVITEONLYCHAN(client->get_nickname(), name));
     return false;
 }

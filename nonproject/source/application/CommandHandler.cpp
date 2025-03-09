@@ -15,9 +15,8 @@
 # include "commands/general/PrivMsg.hpp"
 # include "commands/operator/Mode.hpp"
 # include "commands/operator/Topic.hpp"
-// # include "commands/operator/Invite.hpp"
-// # include "commands/operator/Kick.hpp"
-// # include "commands/operator/Invite.hpp"
+# include "commands/operator/Invite.hpp"
+# include "commands/operator/Kick.hpp"
 
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
@@ -35,8 +34,8 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
     // Operator
     _commands["MODE"] = new Mode(_server);
 	_commands["TOPIC"] = new Topic(_server);
-    // _commands["KICK"] = new Kick(_server);
-    // _commands["INVITE"] = new Invite(_server);
+    _commands["KICK"] = new Kick(_server);
+    _commands["INVITE"] = new Invite(_server);
 }
 
 CommandHandler::~CommandHandler () {
