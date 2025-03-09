@@ -17,14 +17,14 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    std::string target = args.at(0);
+    std::string target = args[0];
     Channel* channel = _server->get_channel(target);
     if (!_is_valid_channel(client, channel, target))
         return;
 
     if (args.size() == 1) {
         _send_current_topic(client, channel);
-        std::cout << "SUCCEDED PART" << std::endl;
+        std::cout << "SUCCEDED TOPIC" << std::endl;
         return;
     }
 

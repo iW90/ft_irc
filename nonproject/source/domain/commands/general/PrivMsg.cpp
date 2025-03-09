@@ -11,12 +11,13 @@ PrivMsg::PrivMsg(Server* server) : ACommand(server, true) {}
 PrivMsg::~PrivMsg() {}
 
 
-// syntax: PRIVMSG <msgtarget> :<message>
+// syntax: PRIVMSG <nickname> :<message>
+//         PRIVMSG <channel> :<message>
 void PrivMsg::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    std::string target = args.at(0);
+    std::string target = args[0];
     std::string message = _build_message(args);
 
     std::cout << "PRIVMSG::Sending message..." << std::endl;
@@ -87,7 +88,7 @@ void PrivMsg::_handle_client_message(Client* client, const std::string& target, 
     }
 
     if (dest->get_channel() != channel) {
-        ClientService::reply_message(client, ERR_NOTONCHANNEL(client->get_nickname(), target)); //MUDAR PARA NÃO ESTÁ NO CANAL
+        ClientService::reply_message(client, ERR_NOTONCHANNEL(client->get_nickname(), target));
         return;
     }
 

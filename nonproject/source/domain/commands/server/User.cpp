@@ -11,7 +11,7 @@ User::User(Server* server) : ACommand(server, false) {}
 User::~User() {}
 
 
-// stntax: USER <username> <hostname> <servername> :<realname>
+// sintax: USER <username> <hostname> <servername> :<realname>
 void    User::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
