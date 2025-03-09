@@ -11,15 +11,19 @@ Part::Part(Server* server) : ACommand(server, true) {}
 Part::~Part() {}
 
 
-// syntax: PART <channel> :<message>
+// syntax: PART #<channel> :<message>
 void    Part::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    std::string name = args[0];
-    Channel     *channel = _server->get_channel(name);
-
-    if (!_is_client_in_channel(client, channel, name))
+    std::string channel_name = args[0];
+    if (channel_name.at(0) != '#') {
+        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
+        return;
+    }
+    channel_name.erase(0,1);
+    Channel     *channel = _server->get_channel(channel_name);
+    if (!_is_client_in_channel(client, channel, channel_name))
         return;
 
     std::cout << "PART::Remove client..." << std::endl;

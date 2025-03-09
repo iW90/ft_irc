@@ -5,13 +5,13 @@
 
 Client::Client(int fd, const std::string& host, int port) {
     _fd = fd;
-    _state = CONNECTED;
+    // _state = CONNECTED;
     _channel = NULL;
 
     // TEMP TO TEST
-    // _state = REGISTERED;
-    // _nickname = "Indy";
-    // _username = "Ingrid";
+    _state = REGISTERED;
+    _nickname = "Indy";
+    _username = "Ingrid";
     // TEMP TO TEST
 
 

@@ -11,24 +11,57 @@ Join::Join(Server* server) : ACommand(server, true) {}
 Join::~Join() {}
 
 
-// syntax: JOIN <channel> <key>
+// syntax: JOIN #<channel> <key>
 //         JOIN <channel>
 void Join::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    std::string name = args[0];
+    if (_is_already_in_channel(client))
+        return;
+
     std::string pass = args.size() == 2 ? args[1] : "";
+    std::string channel_name = args[0];
+    if (channel_name.at(0) != '#')
+        _join_channel(channel_name, client, pass);
+    else
+        _create_channel(channel_name, client, pass);
 
-    if (_is_already_in_channel(client, name))
+}
+
+void Join::_create_channel(std::string& channel_name, Client* client, std::string pass) {
+    channel_name.erase(0,1);
+
+    Channel* channel = _server->get_channel(channel_name);
+    if (channel != NULL)
+        _join_channel(channel_name, client, pass);
+
+    channel = _server->create_channel(channel_name, client);
+
+    std::cout << "JOIN::Add client..." << std::endl;
+    if (ChannelService::add_client(channel, client))
+        ClientService::join_channel(client, channel);
+    
+    // MOSTRANDO USERS
+    std::set<Client*> clients = channel->get_clients();
+    std::cout << "Clients in the channel: ";
+    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        std::cout << (*it)->get_nickname() << " ";  // Obtém e imprime o nickname do cliente
+    }
+    std::cout << std::endl;
+    
+    std::cout << "SUCCEDED JOIN" << std::endl;
+}
+
+void Join::_join_channel(std::string& channel_name, Client* client, std::string pass) {
+    Channel* channel = _server->get_channel(channel_name);
+    if (!_is_valid_channel(client, channel, channel_name))
         return;
 
-    Channel* channel = _get_or_create_channel(name, client);
-
-    if (_is_channel_full(channel, client, name))
+    if (_is_channel_full(channel, client, channel_name))
         return;
 
-    if (!_is_channel_key_valid(channel, client, pass, name))
+    if (!_is_channel_key_valid(channel, client, pass, channel_name))
         return;
 
     if (channel->get_admin() == NULL)
@@ -37,9 +70,16 @@ void Join::execute(Client* client, std::vector<std::string> args) {
     std::cout << "JOIN::Add client..." << std::endl;
     if (ChannelService::add_client(channel, client))
         ClientService::join_channel(client, channel);
+
+        // MOSTRANDO USERS
+    std::set<Client*> clients = channel->get_clients();
+    std::cout << "Clients in the channel: ";
+    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        std::cout << (*it)->get_nickname() << " ";  // Obtém e imprime o nickname do cliente
+    }
+    std::cout << std::endl;
     std::cout << "SUCCEDED JOIN" << std::endl;
 }
-
 
 // Funções auxiliares
 
@@ -51,20 +91,12 @@ bool Join::_has_valid_parameters(Client* client, const std::vector<std::string>&
     return false;
 }
 
-bool Join::_is_already_in_channel(Client* client, std::string name) {
+bool Join::_is_already_in_channel(Client* client) {
     std::cout << "JOIN::Validate if is already in channel..." << std::endl;
     if (client->get_channel() == NULL)
         return false;
-    ClientService::reply_message(client, ERR_TOOMANYCHANNELS(client->get_nickname(), name));
+    ClientService::reply_message(client, ERR_TOOMANYCHANNELS(client->get_nickname(), client->get_channel()->get_name()));
     return true;
-}
-
-Channel* Join::_get_or_create_channel(const std::string& name, Client* client) {
-    std::cout << "JOIN::Get or create channel..." << std::endl;
-    Channel* channel = _server->get_channel(name);
-    if (channel == NULL)
-        channel = _server->create_channel(name, client);
-    return channel;
 }
 
 bool Join::_is_channel_full(Channel* channel, Client* client, const std::string& name) {

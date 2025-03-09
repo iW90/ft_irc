@@ -12,7 +12,7 @@ PrivMsg::~PrivMsg() {}
 
 
 // syntax: PRIVMSG <nickname> :<message>
-//         PRIVMSG <channel> :<message>
+//         PRIVMSG #<channel> :<message>
 void PrivMsg::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
@@ -29,45 +29,20 @@ void PrivMsg::execute(Client* client, std::vector<std::string> args) {
 }
 
 
-// Funções auxiliares
-
-bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
-    std::cout << "PRIVMSG::Validate parameters..." << std::endl;
-    if (args.size() < 2 || args[0].empty() || args[1].empty()) {
-        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PRIVMSG"));
-        return false;
-    }
-    return true;
-}
-
-std::string PrivMsg::_build_message(const std::vector<std::string>& args) {
-    std::cout << "PRIVMSG::Building message..." << std::endl;
-    std::string message;
-    for (std::vector<std::string>::const_iterator it = args.begin() + 1; it != args.end(); ++it)
-        message.append(*it + " ");
-
-    if (message.at(0) == ':')
-        message = message.substr(1);
-
-    return message;
-}
-
-
 // Channel message
 
-void PrivMsg::_handle_channel_message(Client* client, const std::string& target, const std::string& message) {
+void PrivMsg::_handle_channel_message(Client* client, std::string& target, const std::string& message) {
     std::cout << "PRIVMSG::Handling channel message..." << std::endl;
     Channel* channel = client->get_channel();
     if (!_is_on_channel(client, channel))
         return;
 
-    std::string target_channel_name = target.substr(1);
-    std::cout << target_channel_name << std::endl;
-    Channel* target_channel = _server->get_channel(target_channel_name);
-    if (!_is_valid_channel(client, target_channel, target_channel_name))
+    target.erase(0,1);
+    Channel* target_channel = _server->get_channel(target);
+    if (!_is_valid_channel(client, target_channel, target))
         return;
 
-    ChannelService::broadcast(channel, RPL_PRIVMSG(client->get_prefix(), target_channel_name, message), client);
+    ChannelService::broadcast(channel, RPL_PRIVMSG(client->get_prefix(), target, message), client);
     std::cout << "PRIVMSG::Message sended to channel." << std::endl;
 }
 
@@ -94,4 +69,28 @@ void PrivMsg::_handle_client_message(Client* client, const std::string& target, 
 
     ClientService::send_message(dest, RPL_PRIVMSG(client->get_prefix(), target, message));
     std::cout << "PRIVMSG::Message sended to client..." << std::endl;
+}
+
+
+// Funções auxiliares
+
+bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "PRIVMSG::Validate parameters..." << std::endl;
+    if (args.size() < 2 || args[0].empty() || args[1].empty()) {
+        ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PRIVMSG"));
+        return false;
+    }
+    return true;
+}
+
+std::string PrivMsg::_build_message(const std::vector<std::string>& args) {
+    std::cout << "PRIVMSG::Building message..." << std::endl;
+    std::string message;
+    for (std::vector<std::string>::const_iterator it = args.begin() + 1; it != args.end(); ++it)
+        message.append(*it + " ");
+
+    if (message.at(0) == ':')
+        message = message.substr(1);
+
+    return message;
 }

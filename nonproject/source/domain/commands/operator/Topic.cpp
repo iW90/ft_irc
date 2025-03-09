@@ -11,15 +11,21 @@ Topic::Topic(Server* server) : ACommand(server, true) {}
 Topic::~Topic() {}
 
 
-// syntax:  TOPIC <channel> :<new_topic>
-//          TOPIC <channel>
+// syntax:  TOPIC #<channel> :<new_topic>
+//          TOPIC #<channel>
 void Topic::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    std::string target = args[0];
-    Channel* channel = _server->get_channel(target);
-    if (!_is_valid_channel(client, channel, target))
+    std::string channel_name = args[0];
+    if (channel_name.at(0) != '#') {
+        ClientService::reply_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
+        return;
+    }
+    channel_name.erase(0,1);
+
+    Channel* channel = _server->get_channel(channel_name);
+    if (!_is_valid_channel(client, channel, channel_name))
         return;
 
     if (args.size() == 1) {
@@ -65,7 +71,7 @@ std::string Topic::_extract_topic(const std::vector<std::string>& args) {
     std::cout << "TOPIC::Extracting topic description..." << std::endl;
     std::string topic = "";
     if (args.size() >= 2 && (args[1][0] != ':' || args[1].size() > 1)) {
-        for (size_t i = 2; i < args.size(); ++i) {
+        for (size_t i = 1; i < args.size(); ++i) {
             topic.append(args[i]);
             topic.append(" ");
         }

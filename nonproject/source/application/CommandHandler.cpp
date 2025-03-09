@@ -13,10 +13,10 @@
 # include "commands/general/Join.hpp"
 # include "commands/general/Part.hpp"
 # include "commands/general/PrivMsg.hpp"
+# include "commands/operator/Mode.hpp"
+# include "commands/operator/Topic.hpp"
 // # include "commands/operator/Invite.hpp"
 // # include "commands/operator/Kick.hpp"
-// # include "commands/operator/Mode.hpp"
-// # include "commands/operator/Topic.hpp"
 // # include "commands/operator/Invite.hpp"
 
 
@@ -33,9 +33,9 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
 	_commands["PRIVMSG"] = new PrivMsg(_server);
 
     // Operator
-    // _commands["MODE"] = new Mode(_server);
+    _commands["MODE"] = new Mode(_server);
+	_commands["TOPIC"] = new Topic(_server);
     // _commands["KICK"] = new Kick(_server);
-	// _commands["TOPIC"] = new Topic(_server);
     // _commands["INVITE"] = new Invite(_server);
 }
 
