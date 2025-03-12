@@ -16,7 +16,7 @@ int main(int ac, char** av) {
 
 
     // Injeções de dependência
-    const std::string   IP_ADDRESS      = "127.0.0.1";
+    const std::string   IP_ADDRESS      = "0.0.0.0";
     IVault*             vault           = new Vault(password);
     ISocket*            server_socket   = new Socket(IP_ADDRESS, port);
     IMultiplexer*       multiplexer     = new Multiplexer(server_socket->get_fd());
