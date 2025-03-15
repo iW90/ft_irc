@@ -6,17 +6,25 @@
 #include "ClientService.hpp"
 #include "Server.hpp"
 
-# include "commands/server/Pass.hpp"
-# include "commands/server/Nick.hpp"
-# include "commands/server/User.hpp"
-# include "commands/server/Quit.hpp"
-# include "commands/general/Join.hpp"
-# include "commands/general/Part.hpp"
-# include "commands/general/PrivMsg.hpp"
-# include "commands/operator/Mode.hpp"
-# include "commands/operator/Topic.hpp"
-# include "commands/operator/Invite.hpp"
-# include "commands/operator/Kick.hpp"
+#include "commands/server/Pass.hpp"
+#include "commands/server/Nick.hpp"
+#include "commands/server/User.hpp"
+#include "commands/server/Quit.hpp"
+#include "commands/general/Join.hpp"
+#include "commands/general/Part.hpp"
+#include "commands/general/PrivMsg.hpp"
+#include "commands/operator/Mode.hpp"
+#include "commands/operator/Topic.hpp"
+#include "commands/operator/Invite.hpp"
+#include "commands/operator/Kick.hpp"
+#include "commands/misc/Cap.hpp"
+#include "commands/misc/Help.hpp"
+#include "commands/misc/Info.hpp"
+#include "commands/misc/List.hpp"
+#include "commands/misc/Names.hpp"
+#include "commands/misc/Notice.hpp"
+#include "commands/misc/Ping.hpp"
+#include "commands/misc/Pong.hpp"
 
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
@@ -36,6 +44,16 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
 	_commands["TOPIC"] = new Topic(_server);
     _commands["KICK"] = new Kick(_server);
     _commands["INVITE"] = new Invite(_server);
+
+    // Misc
+    _commands["CAP"] = new Cap(_server);
+    _commands["HELP"] = new Help(_server);
+    _commands["INFO"] = new Info(_server);
+    _commands["LIST"] = new List(_server);
+    _commands["NAMES"] = new Names(_server);
+    _commands["NOTICE"] = new Notice(_server);
+    _commands["PING"] = new Ping(_server);
+    _commands["PONG"] = new Pong(_server);
 }
 
 CommandHandler::~CommandHandler () {
@@ -81,13 +99,13 @@ void CommandHandler::handle_command(Client* client, const std::string& message) 
                 args.push_back(buf);
 
             if (client->get_state() != REGISTERED && cmd->auth_required()) {
-                ClientService::reply_message(client, ERR_NOTREGISTERED(client->get_nickname()));
+                ClientService::send_message(client, ERR_NOTREGISTERED(client->get_nickname()));
                 return;
             }
 
             cmd->execute(client, args);
         } catch (const std::exception& e) {
-            ClientService::reply_message(client, ERR_UNKNOWNCOMMAND(client->get_nickname(), name));
+            ClientService::send_message(client, ERR_UNKNOWNCOMMAND(client->get_nickname(), name));
         }
     }
 }

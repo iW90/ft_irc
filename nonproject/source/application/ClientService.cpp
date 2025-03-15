@@ -58,10 +58,10 @@ void ClientService::_broadcast_part_message(Client* client, Channel* channel) {
 // }
 
 // void ClientService::_send_nickname_reply(Client* client, Channel* channel, const std::string& users) {
-//     reply_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), users));
+//     send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), users));
 // }
 
 
 // void ClientService::_send_end_of_names_reply(Client* client, Channel* channel) {
-//     reply_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
+//     send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
 // }
