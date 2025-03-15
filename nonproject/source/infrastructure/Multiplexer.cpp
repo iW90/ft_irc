@@ -102,8 +102,14 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 int Multiplexer::check_for_events() {
 
     int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
-    if (total_events == -1)
+    if (total_events == -1) {
+        if (errno == EINTR) {
+            // Epoll was interrupted by a signal, return 0 to indicate no new events
+            return 0;
+        }
         throw std::runtime_error("Error while polling with epoll");
+    }
+
 
     return total_events;
 
