@@ -24,6 +24,7 @@ class Server {
         IMultiplexer*               _multiplexer;
         std::set<Channel* >         _channels;
         CommandHandler*             _command_handler;
+        std::string                 _datetime;
  
     public:
         Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer);
@@ -37,6 +38,8 @@ class Server {
 
         const std::map<int, Client*>&   get_clients() const;
         Client*                         get_client(const std::string& name);
+
+        const std::string&              get_datetime() const;
 
         // Setters
         void                            set_command_handler(CommandHandler* handler);

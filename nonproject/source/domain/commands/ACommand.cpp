@@ -4,6 +4,8 @@
 #include "Client.hpp"
 #include "ClientService.hpp"
 #include "Macros.hpp"
+#include "Utils.hpp"
+#include "Server.hpp"
 
 
 ACommand::ACommand(Server* server, bool auth) : _auth(auth), _server(server) {}
@@ -63,4 +65,14 @@ bool ACommand::_is_valid_client(Client* client, Client* dest, Channel* channel, 
     }
     
     return true;
+}
+
+void ACommand::_set_registered(Client* client) {
+    client->set_state(REGISTERED);
+    std::string server = "ft_irc";
+
+    ClientService::send_message(client, RPL_WELCOME(server, client->get_nickname()));
+    ClientService::send_message(client, RPL_YOURHOST(server));
+    ClientService::send_message(client, RPL_CREATED(server, _server->get_datetime()));
+    ClientService::send_message(client, RPL_MYINFO(client->get_nickname()));
 }

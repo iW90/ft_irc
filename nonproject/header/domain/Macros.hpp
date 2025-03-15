@@ -10,6 +10,7 @@
 # define RPL_YOURHOST(source)                            "002 " + source + " :Your host is ft_irc, running version 1.0"
 # define RPL_CREATED(source, datetime)                   "003 " + source + " :This server was created " + datetime
 # define RPL_MYINFO(source)                              "004 " + source + " ft_irc 1.0 itkol"
+# define RPL_ISUPPORT(source)                            "005 " + source + " MAXCHANNELS=1 MAXNICKLEN=30 CHANLIMIT=1"
 # define RPL_LIST(source, channel, clientcount, topic)   "322 " + source + " " + channel + " " + clientcount + " :" + topic
 # define RPL_LISTEND(source)                             "323 " + source + " :End of /LIST"
 # define RPL_NAMREPLY(source, channel, users)            "353 " + source + " = " + channel + " :" + users

@@ -16,7 +16,8 @@ Server::Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer) :
       _running(false),
       _vault(vault), 
       _socket(socket), 
-      _multiplexer(multiplexer) {}
+      _multiplexer(multiplexer),
+      _datetime(Utils::get_time()) {}
 
 Server::~Server() {
     // Destruir todos os channels
@@ -39,6 +40,7 @@ Server::~Server() {
 IMultiplexer*                   Server::get_multiplexer() const { return _multiplexer; }
 const std::set<Channel*>&       Server::get_channels() const { return _channels; }
 const std::map<int, Client*>&   Server::get_clients() const { return _multiplexer->get_clients(); }
+const std::string&              Server::get_datetime() const { return _datetime; }
 
 Channel*                        Server::get_channel(const std::string& name) {
     for (std::set<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
@@ -72,9 +74,8 @@ void Server::start() {
         int total_events;
 
         std::string source = "ft_irc";
-        std::string datetime = Utils::get_time();
 
-        std::cout << RPL_CREATED(source, datetime) << std::endl;
+        std::cout << RPL_CREATED(source, _datetime) << std::endl;
 
         _multiplexer->subscribe_fd_for_monitoring(_socket->get_fd());
 
