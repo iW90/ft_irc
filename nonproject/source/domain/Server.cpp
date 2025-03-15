@@ -82,7 +82,6 @@ void Server::start() {
             total_events = _multiplexer->check_for_events();
             _multiplexer->handle_events(total_events, &handler);
         }
-
     } catch (const std::exception& e) {
         throw ServerException(e, "Unable to turn on the server.");
     }

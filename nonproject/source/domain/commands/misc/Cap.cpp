@@ -15,7 +15,7 @@ void Cap::execute(Client* client, std::vector<std::string> args) {
 
     if (args[0] == "LS" && args[1] == "302")
         ClientService::send_message(client, "CAP * LS :");
-    ClientService::send_message(client, "CAP END");
+    ClientService::send_message(client, "CAP * END");
 }
 
 bool Cap::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
