@@ -75,4 +75,5 @@ void ACommand::_set_registered(Client* client) {
     ClientService::send_message(client, RPL_YOURHOST(server));
     ClientService::send_message(client, RPL_CREATED(server, _server->get_datetime()));
     ClientService::send_message(client, RPL_MYINFO(client->get_nickname()));
+    ClientService::send_message(client, RPL_ISUPPORT(client->get_nickname()));
 }
