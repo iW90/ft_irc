@@ -23,7 +23,7 @@ void Join::execute(Client* client, std::vector<std::string> args) {
     std::string pass = args.size() == 2 ? args[1] : "";
     std::string channel_name = args[0];
     if (channel_name.at(0) != '#')
-        _join_channel(channel_name, client, pass);
+        return; //WAS _join_channel(channel_name, client, pass);
     else
         _create_channel(channel_name, client, pass);
 
