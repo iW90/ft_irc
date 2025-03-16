@@ -33,8 +33,10 @@ void Join::_create_channel(std::string& channel_name, Client* client, std::strin
     channel_name.erase(0,1);
 
     Channel* channel = _server->get_channel(channel_name);
-    if (channel != NULL)
+    if (channel != NULL) {
         _join_channel(channel_name, client, pass);
+        return;
+    }
 
     channel = _server->create_channel(channel_name, client);
 
@@ -73,8 +75,10 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
         channel->set_admin(client);
 
     std::cout << "JOIN::Add client..." << std::endl;
-    if (ChannelService::add_client(channel, client))
+    if (ChannelService::add_client(channel, client)) {
         ClientService::join_channel(client, channel);
+        _send_client_list(channel, client);
+    }
 
     // MOSTRANDO USERS
     std::set<Client*> clients = channel->get_clients();
