@@ -121,7 +121,8 @@ void ChannelService::_announce_client_join(Channel* channel, Client* client) {
     std::string announcer = "ft_irc: ";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
-    broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
+    //broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
+    broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name()));
 }
 
 void ChannelService::_announce_client_leave(Channel* channel, Client* client) {

@@ -13,6 +13,7 @@ class Join : public ACommand {
 
         void        _create_channel(std::string& channel_name, Client* client, std::string pass);
         void        _join_channel(std::string& channel_name, Client* client, std::string pass);
+        void        _send_client_list(Channel* channel, Client* client);
 
     public:
         Join(Server* server);

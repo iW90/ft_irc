@@ -39,9 +39,11 @@ void Join::_create_channel(std::string& channel_name, Client* client, std::strin
     channel = _server->create_channel(channel_name, client);
 
     std::cout << "JOIN::Add client..." << std::endl;
-    if (ChannelService::add_client(channel, client))
+    if (ChannelService::add_client(channel, client)) {
         ClientService::join_channel(client, channel);
-    
+        _send_client_list(channel, client);
+    }
+
     // MOSTRANDO USERS
     std::set<Client*> clients = channel->get_clients();
     std::cout << "Clients in the channel: ";
@@ -125,4 +127,19 @@ bool Join::_is_invited(Channel* channel, Client* client, const std::string& name
         return true;
     ClientService::send_message(client, ERR_INVITEONLYCHAN(client->get_nickname(), name));
     return false;
+}
+
+void Join::_send_client_list(Channel* channel, Client* client) {
+    std::set<Client*> clients = channel->get_clients();
+    std::string user_info;
+    for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        user_info += (*it)->get_nickname() + " ";
+    }
+//    std::cout << "start\033[31m\n" << std::endl;
+    ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info));
+    ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
+
+    /*std::cout << RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info) << std::endl;
+    std::cout << RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()) << std::endl;
+    std::cout << "\033[0m\nended" << std::endl;*/
 }
