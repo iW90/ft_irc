@@ -17,7 +17,7 @@ void ClientService::reply_message(Client* client, const std::string& reply) {
 void ClientService::join_channel(Client* client, Channel* channel) {
     std::cout << "ClientService::Joining to a channel..." << std::endl;
     _update_client_channel(client, channel);
-//    _broadcast_join_message(client, channel);
+    _broadcast_join_message(client, channel);
     std::cout << "ClientService::Client joinned." << std::endl;
 
     // std::string users = _gather_channel_users(channel);
@@ -29,7 +29,7 @@ void ClientService::leave_channel(Client* client, Channel* channel) {
     std::cout << "ClientService::Leaving for a channel..." << std::endl;
     _update_client_channel(client, NULL);
     _broadcast_part_message(client, channel);
-    std::cout << "ClientService::Client leaved." << std::endl;
+    std::cout << "ClientService::Client left." << std::endl;
 }
 
 
