@@ -10,7 +10,7 @@
 # define RPL_YOURHOST(source)                            ":ft_irc 002 " + source + " :Your host is ft_irc, running version 1.0"
 # define RPL_CREATED(source, datetime)                   ":ft_irc 003 " + source + " :This server was created " + datetime
 # define RPL_MYINFO(source)                              ":ft_irc 004 " + source + " ft_irc 1.0 itkol"
-# define RPL_ISUPPORT(source)                            ":ft_irc 005 " + source + " MAXCHANNELS=1 MAXNICKLEN=30 CHANLIMIT=1"
+# define RPL_ISUPPORT(source)                            ":ft_irc 005 " + source + " CHANMODES=b,k,l,it PREFIX=(o)@ :are supported by this server"
 # define RPL_LIST(source, channel, clientcount, topic)   ":ft_irc 322 " + source + " #" + channel + " " + clientcount + " :" + topic
 # define RPL_LISTEND(source)                             ":ft_irc 323 " + source + " :End of /LIST"
 # define RPL_NAMREPLY(source, channel, users)            ":ft_irc 353 " + source + " = #" + channel + " :" + users
@@ -45,7 +45,7 @@
 
 /* Command Responses */
 
-# define RPL_JOIN(source, channel)                       ":" + source + " JOIN #" + channel
+# define RPL_JOIN(source, channel, target)               ":" + source + " JOIN #" + channel + " * :" + target
 # define RPL_PART(source, channel)                       ":" + source + " PART #" + channel
 # define RPL_PRIVMSG(source, target, message)            ":" + source + " PRIVMSG " + target + " :" + message
 # define RPL_QUIT(source, message)                       ":" + source + " QUIT :Quit: " + message

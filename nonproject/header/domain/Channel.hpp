@@ -21,7 +21,8 @@ class Channel {
         Client*                 _admin;
         std::set<Client*>       _clients;
         std::map<Client*, int>  _black_list;
-        
+        std::pair<std::string, std::string> _created;
+
         /* Modes */
         std::pair<bool, std::set<Client*> >     _operators;
         std::pair<bool, std::set<Client*> >     _inviteds;
@@ -66,6 +67,9 @@ class Channel {
         void                        remove_from_clients(Client* client);
         void                        remove_from_inviteds(Client* client);
         void                        remove_from_operators(Client* client);
+
+        std::string                 get_creation();
+        std::string                 get_creator();
 };
 
 #endif // CHANNEL_HPP

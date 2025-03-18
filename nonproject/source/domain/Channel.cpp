@@ -1,6 +1,7 @@
 #include "Channel.hpp"
 #include "Client.hpp"
-
+#include <ctime>
+#include <sstream>
 
 Channel::Channel(Client* admin, const std::string& name) :
         _name(name),
@@ -9,7 +10,13 @@ Channel::Channel(Client* admin, const std::string& name) :
         _inviteds(std::make_pair(false, std::set<Client*>())),
         _topic(std::make_pair(false, "")),
         _key(std::make_pair(false, "")),
-        _limit(std::make_pair(false, 0)) {}
+        _limit(std::make_pair(false, 0)) {
+
+        std::time_t now = std::time(NULL);  // Get current timestamp
+        std::ostringstream oss;
+        oss << now;  // Convert int to string
+        _created = (std::make_pair(admin->get_nickname(), oss.str()));
+    }
 
 Channel::~Channel() {}
 
@@ -51,6 +58,14 @@ Client* Channel::get_invited(Client* target) {
     if (_inviteds.first && _inviteds.second.find(target) != _inviteds.second.end())
         return target;
     return NULL;
+}
+
+std::string Channel::get_creator() {
+    return _created.first;
+}
+
+std::string Channel::get_creation() {
+    return _created.second;
 }
 
 void Channel::add_to_black_list(Client* client) {
