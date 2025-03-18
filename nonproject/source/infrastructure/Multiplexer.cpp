@@ -317,14 +317,24 @@ int Multiplexer::_accept_connection(int server_fd, sockaddr_in* addr, socklen_t*
     */   
 }
 
+std::string Multiplexer::_get_client_hostname(const struct in_addr& client_ip) {
+    struct hostent* host = gethostbyname(inet_ntoa(client_ip));
+    
+    if (host && host->h_name) {
+        return std::string(host->h_name);
+    }
+    return std::string(inet_ntoa(client_ip));
+}
+
+
 Client* Multiplexer::_create_client(int client_fd, const sockaddr_in& addr) {
-    char* client_ip = inet_ntoa(addr.sin_addr);
+    std::string client_host = _get_client_hostname(addr.sin_addr);
     int client_port = ntohs(addr.sin_port);
 
-    // std::cout << "Creating client:" << std::endl;
-    // std::cout << "Client FD: " << client_fd << std::endl;
-    // std::cout << "Client IP: " << client_ip << std::endl;
-    // std::cout << "Client Port: " << client_port << std::endl;
+//    std::cout << "Creating client:" << std::endl;
+//    std::cout << "Client FD: " << client_fd << std::endl;
+//    std::cout << "Client IP: " << client_host << std::endl;
+//    std::cout << "Client Port: " << client_port << std::endl;
 
-    return new Client(client_fd, client_ip, client_port);
+    return new Client(client_fd, client_host, client_port);
 }
