@@ -13,15 +13,17 @@ void Cap::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    if (args[0] == "LS" && args[1] == "302")
+    if (args[0] == "LS" && args[1] == "302") {
         ClientService::send_message(client, "CAP * LS :");
-    ClientService::send_message(client, "CAP * END");
+        ClientService::send_message(client, "CAP * END");
+    }
 }
 
 bool Cap::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "CAP::Validate parameters..." << std::endl;
     if (args.size() < 3)
         return true;
+    std::cout << "fuuu\n\n" << std::endl;
     ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "CAP"));
     return false;
 }
