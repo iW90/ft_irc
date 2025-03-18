@@ -141,6 +141,8 @@ void Join::_send_client_list(Channel* channel, Client* client) {
     }
     //std::cout << "start\033[31m\n" << " userinfo " << user_info << "\033[0m\n\n" << std::endl;
     ClientService::send_message(client, ":ft_irc MODE #" + channel->get_name() + " +n");
+    ClientService::send_message(client, ":ft_irc 332 " + client->get_nickname() + " #" + channel->get_name() + " :No topic fornow");
+    std::cout << "\n\n:ft_irc 331 " + client->get_nickname() + " #" + channel->get_name() + " :No topic fornow\n\n" << std::endl;
     ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info));
     ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
 
