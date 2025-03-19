@@ -6,12 +6,12 @@
 
 /* General Responses */
 
-# define RPL_ENDOFWHO(source, mask)                      "315 " + source + mask + " :End of WHO list" // <mask> MUST be the same <mask> parameter sent by the client in its WHO message, but MAY be casefolded.
 # define RPL_WELCOME(source, client)                     "001 " + source + " :Welcome " + client + " to the ft_irc network"
 # define RPL_YOURHOST(source)                            "002 " + source + " :Your host is ft_irc, running version 1.0"
 # define RPL_CREATED(source, datetime)                   "003 " + source + " :This server was created " + datetime
 # define RPL_MYINFO(source)                              "004 " + source + " ft_irc 1.0 itkol"
 # define RPL_ISUPPORT(source)                            "005 " + source + " MAXCHANNELS=1 MAXNICKLEN=30 CHANLIMIT=1"
+# define RPL_ENDOFWHO(source, mask)                      "315 " + source + mask + " :End of WHO list" // <mask> MUST be the same <mask> parameter sent by the client in its WHO message, but MAY be casefolded.
 # define RPL_LISTSTART(source)                           "321 " + source + " Channel :Users Name" // Sent as a reply to the LIST command, this numeric marks the start of a channel list. As noted in the command description, this numeric MAY be skipped by the server so clients MUST NOT depend on receiving it.
 # define RPL_LIST(source, channel, clientcount, topic)   "322 " + source + " " + channel + " " + clientcount + " :" + topic
 # define RPL_LISTEND(source)                             "323 " + source + " :End of /LIST"
