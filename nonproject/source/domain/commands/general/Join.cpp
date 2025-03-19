@@ -140,10 +140,11 @@ void Join::_send_client_list(Channel* channel, Client* client) {
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
         user_info += (*it)->get_nickname() + " ";
     }
-//    channel->set_topic(true, "FLARGBUGS are awesome");
+//   channel->set_topic(true, "FLARGBUGS are awesome");
     //std::cout << "start\033[31m\n" << " userinfo " << user_info << "\033[0m\n\n" << std::endl;
     //ClientService::send_message(client, ":ft_irc MODE #" + channel->get_name() + " +n");
     CommandFactory::execute_command(_server, client, "TOPIC #" + channel->get_name());
+    CommandFactory::execute_command(_server, client, "MODE #" + channel->get_name());
 //    ClientService::send_message(client, ":ft_irc 332 " + client->get_nickname() + " #" + channel->get_name() + " :No topic fornow");
 //    ClientService::send_message(client, ":ft_irc 333 " + client->get_nickname() + " #" + channel->get_name() + " " + channel->get_creator() + " " + channel->get_creation());
     ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info));

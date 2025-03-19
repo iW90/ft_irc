@@ -74,6 +74,40 @@ void Channel::add_to_black_list(Client* client) {
         : _black_list[client] = 1;
 }
 
+std::string Channel::get_active_modes() {
+    std::string modes = "+";
+
+    if (_topic.first)
+        modes += "t";
+    if (_inviteds.first)
+        modes += "i";
+    if (_limit.first)
+        modes += "l";
+    if (_key.first)
+        modes += "k";
+    if (!_operators.second.empty())
+        modes += "o";
+
+    return modes;
+}
+
+std::string Channel::get_mode_params() {
+    std::string params;
+    std::stringstream ss;
+
+    if (_limit.first) {
+        ss << _limit.second;
+        params += ss.str() + " ";
+    }
+
+    if (_key.first)
+        params += _key.second + " ";
+
+
+    return params;
+}
+
+
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
 void Channel::add_to_inviteds(Client* client) { _inviteds.second.insert(client); }
 void Channel::add_to_operators(Client* client) { _operators.second.insert(client); }

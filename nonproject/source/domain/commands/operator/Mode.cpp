@@ -27,6 +27,13 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
     if (!_is_valid_channel(client, channel, channel_name))
         return;
 
+
+    if (args.size() == 1) {
+        _send_active_modes(client, channel);
+        return;
+    }
+
+
     if (!_has_channel_privileges(client, channel))
         return;
 
@@ -38,6 +45,12 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED MODE" << std::endl;
 }
 
+void Mode::_send_active_modes(Client* client, Channel* channel) {
+    std::string active_modes = channel->get_active_modes();
+    std::string mode_params = channel->get_mode_params();
+
+    ClientService::send_message(client, RPL_CHANNELMODEIS(client->get_nickname(), channel->get_name(), active_modes, mode_params));
+}
 
 // Funções auxiliares
 
