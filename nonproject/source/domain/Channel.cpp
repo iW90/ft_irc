@@ -6,17 +6,12 @@
 Channel::Channel(Client* admin, const std::string& name) :
         _name(name),
         _admin(admin),
+        _created(std::make_pair(admin->get_nickname(), _get_time())),
         _operators(std::make_pair(false, std::set<Client*>())),
         _inviteds(std::make_pair(false, std::set<Client*>())),
         _topic(std::make_pair(false, "")),
         _key(std::make_pair(false, "")),
-        _limit(std::make_pair(false, 0)) {
-
-        std::time_t now = std::time(NULL);  // Get current timestamp
-        std::ostringstream oss;
-        oss << now;  // Convert int to string
-        _created = (std::make_pair(admin->get_nickname(), oss.str()));
-    }
+        _limit(std::make_pair(false, 0)) {}
 
 Channel::~Channel() {}
 
@@ -41,9 +36,14 @@ void Channel::set_name(const std::string& name) { _name = name; }
 
 void Channel::set_operators(bool state) { _operators.first = state; }
 void Channel::set_inviteds(bool state) { _inviteds.first = state; }
-void Channel::set_topic(bool state, const std::string& topic) { _topic.first = state; _topic.second = topic; }
 void Channel::set_key(bool state, const std::string& key) { _key.first = state; _key.second = key; }
 void Channel::set_limit(bool state, int limit) { _limit.first = state; _limit.second = limit; }
+
+void Channel::set_topic(bool state, const std::string& topic, const std::string& creator) {
+    _topic.first = state;
+    _topic.second = topic;
+    _created = (std::make_pair(creator, _get_time()));
+}
 
 
 // Métodos
@@ -107,6 +107,12 @@ std::string Channel::get_mode_params() {
     return params;
 }
 
+std::string Channel::_get_time() {
+    std::time_t now = std::time(NULL);
+    std::ostringstream oss;
+    oss << now;
+    return oss.str();
+}
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
 void Channel::add_to_inviteds(Client* client) { _inviteds.second.insert(client); }

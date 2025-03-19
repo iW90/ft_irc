@@ -56,7 +56,7 @@ void Mode::_send_active_modes(Client* client, Channel* channel) {
 
 bool Mode::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "MODE::Validate parameters..." << std::endl;
-    if (args.size() > 1)
+    if (args.size() > 0)
         return true;
     ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "MODE"));
     return false;
@@ -97,7 +97,7 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
 // Modes
 
 void Mode::_set_mode_t(Client* client, Channel* channel, bool enable_mode) {
-    channel->set_topic(enable_mode, "");
+    channel->set_topic(enable_mode, "", client->get_nickname());
     ChannelService::broadcast(channel, RPL_MODE(client->get_prefix(), channel->get_name(), (enable_mode ? "+t" : "-t"), ""));
 }
 

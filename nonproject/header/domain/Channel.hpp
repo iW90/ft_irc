@@ -30,6 +30,8 @@ class Channel {
         std::pair<bool, std::string>            _key;
         std::pair<bool, int>                    _limit;
 
+        std::string _get_time();
+
     public:
         Channel(Client* admin, const std::string& name);
         ~Channel();
@@ -51,7 +53,7 @@ class Channel {
 
         void                        set_operators(bool state);
         void                        set_inviteds(bool state);
-        void                        set_topic(bool state, const std::string& topic);
+        void                        set_topic(bool state, const std::string& topic, const std::string& creator);
         void                        set_key(bool state, const std::string& key);
         void                        set_limit(bool state, int limit);
 

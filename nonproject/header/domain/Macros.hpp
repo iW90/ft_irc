@@ -54,6 +54,7 @@
 # define RPL_CHANNELMODEIS(source, channel, modes, args) ":ft_irc 324 " + source + " #" + channel + " " + modes + " " + args
 # define RPL_NOTOPIC(source, channel)                    ":ft_irc 331 " + source + " #" + channel + " :No topic is set"
 # define RPL_TOPIC(source, channel, topic)               ":ft_irc 332 " + source + " #" + channel + " :" + topic
+# define RPL_TOPICWHOTIME(source, channel, user, time)   ":ft_irc 333 " + source + " #" + channel + " " + user + " " + time
 # define RPL_INVITE(source, target, channel)             ":" + source + " INVITE " + target + " to #" + channel
 # define RPL_NICK(source)                                ":" + source + " NICK is now " + source
 # define RPL_NOTICE(source, target, message)             ":" + source + " PRIVMSG " + target + " :" + message
