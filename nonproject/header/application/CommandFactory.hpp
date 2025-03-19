@@ -1,7 +1,10 @@
 #ifndef COMMAND_FACTORY_HPP
 # define COMMAND_FACTORY_HPP
 
-#include <string>
+# include <string>
+# include <sstream>
+# include <vector>
+
 
 class Server;
 class Client;

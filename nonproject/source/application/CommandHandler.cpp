@@ -82,7 +82,7 @@ std::string     CommandHandler::_trim(const std::string& str) {
 void CommandHandler::handle_command(Client* client, const std::string& message) {
     std::stringstream   ss(message);
     std::string         syntax;
-    
+
     while (std::getline(ss, syntax)) {
         syntax = _trim(syntax);
 
