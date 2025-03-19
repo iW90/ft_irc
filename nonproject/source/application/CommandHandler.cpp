@@ -25,6 +25,7 @@
 #include "commands/misc/Notice.hpp"
 #include "commands/misc/Ping.hpp"
 #include "commands/misc/Pong.hpp"
+#include "commands/misc/Who.hpp"
 
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
@@ -54,6 +55,7 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
     _commands["NOTICE"] = new Notice(_server);
     _commands["PING"] = new Ping(_server);
     _commands["PONG"] = new Pong(_server);
+    _commands["WHO"] = new Who(_server);
 }
 
 CommandHandler::~CommandHandler () {

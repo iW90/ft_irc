@@ -29,11 +29,11 @@ void Names::execute(Client* client, std::vector<std::string> args) {
     }
 
     std::set<Client*> clients = channel->get_clients();
+    std::string user_info;
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        std::string user_info = (*it)->get_prefix();
-        ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel_name, user_info));
+        user_info += (channel->get_operators().second.find(*it) != channel->get_operators().second.end() ? "@" : "" )+ (*it)->get_nickname() + " ";
     }
-
+    ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel_name, user_info));
     ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel_name));
 }
 

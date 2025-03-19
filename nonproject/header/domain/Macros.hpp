@@ -11,10 +11,12 @@
 # define RPL_CREATED(source, datetime)                   ":ft_irc 003 " + source + " :This server was created " + datetime
 # define RPL_MYINFO(source)                              ":ft_irc 004 " + source + " ft_irc 1.0 itkol"
 # define RPL_ISUPPORT(source)                            ":ft_irc 005 " + source + " CHANMODES=b,k,l,it PREFIX=(o)@ :are supported by this server"
+# define RPL_ENDOFWHO(source, channel)                   ":ft_irc 315 " + source + " #" + channel + " :End of WHO list"
 # define RPL_LIST(source, channel, clientcount, topic)   ":ft_irc 322 " + source + " #" + channel + " " + clientcount + " :" + topic
 # define RPL_LISTEND(source)                             ":ft_irc 323 " + source + " :End of /LIST"
+# define RPL_WHOREPLY(source, channel, users)            ":ft_irc 352 " + source + " #" + channel + " " + users
 # define RPL_NAMREPLY(source, channel, users)            ":ft_irc 353 " + source + " = #" + channel + " :" + users
-# define RPL_ENDOFNAMES(source, channel)                 ":ft_irc 366 " + source + " #" + channel + " :End of /NAMES list."
+# define RPL_ENDOFNAMES(source, channel)                 ":ft_irc 366 " + source + " #" + channel + " :End of /NAMES list"
 # define RPL_INFO(source, info)                          ":ft_irc 371 " + source + " :" info
 # define RPL_ENDOFINFO(source)                           ":ft_irc 374 " + source + " :End of INFO list"
 

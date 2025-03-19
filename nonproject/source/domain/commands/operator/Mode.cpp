@@ -30,6 +30,7 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
 
     if (args.size() == 1) {
         _send_active_modes(client, channel);
+        std::cout << "SUCCEDED MODE NO-ARGS" << std::endl;
         return;
     }
 
