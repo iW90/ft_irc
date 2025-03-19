@@ -141,13 +141,9 @@ void Join::_send_client_list(Channel* channel, Client* client) {
         user_info += (*it)->get_nickname() + " ";
     }
    //channel->set_topic(true, "FLARGBUGS are awesome", "josephine");
-    //std::cout << "start\033[31m\n" << " userinfo " << user_info << "\033[0m\n\n" << std::endl;
     CommandFactory::execute_command(_server, client, "TOPIC #" + channel->get_name());
     CommandFactory::execute_command(_server, client, "MODE #" + channel->get_name());
-    ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info));
-    ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
-
-    /*std::cout << RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info) << std::endl;
-    std::cout << RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()) << std::endl;
-    std::cout << "\033[0m\nended" << std::endl;*/
+    CommandFactory::execute_command(_server, client, "NAMES #" + channel->get_name());
+//    ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel->get_name(), user_info));
+//    ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel->get_name()));
 }

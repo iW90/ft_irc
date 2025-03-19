@@ -23,7 +23,7 @@ void Names::execute(Client* client, std::vector<std::string> args) {
 
     channel_name.erase(0,1);
     Channel* channel = _server->get_channel(channel_name);
-    if (channel != NULL) {
+    if (channel == NULL) {
         ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
         return;
     }
