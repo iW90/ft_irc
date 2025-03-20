@@ -5,11 +5,7 @@
 
 # include <vector>
 # include <string>
-
-//# include "Macros.hpp"
-//# include "ChannelService.hpp"
-//# include "ClientService.hpp"
-//# include "Server.hpp"
+# include <iostream>
 
 
 class Channel;
@@ -29,7 +25,9 @@ class ACommand {
         bool            _is_valid_client(Client* client, Client* dest, Channel* channel, const std::string& name);
 
         bool            _is_already_registered(Client* client);
-        bool            _is_on_channel(Client* client, Channel* channel, const std::string& name);
+        bool            _is_on_channel(Client* client, Channel* channel);
+
+        void            _set_registered(Client* client);
         
     public:
         ACommand(Server* server, bool auth = true);

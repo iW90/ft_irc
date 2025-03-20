@@ -8,6 +8,7 @@
 # include <map>
 # include <ctime>
 
+
 class CommandHandler;
 class IMultiplexer;
 class IVault;
@@ -23,6 +24,7 @@ class Server {
         IMultiplexer*               _multiplexer;
         std::set<Channel* >         _channels;
         CommandHandler*             _command_handler;
+        std::string                 _datetime;
  
     public:
         Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer);
@@ -37,6 +39,8 @@ class Server {
         const std::map<int, Client*>&   get_clients() const;
         Client*                         get_client(const std::string& name);
 
+        const std::string&              get_datetime() const;
+
         // Setters
         void                            set_command_handler(CommandHandler* handler);
 
@@ -46,8 +50,6 @@ class Server {
 
         Channel*    create_channel(const std::string& name, Client* client);
         bool        is_valid_pass(std::string pass);
-
-        std::string get_time();
 };
 
 #endif // SERVER_HPP

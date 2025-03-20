@@ -1,9 +1,12 @@
 #include "Channel.hpp"
 #include "Client.hpp"
+#include <ctime>
+#include <sstream>
 
 Channel::Channel(Client* admin, const std::string& name) :
         _name(name),
         _admin(admin),
+        _created(std::make_pair(admin->get_nickname(), _get_time())),
         _operators(std::make_pair(false, std::set<Client*>())),
         _inviteds(std::make_pair(false, std::set<Client*>())),
         _topic(std::make_pair(false, "")),
@@ -33,9 +36,14 @@ void Channel::set_name(const std::string& name) { _name = name; }
 
 void Channel::set_operators(bool state) { _operators.first = state; }
 void Channel::set_inviteds(bool state) { _inviteds.first = state; }
-void Channel::set_topic(bool state, const std::string& topic) { _topic.first = state; _topic.second = topic; }
 void Channel::set_key(bool state, const std::string& key) { _key.first = state; _key.second = key; }
 void Channel::set_limit(bool state, int limit) { _limit.first = state; _limit.second = limit; }
+
+void Channel::set_topic(bool state, const std::string& topic, const std::string& creator) {
+    _topic.first = state;
+    _topic.second = topic;
+    _created = (std::make_pair(creator, _get_time()));
+}
 
 
 // Métodos
@@ -52,10 +60,58 @@ Client* Channel::get_invited(Client* target) {
     return NULL;
 }
 
+std::string Channel::get_creator() {
+    return _created.first;
+}
+
+std::string Channel::get_creation() {
+    return _created.second;
+}
+
 void Channel::add_to_black_list(Client* client) {
     _black_list.find(client) != _black_list.end() 
         ? _black_list[client] += 1 
         : _black_list[client] = 1;
+}
+
+std::string Channel::get_active_modes() {
+    std::string modes = "+";
+
+    if (_topic.first)
+        modes += "t";
+    if (_inviteds.first)
+        modes += "i";
+    if (_limit.first)
+        modes += "l";
+    if (_key.first)
+        modes += "k";
+    if (!_operators.second.empty())
+        modes += "o";
+
+    return modes;
+}
+
+std::string Channel::get_mode_params() {
+    std::string params;
+    std::stringstream ss;
+
+    if (_limit.first) {
+        ss << _limit.second;
+        params += ss.str() + " ";
+    }
+
+    if (_key.first)
+        params += _key.second + " ";
+
+
+    return params;
+}
+
+std::string Channel::_get_time() {
+    std::time_t now = std::time(NULL);
+    std::ostringstream oss;
+    oss << now;
+    return oss.str();
 }
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }

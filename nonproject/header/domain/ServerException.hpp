@@ -5,6 +5,7 @@
 # include <iostream>
 # include <cstring>
 
+
 class ServerException : public std::exception {
     private:
         std::string message_;           // Variável para armazenar a mensagem personalizada

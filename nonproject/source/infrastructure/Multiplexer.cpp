@@ -1,6 +1,8 @@
 #include "Multiplexer.hpp"
 #include "Client.hpp"
 #include "CommandHandler.hpp"
+#include "Utils.hpp"
+
 
 Multiplexer::Multiplexer(int server_fd) {
     _server_fd = server_fd;
@@ -100,8 +102,14 @@ void Multiplexer::unsubscribe_fd_for_monitoring(int fd) {
 int Multiplexer::check_for_events() {
 
     int total_events = epoll_wait(_epoll_fd, _events, MAX_EVENTS, -1); //implementar o sinal de sair do programa
-    if (total_events == -1)
+    if (total_events == -1) {
+        if (errno == EINTR) {
+            // Epoll was interrupted by a signal, return 0 to indicate no new events
+            return 0;
+        }
         throw std::runtime_error("Error while polling with epoll");
+    }
+
 
     return total_events;
 
@@ -158,7 +166,8 @@ void Multiplexer::disconnect_client(int client_fd) {
 
     ::close(client_fd);
 
-    std::cout << "Client disconnected." << std::endl;
+    std::string datetime = Utils::get_time();
+    std::cout << "[" << datetime << "] Client disconnected." << std::endl;
 }
 
 // CONECTA UM CLIENT AO SERVER
@@ -172,7 +181,8 @@ int Multiplexer::connect_client(int server_fd) {
     _clients.insert(std::make_pair(client_fd, client));
     subscribe_fd_for_monitoring(client_fd);
 
-    std::cout << "Client connected." << std::endl;
+    std::string datetime = Utils::get_time();
+    std::cout << "[" << datetime << "] Client connected." << std::endl;
     return client_fd;
 }
 
@@ -183,7 +193,7 @@ void Multiplexer::handle_client(int client_fd, CommandHandler* handler) {
         Client*     client = _clients.at(client_fd);
         std::string message = read_client_message(client_fd);
         
-        handler->invoke(client, message);
+        handler->handle_command(client, message);
     } catch (const std::exception& e) {
         std::cout << "Error while handling the client message! " << e.what() << std::endl;
     }
@@ -307,14 +317,24 @@ int Multiplexer::_accept_connection(int server_fd, sockaddr_in* addr, socklen_t*
     */   
 }
 
+std::string Multiplexer::_get_client_hostname(const struct in_addr& client_ip) {
+    struct hostent* host = gethostbyname(inet_ntoa(client_ip));
+    
+    if (host && host->h_name) {
+        return std::string(host->h_name);
+    }
+    return std::string(inet_ntoa(client_ip));
+}
+
+
 Client* Multiplexer::_create_client(int client_fd, const sockaddr_in& addr) {
-    char* client_ip = inet_ntoa(addr.sin_addr);
+    std::string client_host = _get_client_hostname(addr.sin_addr);
     int client_port = ntohs(addr.sin_port);
 
-    // std::cout << "Creating client:" << std::endl;
-    // std::cout << "Client FD: " << client_fd << std::endl;
-    // std::cout << "Client IP: " << client_ip << std::endl;
-    // std::cout << "Client Port: " << client_port << std::endl;
+//    std::cout << "Creating client:" << std::endl;
+//    std::cout << "Client FD: " << client_fd << std::endl;
+//    std::cout << "Client IP: " << client_host << std::endl;
+//    std::cout << "Client Port: " << client_port << std::endl;
 
-    return new Client(client_fd, client_ip, client_port);
+    return new Client(client_fd, client_host, client_port);
 }

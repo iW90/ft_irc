@@ -21,20 +21,22 @@ void    Pass::execute(Client* client, std::vector<std::string> args) {
 
     std::string password = args[0];
     if (!_is_password_valid(password)) {
-        ClientService::reply_message(client, ERR_PASSWDMISMATCH(client->get_nickname()));
+        ClientService::send_message(client, ERR_PASSWDMISMATCH(client->get_nickname()));
         return;
     }
 
     client->set_state(LOGGED_IN);
+    std::cout << "SUCCEDED PASS" << std::endl;
 }
 
 
 // Funções auxiliares
 
 bool Pass::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
+    std::cout << "PASS::Validate parameters..." << std::endl;
     if (args.size() == 1)
         return true;
-    ClientService::reply_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PASS"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PASS"));
     return false;
 }
 

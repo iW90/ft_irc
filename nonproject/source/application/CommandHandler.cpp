@@ -6,18 +6,26 @@
 #include "ClientService.hpp"
 #include "Server.hpp"
 
-# include "commands/server/Pass.hpp"
-# include "commands/server/Nick.hpp"
-# include "commands/server/User.hpp"
-# include "commands/server/Quit.hpp"
-# include "commands/general/Join.hpp"
-// # include "commands/general/Part.hpp"
-// # include "commands/general/PrivMsg.hpp"
-// # include "commands/operator/Invite.hpp"
-// # include "commands/operator/Kick.hpp"
-// # include "commands/operator/Mode.hpp"
-// # include "commands/operator/Topic.hpp"
-// # include "commands/operator/Invite.hpp"
+#include "commands/server/Pass.hpp"
+#include "commands/server/Nick.hpp"
+#include "commands/server/User.hpp"
+#include "commands/server/Quit.hpp"
+#include "commands/general/Join.hpp"
+#include "commands/general/Part.hpp"
+#include "commands/general/PrivMsg.hpp"
+#include "commands/operator/Mode.hpp"
+#include "commands/operator/Topic.hpp"
+#include "commands/operator/Invite.hpp"
+#include "commands/operator/Kick.hpp"
+#include "commands/misc/Cap.hpp"
+#include "commands/misc/Help.hpp"
+#include "commands/misc/Info.hpp"
+#include "commands/misc/List.hpp"
+#include "commands/misc/Names.hpp"
+#include "commands/misc/Notice.hpp"
+#include "commands/misc/Ping.hpp"
+#include "commands/misc/Pong.hpp"
+#include "commands/misc/Who.hpp"
 
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
@@ -27,16 +35,27 @@ CommandHandler::CommandHandler(Server* server) : _server(server) {
     _commands["USER"] = new User(_server);
     _commands["QUIT"] = new Quit(_server);
 
-    // // General
+    // General
     _commands["JOIN"] = new Join(_server);
-    // _commands["PART"] = new Part(*_server);
-	// _commands["PRIVMSG"] = new PrivMsg(*_server);
+    _commands["PART"] = new Part(_server);
+	_commands["PRIVMSG"] = new PrivMsg(_server);
 
-    // // Operator
-    // _commands["MODE"] = new Mode(*_server);
-    // _commands["KICK"] = new Kick(*_server);
-	// _commands["TOPIC"] = new Topic(*_server);
-    // _commands["INVITE"] = new Invite(*_server);
+    // Operator
+    _commands["MODE"] = new Mode(_server);
+	_commands["TOPIC"] = new Topic(_server);
+    _commands["KICK"] = new Kick(_server);
+    _commands["INVITE"] = new Invite(_server);
+
+    // Misc
+    _commands["CAP"] = new Cap(_server);
+    _commands["HELP"] = new Help(_server);
+    _commands["INFO"] = new Info(_server);
+    _commands["LIST"] = new List(_server);
+    _commands["NAMES"] = new Names(_server);
+    _commands["NOTICE"] = new Notice(_server);
+    _commands["PING"] = new Ping(_server);
+    _commands["PONG"] = new Pong(_server);
+    _commands["WHO"] = new Who(_server);
 }
 
 CommandHandler::~CommandHandler () {
@@ -62,10 +81,10 @@ std::string     CommandHandler::_trim(const std::string& str) {
     return result;
 }
 
-void CommandHandler::invoke(Client* client, const std::string& message) {
+void CommandHandler::handle_command(Client* client, const std::string& message) {
     std::stringstream   ss(message);
     std::string         syntax;
-    
+
     while (std::getline(ss, syntax)) {
         syntax = _trim(syntax);
 
@@ -82,13 +101,13 @@ void CommandHandler::invoke(Client* client, const std::string& message) {
                 args.push_back(buf);
 
             if (client->get_state() != REGISTERED && cmd->auth_required()) {
-                ClientService::reply_message(client, ERR_NOTREGISTERED(client->get_nickname()));
+                ClientService::send_message(client, ERR_NOTREGISTERED(client->get_nickname()));
                 return;
             }
 
             cmd->execute(client, args);
         } catch (const std::exception& e) {
-            ClientService::reply_message(client, ERR_UNKNOWNCOMMAND(client->get_nickname(), name));
+            ClientService::send_message(client, ERR_UNKNOWNCOMMAND(client->get_nickname(), name));
         }
     }
 }

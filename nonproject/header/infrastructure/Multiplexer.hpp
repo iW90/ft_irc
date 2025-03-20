@@ -10,6 +10,7 @@
 # include <netinet/in.h>    // Necessário para sockaddr_in
 # include <cstring>         // Necessário para strstr() e bzero()
 # include <map>             // Necessário para map<x,y>()
+# include <netdb.h>         // Necessário para gethostbyname()
 
 # include "interfaces/IMultiplexer.hpp"
 #include "Constants.hpp"
@@ -26,6 +27,7 @@ class Multiplexer : public IMultiplexer {
 
         int     _accept_connection(int server_fd, sockaddr_in* addr, socklen_t* size);
         Client* _create_client(int client_fd, const sockaddr_in& addr);
+        std::string _get_client_hostname(const struct in_addr& client_ip);
 
     public:
         Multiplexer(int server_fd);

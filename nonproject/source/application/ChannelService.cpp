@@ -5,44 +5,52 @@
 #include "Macros.hpp"
 #include "Constants.hpp"
 
-void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
-    std::set<Client*>& clients = channel->get_clients();
 
+void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
+    std::cout << "ChannelService::Broadcast annoucing..." << std::endl;
+    std::set<Client*>& clients = channel->get_clients();
+    std::cout << "\033[31m"<< message << "\033[0m" << std::endl;
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        if (*it != exclude)
+        if (*it != exclude) {
             ClientService::send_message(*it, message);
+            std::cout << "\033[34m sending to fd " << (*it)->get_fd() << " and nick " << (*it)->get_nickname() << std::endl;
+            std::cout << "\033[31m"<< message << "\033[0m " << std::endl;
+        }
     }
 }
 
-int ChannelService::add_client(Channel* channel, Client* client) {
-    if (_is_client_banned(channel, client)) {
-        channel->add_to_clients(client);
-        _announce_client_join(channel, client);
-        return 0;
-    }
+bool ChannelService::add_client(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Adding client..." << std::endl;
+    if (_is_client_banned(channel, client))
+        return false;
 
-    return -1;
+    channel->add_to_clients(client);
+    _announce_client_join(channel, client);
+    std::cout << "ChannelService::Client added." << std::endl;
+    return true;
 }
 
 void ChannelService::remove_client(Channel* channel, Client* client) {
-    std::set<Client*>& clients = channel->get_clients();
-    std::set<Client*>::iterator it = clients.find(client);
-    if (it != clients.end())
-        clients.erase(it);
+    std::cout << "ChannelService::Removing client..." << std::endl;
+    channel->remove_from_clients(client);
+    channel->remove_from_inviteds(client);
+    channel->remove_from_operators(client);
 
     _change_admin_if_needed(channel, client);
     _announce_client_leave(channel, client);
+    std::cout << "ChannelService::Client removed." << std::endl;
 }
 
 void ChannelService::kick_client(Channel* channel, Client* client, Client* target, const std::string& reason) {
+    std::cout << "ChannelService::Kicking client..." << std::endl;
     channel->add_to_black_list(target);
     channel->remove_from_clients(target);
     channel->remove_from_inviteds(target);
     channel->remove_from_operators(target);
     remove_client(channel, target);
-    target->set_channel(NULL);
 
     _announce_client_kick(channel, client, target, reason);
+    std::cout << "ChannelService::Client kicked." << std::endl;
 }
 
 std::vector<std::string>    ChannelService::get_nicknames(Channel* channel) {
@@ -67,10 +75,15 @@ int ChannelService::get_total_clients(Channel* channel) {
 // Funções auxiliares
 
 bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Validate if client is banned..." << std::endl;
     std::map<Client*, int>& black_list = channel->get_black_list();
     std::map<Client*, int>::iterator it = black_list.find(client);
 
-    return (it == black_list.end() || it->second < MAX_BLACKLIST_VIOLATIONS);
+    if (it == black_list.end() || it->second < MAX_BLACKLIST_VIOLATIONS)
+        return false;
+
+    ClientService::send_message(client, ERR_BANNEDFROMCHAN(client->get_nickname(), channel->get_name()));
+    return true;
     /* O Client só será adicionado ao canal se:
         - Não estiver na black list, ou;
         - Tiver valor menor que três na black list.
@@ -78,10 +91,12 @@ bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
 }
 
 void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
+    std::cout << "ChannelService::Validate if change admin is needed..." << std::endl;
     if (client != channel->get_admin())
         return;
 
     if (channel->get_operators().first) {
+        std::cout << "ChannelService::Searching for operator to set new admin..." << std::endl;
         std::set<Client*>& operators = channel->get_operators().second;
         if (!operators.empty()) {
             Client* new_admin = *operators.begin();
@@ -94,6 +109,7 @@ void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
 
     std::set<Client*>& clients = channel->get_clients();
     if (!clients.empty()) {
+        std::cout << "ChannelService::Searching for client to set new admin..." << std::endl;
         std::set<Client*>::iterator it = clients.begin();
         Client* new_admin = *it;
         channel->set_admin(new_admin);
@@ -101,32 +117,35 @@ void ChannelService::_change_admin_if_needed(Channel* channel, Client* client) {
         return;
     }
 
+    std::cout << "ChannelService::Channel is empty." << std::endl;
     channel->set_admin(NULL);
 }
 
 void ChannelService::_announce_client_join(Channel* channel, Client* client) {
-    std::string announcer = "ft_irc: ";
+    std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
-    broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
+    //broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
+//    broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name()));
+  //  std::cout << "fuuuuu\n" << std::endl;
 }
 
 void ChannelService::_announce_client_leave(Channel* channel, Client* client) {
-    std::string announcer = "ft_irc: ";
+    std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
     broadcast(channel, announcer + MESSAGE_CLIENT_LEAVE(channel_name, nickname_client));
 }
 
 void ChannelService::_announce_admin_change(Channel* channel, Client* client) {
-    std::string announcer = "ft_irc: ";
+    std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
     broadcast(channel, announcer + MESSAGE_ADMIN_CHANGE(channel_name, nickname_client));
 }
 
 void ChannelService::_announce_client_kick(Channel* channel, Client* client, Client* target, const std::string& reason) {
-    std::string announcer = "ft_irc: ";
+    std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string nickname_target = target->get_nickname();
     std::string channel_name = channel->get_name();

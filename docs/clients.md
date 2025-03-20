@@ -10,3 +10,14 @@
 - **Netcat**: Via terminal, sem client
     - `nc <endereco_do_servidor> <porta_do_servidor>`
     - Sem interface, apenas para testar localmente.
+
+
+---
+
+### Install HexChat
+
+`flatpak install flathub io.github.Hexchat`
+
+### Run HexChat
+
+`flatpak run io.github.Hexchat`

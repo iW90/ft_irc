@@ -3,14 +3,13 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-//# include "Client.hpp"
-
 # include <set>         // Necessário para std::set
 # include <map>         // Necessário para std::map
 # include <utility>     // Necessário para pair
 # include <algorithm>   // Necessário para std::find
 # include <vector>
 # include <string>
+
 
 class Client;
 
@@ -22,13 +21,16 @@ class Channel {
         Client*                 _admin;
         std::set<Client*>       _clients;
         std::map<Client*, int>  _black_list;
-        
+        std::pair<std::string, std::string> _created;
+
         /* Modes */
         std::pair<bool, std::set<Client*> >     _operators;
         std::pair<bool, std::set<Client*> >     _inviteds;
         std::pair<bool, std::string>            _topic;
         std::pair<bool, std::string>            _key;
         std::pair<bool, int>                    _limit;
+
+        std::string _get_time();
 
     public:
         Channel(Client* admin, const std::string& name);
@@ -51,7 +53,7 @@ class Channel {
 
         void                        set_operators(bool state);
         void                        set_inviteds(bool state);
-        void                        set_topic(bool state, const std::string& topic);
+        void                        set_topic(bool state, const std::string& topic, const std::string& creator);
         void                        set_key(bool state, const std::string& key);
         void                        set_limit(bool state, int limit);
 
@@ -67,6 +69,11 @@ class Channel {
         void                        remove_from_clients(Client* client);
         void                        remove_from_inviteds(Client* client);
         void                        remove_from_operators(Client* client);
+
+        std::string                 get_creation();
+        std::string                 get_creator();
+        std::string                 get_active_modes();
+        std::string                 get_mode_params();
 };
 
 #endif // CHANNEL_HPP
