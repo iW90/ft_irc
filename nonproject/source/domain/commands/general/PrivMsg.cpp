@@ -19,7 +19,7 @@ void PrivMsg::execute(Client* client, std::vector<std::string> args) {
 
     std::string target = args[0];
     std::string message = _build_message(args);
-
+std::cout << "\n\nMESSAGE:\n" << message << "\nfor target " << target << std::endl;
     std::cout << "PRIVMSG::Sending message..." << std::endl;
     if (target.at(0) == '#')
         _handle_channel_message(client, target, message);
@@ -37,13 +37,14 @@ void PrivMsg::_handle_channel_message(Client* client, std::string& target, const
     if (!_is_on_channel(client, channel))
         return;
 
-    target.erase(0,1);
-    Channel* target_channel = _server->get_channel(target);
-    if (!_is_valid_channel(client, target_channel, target))
+    std::string chan_name = target;
+    chan_name.erase(0,1);
+    Channel* target_channel = _server->get_channel(chan_name);
+    if (!_is_valid_channel(client, target_channel, chan_name))
         return;
 
     ChannelService::broadcast(channel, RPL_PRIVMSG(client->get_prefix(), target, message), client);
-    std::cout << "PRIVMSG::Message sended to channel." << std::endl;
+    std::cout << "PRIVMSG::Message sent to channel." << std::endl;
 }
 
 
@@ -51,24 +52,24 @@ void PrivMsg::_handle_channel_message(Client* client, std::string& target, const
 
 void PrivMsg::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
     std::cout << "PRIVMSG::Handling client message..." << std::endl;
-
+/*
     Channel* channel = client->get_channel();
     if (!_is_valid_channel(client, channel, "#"))
         return;
-
+*/
     Client* dest = _server->get_client(target);
     if (!dest) {
         ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), target));
         return;
     }
-
+/*
     if (dest->get_channel() != channel) {
         ClientService::send_message(client, ERR_NOTONCHANNEL(client->get_nickname(), target));
         return;
     }
-
+*/
     ClientService::send_message(dest, RPL_PRIVMSG(client->get_prefix(), target, message));
-    std::cout << "PRIVMSG::Message sended to client..." << std::endl;
+    std::cout << "PRIVMSG::Message sent to client..." << std::endl;
 }
 
 

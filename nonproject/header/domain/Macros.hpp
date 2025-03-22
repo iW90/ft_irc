@@ -34,7 +34,7 @@
 //# define RPL_WHOREPLY                                    "352 " + source + " :" // "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
 # define RPL_WHOREPLY(source, channel, users)            "352 " + source + " #" + channel + " " + users
 # define RPL_NAMREPLY(source, channel, users)            "353 " + source + " #" + channel + " :" + users // "<client> <symbol> <channel> :[prefix]<nick>{ [prefix]<nick>}"
-# define RPL_ENDOFNAMES(source, channel)                 "366 " + source + " " + channel + " :End of /NAMES list."
+# define RPL_ENDOFNAMES(source, channel)                 "366 " + source + " #" + channel + " :End of /NAMES list."
 # define RPL_INFO(source, info)                          "371 " + source + " :" info
 # define RPL_ENDOFINFO(source)                           "374 " + source + " :End of INFO list"
 # define RPL_HELPSTART(source, subject, text)            "704 " + source + subject + " :" + text  //"<client> <subject> :<first line of help section>"

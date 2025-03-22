@@ -43,7 +43,7 @@ void Notice::_handle_channel_message(Client* client, std::string& target, const 
         return;
 
     ChannelService::broadcast(channel, RPL_NOTICE(client->get_prefix(), target, message), client);
-    std::cout << "NOTICE::Message sended to channel." << std::endl;
+    std::cout << "NOTICE::Message sent to channel." << std::endl;
 }
 
 
@@ -68,7 +68,7 @@ void Notice::_handle_client_message(Client* client, const std::string& target, c
     }
 
     ClientService::send_message(dest, RPL_NOTICE(client->get_prefix(), target, message));
-    std::cout << "NOTICE::Message sended to client..." << std::endl;
+    std::cout << "NOTICE::Message sent to client..." << std::endl;
 }
 
 

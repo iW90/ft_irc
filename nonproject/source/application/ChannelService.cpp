@@ -9,12 +9,9 @@
 void ChannelService::broadcast(Channel* channel, const std::string& message, Client* exclude) {
     std::cout << "ChannelService::Broadcast annoucing..." << std::endl;
     std::set<Client*>& clients = channel->get_clients();
-    std::cout << "\033[31m"<< message << "\033[0m" << std::endl;
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
         if (*it != exclude) {
             ClientService::send_message(*it, message);
-            std::cout << "\033[34m sending to fd " << (*it)->get_fd() << " and nick " << (*it)->get_nickname() << std::endl;
-            std::cout << "\033[31m"<< message << "\033[0m " << std::endl;
         }
     }
 }
