@@ -33,7 +33,7 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
 
     std::cout << "KICK::Kicking client..." << std::endl;
     ChannelService::kick_client(channel, client, target_client, reason);
-    ClientService::leave_channel(client, channel);
+    ClientService::leave_channel(target_client, channel);
     std::cout << "SUCCEDED KICK" << std::endl;
 }
 
