@@ -6,37 +6,37 @@
 
 /* General Responses */
 
-# define RPL_WELCOME(client)                            "001 :Welcome " + client + " to the ft_irc network"
-# define RPL_YOURHOST(server)                           "002 :Your host is " + server + ", running version 1.0"
-# define RPL_CREATED(datetime)                          "003 :This server was created " + datetime
-# define RPL_MYINFO(server)                             "004 " + server + " 1.0 itkol"
+# define RPL_WELCOME(client)                                "001 :Welcome " + client + " to the ft_irc network"
+# define RPL_YOURHOST(server)                               "002 :Your host is " + server + ", running version 1.0"
+# define RPL_CREATED(datetime)                              "003 :This server was created " + datetime
+# define RPL_MYINFO(server)                                 "004 " + server + " 1.0 itkol"
 
-# define RPL_LISTSTART()                                "321 Channel :Users Name"
-# define RPL_LIST(channel, clientcount, topic)          "322 " + channel + " " + clientcount + " :" + topic
-# define RPL_LISTEND()                                  "323 :End of /LIST"
+# define RPL_LISTSTART()                                    "321 Channel :Users Name"
+# define RPL_LIST(channel, clientcount, topic)              "322 " + channel + " " + clientcount + " :" + topic
+# define RPL_LISTEND()                                      "323 :End of /LIST"
 
-# define RPL_CHANNELMODEIS(channel, modes, args)        "324 " + channel + " " + modes + " " + args
+# define RPL_CHANNELMODEIS(channel, modes, args)            "324 " + channel + " " + modes + " " + args
 
-# define RPL_NOTOPIC(channel)                           "331 " + channel + " :No topic is set"
-# define RPL_TOPIC(channel, topic)                      "332 " + channel + " :" + topic
-# define RPL_TOPICWHOTIME(channel, nick, datetime)      "333 " + channel + " " + nick + " " + datetime
+# define RPL_NOTOPIC(channel)                               "331 " + channel + " :No topic is set"
+# define RPL_TOPIC(channel, topic)                          "332 " + channel + " :" + topic
+# define RPL_TOPICWHOTIME(channel, nick, datetime)          "333 " + channel + " " + nick + " " + datetime
 
-# define RPL_INVITING(nick, channel)                    "341 " + nick + " " + channel
-# define RPL_INVITELIST(channel)                        "346 " + channel
-# define RPL_ENDOFINVITELIST()                          "347 :End of /INVITE list"
+# define RPL_INVITING(nick, channel)                        "341 " + nick + " " + channel
+# define RPL_INVITELIST(channel)                            "346 " + channel
+# define RPL_ENDOFINVITELIST()                              "347 :End of /INVITE list"
 
-# define RPL_WHOREPLY(channel, users)                   "352 " + channel + " " + users // "<channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
-# define RPL_ENDOFWHO(channel)                          "315 " + channel + " :End of WHO list"
+# define RPL_WHOREPLY(channel, users)                       "352 " + channel + " " + users // "<channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
+# define RPL_ENDOFWHO(channel)                              "315 " + channel + " :End of WHO list"
 
-# define RPL_NAMREPLY(channel, users)                   "353 = " + channel + " :" + users // "<symbol> <channel> :[prefix]<nick>"
-# define RPL_ENDOFNAMES(channel)                        "366 " + channel + " :End of /NAMES list"
+# define RPL_NAMREPLY(channel, users)                       "353 = " + channel + " :" + users // "<symbol> <channel> :[prefix]<nick>"
+# define RPL_ENDOFNAMES(channel)                            "366 " + channel + " :End of /NAMES list"
 
-# define RPL_INFO(info)                                 "371 :" info
-# define RPL_ENDOFINFO()                                "374 :End of /INFO list"
+# define RPL_INFO(info)                                     "371 :" info
+# define RPL_ENDOFINFO()                                    "374 :End of /INFO list"
 
-# define RPL_HELPSTART(subject, text)                   "704 " + subject + " :" + text  //"<client> <subject> :<first line of help section>"
-# define RPL_HELPTXT(subject, text)                     "705 " + subject + " :" + text  //"<client> <subject> :<line of help text>"
-# define RPL_ENDOFHELP(subject, text)                   "706 " + subject + " :" + text  //"<client> <subject> :<last line of help text>"
+# define RPL_HELPSTART(subject, text)                       "704 " + subject + " :" + text  //"<client> <subject> :<first line of help section>"
+# define RPL_HELPTXT(subject, text)                         "705 " + subject + " :" + text  //"<client> <subject> :<line of help text>"
+# define RPL_ENDOFHELP(subject, text)                       "706 " + subject + " :" + text  //"<client> <subject> :<last line of help text>"
 
 
 /* Error Responses */
@@ -65,15 +65,15 @@
 
 /* Command Responses */
 
-# define RPL_JOIN(source, channel, target)               ":" + source + " JOIN " + channel + " * :" + target
-# define RPL_PART(source, channel)                       ":" + source + " PART " + channel
-# define RPL_PRIVMSG(source, target, message)            ":" + source + " PRIVMSG " + target + " :" + message
-# define RPL_QUIT(source, message)                       ":" + source + " QUIT " + message
-# define RPL_KICK(source, channel, target, reason)       ":" + source + " KICK " + channel + " " + target + " :" + reason
-# define RPL_MODE(source, channel, modes, args)          ":" + source + " MODE " + channel + " " + modes + " " + args
-# define RPL_NICK(source)                                ":" + source + " NICK is now " + source
-# define RPL_NOTICE(source, target, message)             ":" + source + " PRIVMSG " + target + " :" + message
-# define RPL_PING(source, token)                         ":" + source + " PONG :" + token
+# define RPL_JOIN(client, channel, target)                  ":" + client + " JOIN " + channel + " * :" + target
+# define RPL_PART(client, channel)                          ":" + client + " PART " + channel
+# define RPL_PRIVMSG(client, target, message)               ":" + client + " PRIVMSG " + target + " :" + message
+# define RPL_QUIT(client, message)                          ":" + client + " QUIT " + message
+# define RPL_KICK(client, channel, target, reason)          ":" + client + " KICK " + channel + " " + target + " :" + reason
+# define RPL_MODE(client, channel, modes, args)             ":" + client + " MODE " + channel + " " + modes + " " + args
+# define RPL_NICK(client)                                   ":" + client + " NICK is now " + client
+# define RPL_NOTICE(client, target, message)                ":" + client + " PRIVMSG " + target + " :" + message
+# define RPL_PING(client, token)                            ":" + client + " PONG :" + token
 
 
 
