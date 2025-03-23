@@ -79,7 +79,7 @@ bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
     if (it == black_list.end() || it->second < MAX_BLACKLIST_VIOLATIONS)
         return false;
 
-    ClientService::send_message(client, ERR_BANNEDFROMCHAN(client->get_nickname(), channel->get_name()));
+    ClientService::send_message(client, ERR_BANNEDFROMCHAN(channel->get_name()));
     return true;
     /* O Client só será adicionado ao canal se:
         - Não estiver na black list, ou;

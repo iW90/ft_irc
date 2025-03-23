@@ -49,6 +49,6 @@ bool Invite::_has_valid_parameters(Client* client, const std::vector<std::string
     std::cout << "INVITE::Validate parameters..." << std::endl;
     if (args.size() == 2)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "INVITE"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("INVITE")));
     return false;
 }

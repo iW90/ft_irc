@@ -20,6 +20,6 @@ bool Pong::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "PONG::Validate parameters..." << std::endl;
     if (args.size() == 1 || args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PONG"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("PONG")));
     return false;
 }

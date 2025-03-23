@@ -21,7 +21,7 @@ class ClientService {
         static void         _broadcast_part_message(Client* client, Channel* channel);
 
     public:
-        static void         send_message(Client* client, const std::string& message);
+        static void         send_message(Client* client, const std::string message);
         static void         reply_message(Client* client, const std::string& reply);
 
         static void         join_channel(Client* client, Channel* channel);

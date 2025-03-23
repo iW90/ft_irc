@@ -6,7 +6,7 @@
 #include "Macros.hpp"
 
 
-void ClientService::send_message(Client* client, const std::string& message) {
+void ClientService::send_message(Client* client, const std::string message) {
     Multiplexer::send_client_message(client->get_fd(), message);
 }
 

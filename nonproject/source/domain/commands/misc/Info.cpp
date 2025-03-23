@@ -21,6 +21,6 @@ bool Info::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "INFO::Validate parameters..." << std::endl;
     if (args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "INFO"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("INFO")));
     return false;
 }

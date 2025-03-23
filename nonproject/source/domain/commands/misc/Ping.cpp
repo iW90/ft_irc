@@ -20,6 +20,6 @@ bool Ping::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "PING::Validate parameters..." << std::endl;
     if (args.size() == 1 || args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PING"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("PING")));
     return false;
 }

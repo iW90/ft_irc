@@ -51,7 +51,7 @@ bool Mode::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "MODE::Validate parameters..." << std::endl;
     if (args.size() > 0)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "MODE"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("MODE")));
     return false;
 }
 
@@ -127,13 +127,13 @@ void Mode::_set_mode_o(Client* client, Channel* channel, bool enable_mode, std::
     for (size_t i = 2; i < args.size(); ++i) {
         Client* dest = _server->get_client(args[i]);
         if (!dest) {
-            ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), dest->get_nickname()));
+            ClientService::send_message(client, ERR_NOSUCHNICK(dest->get_nickname()));
             continue;
         }
 
         std::set<Client*> channel_clients = channel->get_clients();
         if (channel_clients.find(dest) == channel_clients.end()) {
-            ClientService::send_message(client, ERR_NOTONCHANNEL(client->get_nickname(), dest->get_nickname()));
+            ClientService::send_message(client, ERR_NOTONCHANNEL(dest->get_nickname()));
             continue;
         }
 

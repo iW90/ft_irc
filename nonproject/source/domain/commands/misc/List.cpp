@@ -38,6 +38,6 @@ bool List::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "LIST::Validate parameters..." << std::endl;
     if (args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "LIST"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("LIST")));
     return false;
 }

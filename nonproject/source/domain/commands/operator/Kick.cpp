@@ -44,7 +44,7 @@ bool Kick::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "KICK::Validate parameters..." << std::endl;
     if (args.size() > 1)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "KICK"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("KICK")));
     return false;
 }
 

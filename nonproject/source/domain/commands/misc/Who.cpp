@@ -17,14 +17,14 @@ void Who::execute(Client* client, std::vector<std::string> args) {
 
     std::string channel_name = args[0];
     if (channel_name.at(0) != '#') {
-        ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
+        ClientService::send_message(client, ERR_NOSUCHCHANNEL(channel_name));
         return;
     }
 
     channel_name.erase(0,1);
     Channel* channel = _server->get_channel(channel_name);
     if (channel == NULL) {
-        ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
+        ClientService::send_message(client, ERR_NOSUCHCHANNEL(channel_name));
         return;
     }
 
@@ -41,7 +41,7 @@ bool Who::_has_valid_parameters(Client* client, const std::vector<std::string>& 
     std::cout << "WHO::Validate parameters..." << std::endl;
     if (args.size() == 1)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "WHO"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("WHO")));
     return false;
 }
 

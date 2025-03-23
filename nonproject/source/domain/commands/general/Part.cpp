@@ -38,7 +38,7 @@ bool Part::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "PART::Validate parameters..." << std::endl;
     if (args.size() > 0)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "PART"));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("PART")));
     return false;
 }
 
@@ -47,6 +47,6 @@ bool Part::_is_client_in_channel(Client* client, Channel* channel, const std::st
     if (channel && client->get_channel() && client->get_channel()->get_name() == name)
         return true;
 
-    ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), name));
+    ClientService::send_message(client, ERR_NOSUCHCHANNEL(name));
     return false;
 }
