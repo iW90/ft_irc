@@ -31,7 +31,7 @@ std::string Client::get_realname() const { return _realname; }
 ClientState Client::get_state() const { return _state; }
 
 
-std::string Client::get_prefix() const {
+std::string Client::get_info() const {
     std::string username = _username.empty() ? "" : "!" + _username;
     std::string hostname = _hostname.empty() ? "" : "@" + _hostname;
 

@@ -48,7 +48,7 @@ class Server {
         void start();
         void stop();
 
-        Channel*    create_channel(const std::string& name, Client* client);
+        Channel*    create_channel(std::string name, Client* client);
         bool        is_valid_pass(std::string pass);
 };
 

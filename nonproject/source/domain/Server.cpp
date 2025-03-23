@@ -75,7 +75,7 @@ void Server::start() {
 
         std::string source = "ft_irc";
 
-        std::cout << RPL_CREATED(source, _datetime) << std::endl;
+        std::cout << RPL_CREATED(_datetime) << std::endl;
 
         _multiplexer->subscribe_fd_for_monitoring(_socket->get_fd());
 
@@ -101,7 +101,7 @@ void Server::stop() {
     }
 }
 
-Channel* Server::create_channel(const std::string& name, Client* client) {
+Channel* Server::create_channel(std::string name, Client* client) {
     Channel* channel = new Channel(client, name);
     _channels.insert(channel);
 

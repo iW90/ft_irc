@@ -30,7 +30,7 @@ bool ChannelService::add_client(Channel* channel, Client* client) {
 void ChannelService::remove_client(Channel* channel, Client* client) {
     std::cout << "ChannelService::Removing client..." << std::endl;
     channel->remove_from_clients(client);
-    channel->remove_from_inviteds(client);
+    channel->remove_from_guests(client);
     channel->remove_from_operators(client);
 
     _change_admin_if_needed(channel, client);
@@ -42,7 +42,7 @@ void ChannelService::kick_client(Channel* channel, Client* client, Client* targe
     std::cout << "ChannelService::Kicking client..." << std::endl;
     channel->add_to_black_list(target);
     channel->remove_from_clients(target);
-    channel->remove_from_inviteds(target);
+    channel->remove_from_guests(target);
     channel->remove_from_operators(target);
     remove_client(channel, target);
 
@@ -122,9 +122,8 @@ void ChannelService::_announce_client_join(Channel* channel, Client* client) {
     std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
-    //broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
-//    broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name()));
-  //  std::cout << "fuuuuu\n" << std::endl;
+//     broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
+//     broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name()));
 }
 
 void ChannelService::_announce_client_leave(Channel* channel, Client* client) {

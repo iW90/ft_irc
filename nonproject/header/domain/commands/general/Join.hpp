@@ -9,9 +9,9 @@ class Join : public ACommand {
         bool        _is_already_in_channel(Client* client);
         bool        _is_channel_full(Channel* channel, Client* client, const std::string& name);
         bool        _is_channel_key_valid(Channel* channel, Client* client, const std::string& pass, std::string name);
-        bool        _is_invited(Channel* channel, Client* client, const std::string& name);
+        bool        _is_guest(Channel* channel, Client* client, const std::string& name);
 
-        void        _create_channel(std::string& channel_name, Client* client, std::string pass);
+        void        _create_channel(std::string& channel_name, Client* client);
         void        _join_channel(std::string& channel_name, Client* client, std::string pass);
         void        _send_client_list(Channel* channel, Client* client);
 

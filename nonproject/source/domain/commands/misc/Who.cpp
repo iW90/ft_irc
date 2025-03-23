@@ -31,10 +31,10 @@ void Who::execute(Client* client, std::vector<std::string> args) {
     std::set<Client*> clients = channel->get_clients();
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
         std::string user_info = _get_user_info(*it, channel);
-        ClientService::send_message(client, RPL_WHOREPLY(client->get_nickname(), channel_name, user_info));
+        ClientService::send_message(client, RPL_WHOREPLY(channel_name, user_info));
     }
 
-    ClientService::send_message(client, RPL_ENDOFWHO(client->get_nickname(), channel_name));
+    ClientService::send_message(client, RPL_ENDOFWHO(channel_name));
 }
 
 bool Who::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
@@ -47,7 +47,7 @@ bool Who::_has_valid_parameters(Client* client, const std::vector<std::string>& 
 
 std::string Who::_get_user_info(Client* client, Channel* channel) {
     std::string info =  client->get_username() + " " + client->get_hostname() + " " +
-                        client->get_prefix() + " ft_irc " +
+                        client->get_info() + " ft_irc " +
                         client->get_nickname() + " H" +
                         (channel->get_operators().second.find(client) != channel->get_operators().second.end() ? "*" : "" ) + 
                         " :0 " + client->get_realname();

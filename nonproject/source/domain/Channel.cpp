@@ -8,7 +8,7 @@ Channel::Channel(Client* admin, const std::string& name) :
         _admin(admin),
         _created(std::make_pair(admin->get_nickname(), _get_time())),
         _operators(std::make_pair(false, std::set<Client*>())),
-        _inviteds(std::make_pair(false, std::set<Client*>())),
+        _guests(std::make_pair(false, std::set<Client*>())),
         _topic(std::make_pair(false, "")),
         _key(std::make_pair(false, "")),
         _limit(std::make_pair(false, 0)) {}
@@ -23,7 +23,7 @@ std::map<Client*, int>&     Channel::get_black_list() { return _black_list; }
 
 
 std::pair<bool, std::set<Client*> >&     Channel::get_operators() { return _operators; }
-std::pair<bool, std::set<Client*> >&     Channel::get_inviteds() { return _inviteds; }
+std::pair<bool, std::set<Client*> >&     Channel::get_guests() { return _guests; }
 std::pair<bool, std::string>&            Channel::get_topic() { return _topic; }
 std::pair<bool, std::string>&            Channel::get_key() { return _key; }
 std::pair<bool, int>&                    Channel::get_limit() { return _limit; }
@@ -35,7 +35,7 @@ void Channel::set_admin(Client* admin) { _admin = admin; }
 void Channel::set_name(const std::string& name) { _name = name; }
 
 void Channel::set_operators(bool state) { _operators.first = state; }
-void Channel::set_inviteds(bool state) { _inviteds.first = state; }
+void Channel::set_guests(bool state) { _guests.first = state; }
 void Channel::set_key(bool state, const std::string& key) { _key.first = state; _key.second = key; }
 void Channel::set_limit(bool state, int limit) { _limit.first = state; _limit.second = limit; }
 
@@ -54,8 +54,8 @@ Client* Channel::get_operator(Client* target) {
     return NULL;
 }
 
-Client* Channel::get_invited(Client* target) {
-    if (_inviteds.first && _inviteds.second.find(target) != _inviteds.second.end())
+Client* Channel::get_guest(Client* target) {
+    if (_guests.first && _guests.second.find(target) != _guests.second.end())
         return target;
     return NULL;
 }
@@ -79,7 +79,7 @@ std::string Channel::get_active_modes() {
 
     if (_topic.first)
         modes += "t";
-    if (_inviteds.first)
+    if (_guests.first)
         modes += "i";
     if (_limit.first)
         modes += "l";
@@ -115,9 +115,9 @@ std::string Channel::_get_time() {
 }
 
 void Channel::add_to_clients(Client* client) { _clients.insert(client); }
-void Channel::add_to_inviteds(Client* client) { _inviteds.second.insert(client); }
+void Channel::add_to_guests(Client* client) { _guests.second.insert(client); }
 void Channel::add_to_operators(Client* client) { _operators.second.insert(client); }
 
 void Channel::remove_from_clients(Client* client) { _clients.erase(client); }
-void Channel::remove_from_inviteds(Client* client) { _inviteds.second.erase(client); }
+void Channel::remove_from_guests(Client* client) { _guests.second.erase(client); }
 void Channel::remove_from_operators(Client* client) { _operators.second.erase(client); }

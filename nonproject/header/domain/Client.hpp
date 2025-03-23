@@ -39,7 +39,7 @@ class Client {
         std::string get_username() const;
         std::string get_hostname() const;
         std::string get_realname() const;
-        std::string get_prefix() const;
+        std::string get_info() const;
         ClientState get_state() const;
 
         Channel*    get_channel() const;

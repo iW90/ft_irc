@@ -26,9 +26,9 @@ bool ACommand::_is_on_channel(Client* client, Channel* channel) {
     return false;
 }
 
-bool ACommand::_is_valid_channel(Client* client, Channel* channel, const std::string& target) {
+bool ACommand::_is_valid_channel(Client* client, Channel* channel, std::string target) {
     std::cout << "ACOMMAND::Validate if a channel exists..." << std::endl;
-    if (channel)
+    if (channel && channel->get_name() == target)
         return true;
     ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), target));
     return false;
@@ -37,11 +37,10 @@ bool ACommand::_is_valid_channel(Client* client, Channel* channel, const std::st
 bool ACommand::_has_channel_privileges(Client* client, Channel* channel) {
     std::cout << "ACOMMAND::Validate if client has privileges..." << std::endl;
     Client* admin = channel->get_admin();
-    if (client != admin && (channel->get_operators().first && !channel->get_operator(client))) {
-        ClientService::send_message(client, ERR_NOPRIVILEGES(client->get_nickname()));
-        return false;
-    }
-    return true;
+    if (client == admin || (channel->get_operators().first && channel->get_operator(client)))
+        return true;
+    ClientService::send_message(client, ERR_CHANOPRIVSNEEDED(client->get_nickname(), channel->get_name()));
+    return false;
 }
 
 bool ACommand::_is_already_registered(Client* client) {
@@ -52,18 +51,27 @@ bool ACommand::_is_already_registered(Client* client) {
     return true;
 }
 
-bool ACommand::_is_valid_client(Client* client, Client* dest, Channel* channel, const std::string& name) {
-    std::cout << "ACOMMAND::Validate if client exists and is on channel..." << std::endl;
-    if (!dest) {
-        ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), dest->get_nickname()));
-        return false;
-    }
+bool ACommand::_is_valid_client(Client* client, Client* dest) {
+    std::cout << "ACOMMAND::Validate if client exists..." << std::endl;
+    if (dest)
+        return true;
+    ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), dest->get_nickname()));
+    return false;
+}
 
-    if (!dest->get_channel() || dest->get_channel() != channel) {
-        ClientService::send_message(client, ERR_USERNOTINCHANNEL(client->get_nickname(), dest->get_nickname(), name));
+bool ACommand::_is_client_on_channel(Client* client, Channel* channel) {
+    std::cout << "ACOMMAND::Validate if client is on channel..." << std::endl;
+    if (client->get_channel() && client->get_channel() == channel)
+        return true;
+    ClientService::send_message(client, ERR_USERNOTINCHANNEL(client->get_nickname(), client->get_nickname(), channel->get_name()));
+    return false;
+}
+
+bool ACommand::_is_already_on_channel(Client* client, Channel* channel) {
+    std::cout << "ACOMMAND::Validate if client is already on channel..." << std::endl;
+    if (client->get_channel() != channel)
         return false;
-    }
-    
+    ClientService::send_message(client, ERR_USERONCHANNEL(client->get_nickname(), channel->get_name()));
     return true;
 }
 
@@ -71,9 +79,16 @@ void ACommand::_set_registered(Client* client) {
     client->set_state(REGISTERED);
     std::string server = "ft_irc";
 
-    ClientService::send_message(client, RPL_WELCOME(server, client->get_nickname()));
+    ClientService::send_message(client, RPL_WELCOME(client->get_info()));
     ClientService::send_message(client, RPL_YOURHOST(server));
-    ClientService::send_message(client, RPL_CREATED(server, _server->get_datetime()));
+    ClientService::send_message(client, RPL_CREATED(_server->get_datetime()));
     ClientService::send_message(client, RPL_MYINFO(client->get_nickname()));
-    ClientService::send_message(client, RPL_ISUPPORT(client->get_nickname()));
+}
+
+std::string ACommand::_get_prefix(Client* client, Channel* channel) {
+    if (channel->get_admin() == client)
+        return "~";
+    if (channel->get_operators().first)
+        return channel->get_operator(client) ? "@" : "";
+    return "";
 }

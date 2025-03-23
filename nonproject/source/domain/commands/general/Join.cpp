@@ -13,7 +13,6 @@ Join::~Join() {}
 
 
 // syntax: JOIN #<channel> <key>
-//         JOIN <channel>
 void Join::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
@@ -23,15 +22,6 @@ void Join::execute(Client* client, std::vector<std::string> args) {
 
     std::string pass = args.size() == 2 ? args[1] : "";
     std::string channel_name = args[0];
-    if (channel_name.at(0) != '#')
-        return; //WAS _join_channel(channel_name, client, pass);
-    else
-        _create_channel(channel_name, client, pass);
-
-}
-
-void Join::_create_channel(std::string& channel_name, Client* client, std::string pass) {
-    channel_name.erase(0,1);
 
     Channel* channel = _server->get_channel(channel_name);
     if (channel != NULL) {
@@ -39,7 +29,11 @@ void Join::_create_channel(std::string& channel_name, Client* client, std::strin
         return;
     }
 
-    channel = _server->create_channel(channel_name, client);
+    _create_channel(channel_name, client);
+}
+
+void Join::_create_channel(std::string& channel_name, Client* client) {
+    Channel* channel = _server->create_channel(channel_name, client);
 
     std::cout << "JOIN::Add client..." << std::endl;
     if (ChannelService::add_client(channel, client)) {
@@ -69,7 +63,7 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
     if (!_is_channel_key_valid(channel, client, pass, channel_name))
         return;
 
-    if (!_is_invited(channel, client, channel_name))
+    if (!_is_guest(channel, client, channel_name))
         return;
 
     if (channel->get_admin() == NULL)
@@ -95,7 +89,7 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
 
 bool Join::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "JOIN::Validate parameters..." << std::endl;
-    if (args.size() == 1 || args.size() == 2)
+    if ((args.size() == 1 || args.size() == 2) && args[0].at(0) == '#')
         return true;
     ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "JOIN"));
     return false;
@@ -126,9 +120,9 @@ bool Join::_is_channel_key_valid(Channel* channel, Client* client, const std::st
     return false;
 }
 
-bool Join::_is_invited(Channel* channel, Client* client, const std::string& name) {
-    std::cout << "JOIN::Validate if client is invited..." << std::endl;
-    if (!channel->get_inviteds().first || (channel->get_inviteds().first && channel->get_invited(client)))
+bool Join::_is_guest(Channel* channel, Client* client, const std::string& name) {
+    std::cout << "JOIN::Validate if client is guest..." << std::endl;
+    if (!channel->get_guests().first || (channel->get_guests().first && channel->get_guest(client)))
         return true;
     ClientService::send_message(client, ERR_INVITEONLYCHAN(client->get_nickname(), name));
     return false;
@@ -141,8 +135,8 @@ void Join::_send_client_list(Channel* channel, Client* client) {
         user_info += (*it)->get_nickname() + " ";
     }
     //channel->set_topic(true, "FLARGBUGS are awesome", "josephine");
-    CommandFactory::execute_command(_server, client, "MODE #" + channel->get_name());
-    CommandFactory::execute_command(_server, client, "TOPIC #" + channel->get_name());
-    CommandFactory::execute_command(_server, client, "WHO #" + channel->get_name());
-    CommandFactory::execute_command(_server, client, "NAMES #" + channel->get_name());
+    CommandFactory::execute_command(_server, client, "MODE " + channel->get_name());
+    CommandFactory::execute_command(_server, client, "TOPIC " + channel->get_name());
+    CommandFactory::execute_command(_server, client, "WHO " + channel->get_name());
+    CommandFactory::execute_command(_server, client, "NAMES " + channel->get_name());
 }

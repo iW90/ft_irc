@@ -29,9 +29,9 @@ void List::execute(Client* client, std::vector<std::string> args) {
         ss << num;
         std::string clientcount = ss.str();
 
-        ClientService::send_message(client, RPL_LIST(nickname, name, clientcount, topic));
+        ClientService::send_message(client, RPL_LIST(name, clientcount, topic));
     }
-    ClientService::send_message(client, RPL_LISTEND(nickname));
+    ClientService::send_message(client, RPL_LISTEND());
 }
 
 bool List::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {

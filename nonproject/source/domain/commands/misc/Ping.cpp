@@ -13,7 +13,7 @@ void Ping::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    ClientService::send_message(client, RPL_PING(client->get_prefix(), args[0]));
+    ClientService::send_message(client, RPL_PING(client->get_info(), args[0]));
 }
 
 bool Ping::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {

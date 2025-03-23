@@ -11,7 +11,7 @@ void ClientService::send_message(Client* client, const std::string& message) {
 }
 
 void ClientService::reply_message(Client* client, const std::string& reply) {
-    send_message(client, ":" + client->get_prefix() + " " + reply);
+    send_message(client, ":" + client->get_info() + " " + reply);
 }
 
 void ClientService::join_channel(Client* client, Channel* channel) {
@@ -40,12 +40,12 @@ void ClientService::_update_client_channel(Client* client, Channel* channel) {
 }
 
 void ClientService::_broadcast_join_message(Client* client, Channel* channel) {
-    ChannelService::broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name(), client->get_nickname()));
+    ChannelService::broadcast(channel, RPL_JOIN(client->get_info(), channel->get_name(), client->get_nickname()));
 }
 
 void ClientService::_broadcast_part_message(Client* client, Channel* channel) {
-    ClientService::send_message(client, RPL_PART(client->get_prefix(), channel->get_name()));
-    ChannelService::broadcast(channel, RPL_PART(client->get_prefix(), channel->get_name()));
+    ClientService::send_message(client, RPL_PART(client->get_info(), channel->get_name()));
+    ChannelService::broadcast(channel, RPL_PART(client->get_info(), channel->get_name()));
 }
 
 

@@ -13,8 +13,8 @@ void Info::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
-    ClientService::send_message(client, RPL_INFO(client->get_nickname(), "ft_irc v1.0 by inwagner, maalexan and dfrade"));
-    ClientService::send_message(client, RPL_ENDOFINFO(client->get_nickname()));
+    ClientService::send_message(client, RPL_INFO("ft_irc v1.0 by inwagner, maalexan and dfrade"));
+    ClientService::send_message(client, RPL_ENDOFINFO());
 }
 
 bool Info::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {

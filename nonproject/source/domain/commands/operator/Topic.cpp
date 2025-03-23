@@ -55,11 +55,11 @@ bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>
 
 void Topic::_send_current_topic(Client* client, Channel* channel) {
     if (channel->get_topic().first) {
-        ClientService::send_message(client, RPL_TOPIC(client->get_nickname(), channel->get_name(), channel->get_topic().second));
-        ClientService::send_message(client, RPL_TOPICWHOTIME(client->get_nickname(), channel->get_name(), channel->get_creator(), channel->get_creation()));
+        ClientService::send_message(client, RPL_TOPIC(channel->get_name(), channel->get_topic().second));
+        ClientService::send_message(client, RPL_TOPICWHOTIME(channel->get_name(), channel->get_creator(), channel->get_creation()));
         return;
     }
-    ClientService::send_message(client, RPL_NOTOPIC(client->get_nickname(), channel->get_name()));
+    ClientService::send_message(client, RPL_NOTOPIC(channel->get_name()));
 }
 
 void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args) {
@@ -68,7 +68,7 @@ void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<s
         (channel->get_operators().first && client == channel->get_operator(client))) {
         std::string topic = _extract_topic(args);
         channel->set_topic(true, topic, client->get_nickname());
-        ChannelService::broadcast(channel, RPL_TOPIC(client->get_prefix(), channel->get_name(), channel->get_topic().second));
+        ChannelService::broadcast(channel, RPL_TOPIC(channel->get_name(), channel->get_topic().second));
     }
 }
 

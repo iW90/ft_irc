@@ -19,7 +19,7 @@ void PrivMsg::execute(Client* client, std::vector<std::string> args) {
 
     std::string target = args[0];
     std::string message = _build_message(args);
-std::cout << "\n\nMESSAGE:\n" << message << "\nfor target " << target << std::endl;
+
     std::cout << "PRIVMSG::Sending message..." << std::endl;
     if (target.at(0) == '#')
         _handle_channel_message(client, target, message);
@@ -31,19 +31,18 @@ std::cout << "\n\nMESSAGE:\n" << message << "\nfor target " << target << std::en
 
 // Channel message
 
-void PrivMsg::_handle_channel_message(Client* client, std::string& target, const std::string& message) {
+void PrivMsg::_handle_channel_message(Client* client, std::string& channel_name, const std::string& message) {
     std::cout << "PRIVMSG::Handling channel message..." << std::endl;
-    Channel* channel = client->get_channel();
-    if (!_is_on_channel(client, channel))
+
+    Channel* channel = _server->get_channel(channel_name);
+    if (!_is_valid_channel(client, channel, channel_name))
         return;
 
-    std::string chan_name = target;
-    chan_name.erase(0,1);
-    Channel* target_channel = _server->get_channel(chan_name);
-    if (!_is_valid_channel(client, target_channel, chan_name))
+    Channel* client_channel = client->get_channel();
+    if (!_is_on_channel(client, client_channel))
         return;
 
-    ChannelService::broadcast(channel, RPL_PRIVMSG(client->get_prefix(), target, message), client);
+    ChannelService::broadcast(channel, RPL_PRIVMSG(client->get_info(), channel_name, message), client);
     std::cout << "PRIVMSG::Message sent to channel." << std::endl;
 }
 
@@ -52,23 +51,14 @@ void PrivMsg::_handle_channel_message(Client* client, std::string& target, const
 
 void PrivMsg::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
     std::cout << "PRIVMSG::Handling client message..." << std::endl;
-/*
-    Channel* channel = client->get_channel();
-    if (!_is_valid_channel(client, channel, "#"))
+
+    Client* target_client = _server->get_client(target);
+    if (!_is_valid_client(client, target_client))
         return;
-*/
-    Client* dest = _server->get_client(target);
-    if (!dest) {
-        ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), target));
-        return;
-    }
-/*
-    if (dest->get_channel() != channel) {
-        ClientService::send_message(client, ERR_NOTONCHANNEL(client->get_nickname(), target));
-        return;
-    }
-*/
-    ClientService::send_message(dest, RPL_PRIVMSG(client->get_prefix(), target, message));
+
+    std::cout << "TESTE\n\n\n" << std::endl;
+
+    ClientService::send_message(target_client, RPL_PRIVMSG(client->get_info(), target, message));
     std::cout << "PRIVMSG::Message sent to client..." << std::endl;
 }
 

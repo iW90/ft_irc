@@ -16,28 +16,23 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     if (!_has_valid_parameters(client, args))
         return;
 
+    std::string channel_name = args[0];
     std::string target = args[1];
     std::string reason = _extract_reason(args);
-    std::string channel_name = args[0];
-    if (channel_name.at(0) != '#') {
-        ClientService::send_message(client, ERR_NOSUCHCHANNEL(client->get_nickname(), channel_name));
-        return;
-    }
-    channel_name.erase(0,1);
 
-    Channel* channel = client->get_channel();
+    Channel* channel = _server->get_channel(channel_name);
     if (!_is_valid_channel(client, channel, channel_name))
+        return;
+
+    Client* target_client = _server->get_client(target);
+    if (!_is_valid_client(client, target_client) || !_is_on_channel(target_client, channel))
         return;
 
     if (!_has_channel_privileges(client, channel))
         return;
 
-    Client* dest = _server->get_client(target);
-    if (!_is_valid_client(client, dest, channel, channel_name))
-        return;
-
     std::cout << "KICK::Kicking client..." << std::endl;
-    ChannelService::kick_client(channel, client, dest, reason);
+    ChannelService::kick_client(channel, client, target_client, reason);
     ClientService::leave_channel(client, channel);
     std::cout << "SUCCEDED KICK" << std::endl;
 }

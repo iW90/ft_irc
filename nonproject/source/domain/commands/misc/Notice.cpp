@@ -31,18 +31,15 @@ void Notice::execute(Client* client, std::vector<std::string> args) {
 
 // Channel message
 
-void Notice::_handle_channel_message(Client* client, std::string& target, const std::string& message) {
+void Notice::_handle_channel_message(Client* client, std::string& channel_name, const std::string& message) {
     std::cout << "NOTICE::Handling channel message..." << std::endl;
-    Channel* channel = client->get_channel();
-    if (!_is_on_channel(client, channel))
+
+    Channel* channel = _server->get_channel(channel_name);
+    Channel* client_channel = client->get_channel();
+    if (!channel || client_channel != channel)
         return;
 
-    target.erase(0,1);
-    Channel* target_channel = _server->get_channel(target);
-    if (!_is_valid_channel(client, target_channel, target))
-        return;
-
-    ChannelService::broadcast(channel, RPL_NOTICE(client->get_prefix(), target, message), client);
+    ChannelService::broadcast(client_channel, RPL_NOTICE(client->get_info(), channel_name, message), client);
     std::cout << "NOTICE::Message sent to channel." << std::endl;
 }
 
@@ -53,21 +50,11 @@ void Notice::_handle_client_message(Client* client, const std::string& target, c
     std::cout << "NOTICE::Handling client message..." << std::endl;
 
     Channel* channel = client->get_channel();
-    if (!_is_valid_channel(client, channel, "#"))
-        return;
-
     Client* dest = _server->get_client(target);
-    if (!dest) {
-        ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), target));
+    if (!dest || !channel || channel->get_name() != target)
         return;
-    }
 
-    if (dest->get_channel() != channel) {
-        ClientService::send_message(client, ERR_NOTONCHANNEL(client->get_nickname(), target));
-        return;
-    }
-
-    ClientService::send_message(dest, RPL_NOTICE(client->get_prefix(), target, message));
+    ClientService::send_message(dest, RPL_NOTICE(client->get_info(), target, message));
     std::cout << "NOTICE::Message sent to client..." << std::endl;
 }
 
@@ -76,10 +63,9 @@ void Notice::_handle_client_message(Client* client, const std::string& target, c
 
 bool Notice::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "NOTICE::Validate parameters..." << std::endl;
-    if (args.size() < 2 || args[0].empty() || args[1].empty()) {
-        ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), "Notice"));
+    (void)client;
+    if (args.size() < 2)
         return false;
-    }
     return true;
 }
 
