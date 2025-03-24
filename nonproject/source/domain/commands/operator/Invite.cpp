@@ -38,7 +38,7 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
 
     std::cout << "INVITE::Sending invite..." << std::endl;
     channel->add_to_guests(dest);
-    ClientService::send_message(dest, RPL_INVITING(target, channel_name));
+    ClientService::send_message(dest, RPL_INVITING(client->get_nickname(), target, channel_name));
     std::cout << "SUCCEDED INVITE" << std::endl;
 }
 
@@ -49,6 +49,6 @@ bool Invite::_has_valid_parameters(Client* client, const std::vector<std::string
     std::cout << "INVITE::Validate parameters..." << std::endl;
     if (args.size() == 2)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("INVITE")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("INVITE")));
     return false;
 }

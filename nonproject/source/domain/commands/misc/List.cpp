@@ -29,15 +29,15 @@ void List::execute(Client* client, std::vector<std::string> args) {
         ss << num;
         std::string clientcount = ss.str();
 
-        ClientService::send_message(client, RPL_LIST(name, clientcount, topic));
+        ClientService::send_message(client, RPL_LIST(client->get_nickname(), name, clientcount, topic));
     }
-    ClientService::send_message(client, RPL_LISTEND());
+    ClientService::send_message(client, RPL_LISTEND(client->get_nickname()));
 }
 
 bool List::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "LIST::Validate parameters..." << std::endl;
     if (args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("LIST")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("LIST")));
     return false;
 }

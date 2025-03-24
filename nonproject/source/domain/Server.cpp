@@ -73,9 +73,9 @@ void Server::start() {
 
         int total_events;
 
-        std::string source = "ft_irc";
+        std::string source = "ft_irc ";
 
-        std::cout << RPL_CREATED(_datetime) << std::endl;
+        std::cout << RPL_CREATED(source, _datetime) << std::endl;
 
         _multiplexer->subscribe_fd_for_monitoring(_socket->get_fd());
 

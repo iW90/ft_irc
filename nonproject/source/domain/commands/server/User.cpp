@@ -35,7 +35,7 @@ bool User::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "USER::Validate parameters..." << std::endl;
     if (args.size() > 3 && !args[0].empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("USER")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("USER")));
     return false;
 }
 
@@ -65,6 +65,6 @@ bool User::_is_username_taken(const std::string& username, Client* client) {
     std::cout << "USER::Validate if username is already in use..." << std::endl;
     if (!_server->get_client(username))
         return false;
-    ClientService::send_message(client, ERR_NICKNAMEINUSE(client->get_username()));
+    ClientService::send_message(client, ERR_NICKNAMEINUSE(client->get_nickname(), client->get_username()));
     return true;
 }

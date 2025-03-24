@@ -22,15 +22,15 @@ void Names::execute(Client* client, std::vector<std::string> args) {
 
     std::string user_info = _get_client_info(channel);
 
-    ClientService::send_message(client, RPL_NAMREPLY(channel_name, user_info));
-    ClientService::send_message(client, RPL_ENDOFNAMES(channel_name));
+    ClientService::send_message(client, RPL_NAMREPLY(client->get_nickname(), channel_name, user_info));
+    ClientService::send_message(client, RPL_ENDOFNAMES(client->get_nickname(), channel_name));
 }
 
 bool Names::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "NAMES::Validate parameters..." << std::endl;
     if (args.size() == 1)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("NAMES")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("NAMES")));
     return false;
 }
 

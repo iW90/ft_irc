@@ -68,7 +68,7 @@ void PrivMsg::_handle_client_message(Client* client, const std::string& target, 
 bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "PRIVMSG::Validate parameters..." << std::endl;
     if (args.size() < 2 || args[0].empty() || args[1].empty()) {
-        ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("PRIVMSG")));
+        ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("PRIVMSG")));
         return false;
     }
     return true;

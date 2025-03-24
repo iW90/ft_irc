@@ -27,7 +27,7 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     Client* target_client = _server->get_client(target);
     if (!_is_valid_client(client, target_client) || !_is_on_channel(target_client, channel))
         return;
-
+    
     if (!_has_channel_privileges(client, channel))
         return;
 
@@ -44,7 +44,7 @@ bool Kick::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "KICK::Validate parameters..." << std::endl;
     if (args.size() > 1)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("KICK")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("KICK")));
     return false;
 }
 

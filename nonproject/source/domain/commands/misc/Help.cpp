@@ -45,6 +45,6 @@ bool Help::_has_valid_parameters(Client* client, const std::vector<std::string>&
     std::cout << "HELP::Validate parameters..." << std::endl;
     if (args.empty())
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("HELP")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("HELP")));
     return false;
 }

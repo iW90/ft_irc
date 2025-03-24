@@ -23,6 +23,6 @@ bool Cap::_has_valid_parameters(Client* client, const std::vector<std::string>& 
     std::cout << "CAP::Validate parameters..." << std::endl;
     if (args.size() < 3)
         return true;
-    ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("CAP")));
+    ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("CAP")));
     return false;
 }

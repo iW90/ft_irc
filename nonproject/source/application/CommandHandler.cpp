@@ -101,13 +101,13 @@ void CommandHandler::handle_command(Client* client, const std::string& message) 
                 args.push_back(buf);
 
             if (client->get_state() != REGISTERED && cmd->auth_required()) {
-                ClientService::send_message(client, ERR_NOTREGISTERED());
+                ClientService::send_message(client, ERR_NOTREGISTERED(client->get_nickname()));
                 return;
             }
 
             cmd->execute(client, args);
         } catch (const std::exception& e) {
-            ClientService::send_message(client, ERR_UNKNOWNCOMMAND(name));
+            ClientService::send_message(client, ERR_UNKNOWNCOMMAND(client->get_nickname(), name));
         }
     }
 }
