@@ -20,6 +20,8 @@ void    User::execute(Client* client, std::vector<std::string> args) {
         return;
 
     client->set_realname(_get_realname(args));
+
+    // if (_is_username_taken(args[0], client))
     client->set_username(args[0]);
 
     _set_client_state(client);
@@ -31,7 +33,7 @@ void    User::execute(Client* client, std::vector<std::string> args) {
 
 bool User::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "USER::Validate parameters..." << std::endl;
-    if (args.size() > 3)
+    if (args.size() > 3 && !args[0].empty())
         return true;
     ClientService::send_message(client, ERR_NEEDMOREPARAMS(std::string("USER")));
     return false;
@@ -57,4 +59,12 @@ void User::_set_client_state(Client* client) {
         return;
 
     _set_registered(client);
+}
+
+bool User::_is_username_taken(const std::string& username, Client* client) {
+    std::cout << "USER::Validate if username is already in use..." << std::endl;
+    if (!_server->get_client(username))
+        return false;
+    ClientService::send_message(client, ERR_NICKNAMEINUSE(client->get_username()));
+    return true;
 }
