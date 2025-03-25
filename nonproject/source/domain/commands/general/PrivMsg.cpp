@@ -53,10 +53,8 @@ void PrivMsg::_handle_client_message(Client* client, const std::string& target, 
     std::cout << "PRIVMSG::Handling client message..." << std::endl;
 
     Client* target_client = _server->get_client(target);
-    if (!_is_valid_client(client, target_client))
+    if (!_is_valid_client(client, target_client, target))
         return;
-
-    std::cout << "TESTE\n\n\n" << std::endl;
 
     ClientService::send_message(target_client, RPL_PRIVMSG(client->get_info(), target, message));
     std::cout << "PRIVMSG::Message sent to client..." << std::endl;

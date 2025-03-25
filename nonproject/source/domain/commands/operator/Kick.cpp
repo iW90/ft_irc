@@ -25,9 +25,9 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
         return;
 
     Client* target_client = _server->get_client(target);
-    if (!_is_valid_client(client, target_client) || !_is_on_channel(target_client, channel))
+    if (!_is_valid_client(client, target_client, target) || !_is_on_channel(target_client, channel))
         return;
-    
+
     if (!_has_channel_privileges(client, channel))
         return;
 

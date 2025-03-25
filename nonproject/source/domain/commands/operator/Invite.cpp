@@ -24,7 +24,7 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
         return;
 
     Client* dest = _server->get_client(target);
-    if (!_is_valid_client(client, dest))
+    if (!_is_valid_client(client, dest, target))
         return;
 
     if (!_is_on_channel(client, channel) || _is_already_on_channel(dest, channel))

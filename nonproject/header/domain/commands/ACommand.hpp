@@ -22,7 +22,7 @@ class ACommand {
         bool            _has_channel_privileges(Client* client, Channel* channel);
 
         bool            _is_valid_channel(Client* client, Channel* channel, std::string target);
-        bool            _is_valid_client(Client* client, Client* dest);
+        bool            _is_valid_client(Client* client, Client* dest, const std::string& dest_nickname);
         bool            _is_client_on_channel(Client* client, Channel* channel);
 
         bool            _is_already_registered(Client* client);

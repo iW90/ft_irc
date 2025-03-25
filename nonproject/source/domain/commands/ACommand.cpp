@@ -51,11 +51,11 @@ bool ACommand::_is_already_registered(Client* client) {
     return true;
 }
 
-bool ACommand::_is_valid_client(Client* client, Client* dest) {
+bool ACommand::_is_valid_client(Client* client, Client* dest, const std::string& dest_nickname) {
     std::cout << "ACOMMAND::Validate if client exists..." << std::endl;
     if (dest)
         return true;
-    ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), dest->get_nickname()));
+    ClientService::send_message(client, ERR_NOSUCHNICK(client->get_nickname(), dest_nickname));
     return false;
 }
 
