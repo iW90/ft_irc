@@ -199,7 +199,6 @@ void Multiplexer::handle_client(int client_fd, CommandHandler* handler) {
     }
 }
 
-
 // MINI GNL
 std::string Multiplexer::read_client_message(int client_fd) {
     std::string message;
@@ -213,11 +212,23 @@ std::string Multiplexer::read_client_message(int client_fd) {
         {
             bzero(buffer, BUFFER_SIZE);
 
+            /* CODIGO COMENTADO POIS EWOULDBLOCK VIOLARIA A REGRA DE USAR O ERRNO COM EQUIVALENTE AO poll()
             if ((recv(client_fd, buffer, BUFFER_SIZE, 0) <= 0) and (errno != EWOULDBLOCK)) {
                 disconnect_client(client_fd);
                 return "";
             }
+            */
+            ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE, 0);
+            if (bytes_received == 0) {
+                // Client has closed the connection
+                disconnect_client(client_fd);
+                return "";
+            } else if (bytes_received < 0) {
+                // Just return and wait for epoll_wait() to signal readiness again
+                return "";
+            }
             
+
             /*
                 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
                 - sockfd é o fd do client de quem está vindo a mensagem.
