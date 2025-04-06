@@ -6,8 +6,6 @@
 #include "CommandHandler.hpp"
 #include "Macros.hpp"
 #include "Server.hpp"
-#include "CommandFactory.hpp"
-
 
 Join::Join(Server* server) : ACommand(server, true) {}
 Join::~Join() {}
