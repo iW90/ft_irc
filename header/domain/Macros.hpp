@@ -64,7 +64,7 @@
 # define RPL_JOIN(client, channel)                        ":" + client + " JOIN " + channel
 # define RPL_PART(client, channel)                        ":" + client + " PART " + channel
 # define RPL_PRIVMSG(client, target, message)             ":" + client + " PRIVMSG " + target + " :" + message
-# define RPL_QUIT(client, message)                        ":" + client + " QUIT" + message
+# define RPL_QUIT(client, message)                        ":" + client + " QUIT " + message
 # define RPL_KICK(client, channel, reason)                ":" + client + " KICK " + channel + " " + reason
 # define RPL_MODE(client, channel, modes, args)           ":" + client + " MODE " + channel + " " + modes + " " + args
 # define RPL_NICK(old_nick, new_nick)                     ":" + old_nick + " NICK " + new_nick
