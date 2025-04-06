@@ -15,4 +15,4 @@ class Pong : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // PONG_HPP
+#endif

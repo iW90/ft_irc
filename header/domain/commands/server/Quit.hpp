@@ -15,4 +15,4 @@ class Quit : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // QUIT_HPP
+#endif

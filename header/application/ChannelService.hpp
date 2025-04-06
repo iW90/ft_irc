@@ -23,7 +23,6 @@ class ChannelService {
         static void     _announce_client_kick(Channel* channel, Client* client, Client* target, const std::string& reason);
 
     public:
-        // Send messages to channel
         static void     broadcast(Channel* channel, const std::string& message, Client* exclude = NULL);
 
         static bool     add_client(Channel* channel, Client* client);
@@ -34,4 +33,4 @@ class ChannelService {
         static int                      get_total_clients(Channel* channel);
 };
 
-#endif // CHANNEL_HPP
+#endif

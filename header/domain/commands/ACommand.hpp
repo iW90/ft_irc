@@ -41,4 +41,4 @@ class ACommand {
         virtual void execute(Client* client, std::vector<std::string> args) = 0;
 };
 
-#endif // COMMAND_HPP
+#endif

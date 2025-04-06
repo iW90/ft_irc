@@ -18,4 +18,4 @@ class Notice : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // NOTICE_HPP
+#endif

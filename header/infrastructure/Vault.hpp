@@ -2,8 +2,8 @@
 # define VAULT_HPP
 
 # include <string>
-# include <stdexcept>  // Para std::invalid_argument
-# include <cctype>     // Para isalnum()
+# include <stdexcept>
+# include <cctype>
 
 # include "interfaces/IVault.hpp"
 
@@ -20,4 +20,4 @@ class Vault : public IVault {
         bool validate_password(const std::string& pass_to_validate) const;
 };
 
-#endif // VAULT_HPP
+#endif

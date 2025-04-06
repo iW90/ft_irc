@@ -20,7 +20,6 @@ Server::Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer) :
       _datetime(Utils::get_time()) {}
 
 Server::~Server() {
-    // Destruir todos os channels
     std::set<Channel*>::iterator channel_it;
     for (channel_it = _channels.begin(); channel_it != _channels.end(); ++channel_it) {
         Channel* channel = *channel_it;
@@ -28,14 +27,10 @@ Server::~Server() {
     }
     _channels.clear();
 
-    // Destruir outros recursos
     delete _vault;
     delete _socket;
     delete _multiplexer;
 }
-
-
-// Getters
 
 IMultiplexer*                   Server::get_multiplexer() const { return _multiplexer; }
 CommandHandler*                 Server::get_command_handler() const { return _command_handler; }
@@ -56,13 +51,7 @@ Client* Server::get_client(const std::string& target) {
     return _multiplexer->get_client(target);
 }
 
-
-// Setters
-
 void Server::set_command_handler(CommandHandler* handler) { _command_handler = handler; }
-
-
-// Métodos
 
 void Server::start() {
     try {

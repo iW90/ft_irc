@@ -3,11 +3,11 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include <netinet/in.h>    // Necessário para sockaddr_in
-# include <cstring>         // Necessário para memset()
-# include <arpa/inet.h>     // Necessário para inet_ntoa / inet_addr
-# include <stdexcept>       // Necessário para exceções
-# include <string>          // Necessário para std::string
+# include <netinet/in.h>
+# include <cstring>
+# include <arpa/inet.h>
+# include <stdexcept>
+# include <string>
 
 # include "Enums.hpp"
 
@@ -51,4 +51,4 @@ class Client {
         void set_state(ClientState state);
 };
 
-#endif // CLIENT_HPP
+#endif

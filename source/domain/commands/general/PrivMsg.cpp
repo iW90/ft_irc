@@ -29,8 +29,6 @@ void PrivMsg::execute(Client* client, std::vector<std::string> args) {
 }
 
 
-// Channel message
-
 void PrivMsg::_handle_channel_message(Client* client, std::string& channel_name, const std::string& message) {
     std::cout << "PRIVMSG::Handling channel message..." << std::endl;
 
@@ -46,8 +44,6 @@ void PrivMsg::_handle_channel_message(Client* client, std::string& channel_name,
 }
 
 
-// Client message
-
 void PrivMsg::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
     std::cout << "PRIVMSG::Handling client message..." << std::endl;
 
@@ -58,9 +54,6 @@ void PrivMsg::_handle_client_message(Client* client, const std::string& target, 
     ClientService::send_message(target_client, RPL_PRIVMSG(client->get_info(), target, message));
     std::cout << "PRIVMSG::Message sent to client..." << std::endl;
 }
-
-
-// Funções auxiliares
 
 bool PrivMsg::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "PRIVMSG::Validate parameters..." << std::endl;

@@ -30,7 +30,6 @@ class Server {
         Server(IVault* vault, ISocket* socket, IMultiplexer* multiplexer);
         ~Server();
 
-        // Getters
         IMultiplexer*                   get_multiplexer() const;
         CommandHandler*                 get_command_handler() const;
 
@@ -42,10 +41,8 @@ class Server {
 
         const std::string&              get_datetime() const;
 
-        // Setters
         void                            set_command_handler(CommandHandler* handler);
 
-        // Métodos
         void start();
         void stop();
 
@@ -53,4 +50,4 @@ class Server {
         bool        is_valid_pass(std::string pass);
 };
 
-#endif // SERVER_HPP
+#endif

@@ -16,4 +16,4 @@ class Pass : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // PASS_HPP
+#endif

@@ -15,9 +15,6 @@ ACommand::~ACommand() {}
 
 bool    ACommand::auth_required() const { return _auth; }
 
-
-// Funções auxiliares
-
 bool ACommand::_is_on_channel(Client* client, Channel* channel) {
     std::cout << "ACOMMAND::Validate if client is on channel..." << std::endl;
     if (channel == client->get_channel())

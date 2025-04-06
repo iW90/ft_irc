@@ -15,4 +15,4 @@ class Info : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // INFO_HPP
+#endif

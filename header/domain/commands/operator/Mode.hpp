@@ -23,4 +23,4 @@ class Mode : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // MODE_HPP
+#endif

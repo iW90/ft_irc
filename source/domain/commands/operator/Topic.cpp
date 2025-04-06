@@ -38,9 +38,6 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED TOPIC" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Topic::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "TOPIC::Validate parameters..." << std::endl;
     if (args.empty()) {

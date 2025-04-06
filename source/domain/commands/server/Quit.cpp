@@ -25,9 +25,6 @@ void    Quit::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED QUIT" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Quit::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     (void)client;
     (void)args;

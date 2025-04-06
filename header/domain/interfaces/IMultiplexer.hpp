@@ -28,13 +28,11 @@ class IMultiplexer
 
         virtual std::string    read_client_message(int client_fd) = 0;
 
-        
 
-        // Métodos não utilizados
         virtual void    handle_read_event(int fd) = 0;
         virtual void    handle_write_event(int fd) = 0;
         virtual void    handle_error_event(int fd) = 0;
         virtual void    handle_hangup_event(int fd) = 0;
 };
 
-#endif // IMULTIPLEXER_HPP
+#endif

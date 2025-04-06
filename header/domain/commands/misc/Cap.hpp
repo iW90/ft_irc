@@ -15,4 +15,4 @@ class Cap : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // CAP_HPP
+#endif

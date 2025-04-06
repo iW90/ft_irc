@@ -13,9 +13,6 @@ class Client;
 
 class ClientService {
     private:
-        // static std::string  _gather_channel_users(Channel* channel);
-        // static void         _send_nickname_reply(Client* client, Channel* channel, const std::string& users);
-        // static void         _send_end_of_names_reply(Client* client, Channel* channel);
         static void         _update_client_channel(Client* client, Channel* channel);
         static void         _broadcast_join_message(Client* client, Channel* channel);
         static void         _broadcast_part_message(Client* client, Channel* channel);
@@ -29,4 +26,4 @@ class ClientService {
         static void         kicked_from_channel(Client* client, Client* target, Channel* channel, std::string reason);
 };
 
-#endif // CLIENT_ACTION_MANAGER_HPP
+#endif

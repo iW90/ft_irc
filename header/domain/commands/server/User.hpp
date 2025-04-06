@@ -18,4 +18,4 @@ class User : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // USER_HPP
+#endif

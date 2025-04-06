@@ -42,9 +42,6 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED INVITE" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Invite::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "INVITE::Validate parameters..." << std::endl;
     if (args.size() == 2)

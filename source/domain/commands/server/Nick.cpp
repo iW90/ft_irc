@@ -27,9 +27,6 @@ void    Nick::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED NICK" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Nick::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "NICK::Validate parameters..." << std::endl;
     if (args.size() == 1)

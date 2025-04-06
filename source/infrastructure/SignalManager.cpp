@@ -14,10 +14,10 @@ void SignalManager::initialize(bool* running) {
     sa.sa_handler = _signal_handler;
     sa.sa_flags = SA_RESTART;
 
-    sigaction(SIGINT, &sa, NULL);   // Ctrl+C
-    sigaction(SIGTERM, &sa, NULL);  // Termination request
-    sigaction(SIGQUIT, &sa, NULL);  // Ctrl+\ (Quit)
-    sigaction(SIGHUP, &sa, NULL);   // Terminal disconnect
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGHUP, &sa, NULL);
 }
 
 void SignalManager::_signal_handler(int signum) {

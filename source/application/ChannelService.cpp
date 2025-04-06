@@ -34,7 +34,6 @@ void ChannelService::remove_client(Channel* channel, Client* client) {
     channel->remove_from_operators(client);
 
     _change_admin_if_needed(channel, client);
-//    _announce_client_leave(channel, client);
     std::cout << "ChannelService::Client removed." << std::endl;
 }
 
@@ -68,8 +67,6 @@ int ChannelService::get_total_clients(Channel* channel) {
     std::set<Client*>       clients = channel->get_clients();
     return clients.size(); 
 }
-
-// Funções auxiliares
 
 bool ChannelService::_is_client_banned(Channel* channel, Client* client) {
     std::cout << "ChannelService::Validate if client is banned..." << std::endl;
@@ -122,17 +119,7 @@ void ChannelService::_announce_client_join(Channel* channel, Client* client) {
     std::string announcer = ":";
     std::string nickname_client = client->get_nickname();
     std::string channel_name = channel->get_name();
-//     broadcast(channel, announcer + MESSAGE_CLIENT_JOIN(channel_name, nickname_client));
-//     broadcast(channel, RPL_JOIN(client->get_prefix(), channel->get_name()));
 }
-/*
-void ChannelService::_announce_client_leave(Channel* channel, Client* client) {
-    std::string announcer = ":";
-    std::string nickname_client = client->get_nickname();
-    std::string channel_name = channel->get_name();
-    broadcast(channel, announcer + MESSAGE_CLIENT_LEAVE(channel_name, nickname_client));
-}
-*/
 
 void ChannelService::_announce_admin_change(Channel* channel, Client* client) {
     std::string nickname_client = client->get_nickname();

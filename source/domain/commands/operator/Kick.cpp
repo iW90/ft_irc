@@ -43,9 +43,6 @@ void Kick::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED KICK" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Kick::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "KICK::Validate parameters..." << std::endl;
     if (args.size() > 1)

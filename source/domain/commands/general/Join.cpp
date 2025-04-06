@@ -42,11 +42,10 @@ void Join::_create_channel(std::string& channel_name, Client* client) {
         _send_client_list(channel, client);
     }
 
-    // MOSTRANDO USERS
     std::set<Client*> clients = channel->get_clients();
     std::cout << "Clients in the channel: ";
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-        std::cout << (*it)->get_nickname() << " ";  // Obtém e imprime o nickname do cliente
+        std::cout << (*it)->get_nickname() << " ";
     }
     std::cout << std::endl;
     
@@ -76,7 +75,6 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
         _send_client_list(channel, client);
     }
 
-    // MOSTRANDO USERS
     std::set<Client*> clients = channel->get_clients();
     std::cout << "Clients in the channel: ";
     for (std::set<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -85,8 +83,6 @@ void Join::_join_channel(std::string& channel_name, Client* client, std::string 
     std::cout << std::endl;
     std::cout << "SUCCEDED JOIN" << std::endl;
 }
-
-// Funções auxiliares
 
 bool Join::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "JOIN::Validate parameters..." << std::endl;
@@ -140,9 +136,4 @@ void Join::_send_client_list(Channel* channel, Client* client) {
     handler->handle_command(client, "TOPIC " + channel->get_name());
     handler->handle_command(client, "WHO " + channel->get_name());
     handler->handle_command(client, "NAMES " + channel->get_name());
-
-    
-    // CommandFactory::execute_command(_server, client, "TOPIC " + channel->get_name());
-    // CommandFactory::execute_command(_server, client, "WHO " + channel->get_name());
-    // CommandFactory::execute_command(_server, client, "NAMES " + channel->get_name());
 }

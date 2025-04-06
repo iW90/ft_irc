@@ -31,9 +31,6 @@ void    Part::execute(Client* client, std::vector<std::string> args) {
     std::cout << "SUCCEDED PART" << std::endl;
 }
 
-
-// Funções auxiliares
-
 bool Part::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "PART::Validate parameters..." << std::endl;
     if (args.size() > 0)

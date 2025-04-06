@@ -3,9 +3,6 @@
 #ifndef MACROS_HPP
 # define MACROS_HPP
 
-
-/* General Responses */
-
 # define RPL_WELCOME(recipient,client)                              "001 " + recipient + " :Welcome to the ft_irc network " + client
 # define RPL_YOURHOST(recipient,server)                             "002 " + recipient + " :Your host is " + server + ", running version 1.0"
 # define RPL_CREATED(recipient,datetime)                            "003 " + recipient + " :This server was created " + datetime
@@ -26,21 +23,19 @@
 # define RPL_INVITELIST(recipient, channel)                         "346 " + recipient + " " + channel
 # define RPL_ENDOFINVITELIST(recipient)                             "347 " + recipient + " :End of /INVITE list"
 
-# define RPL_WHOREPLY(recipient, channel, users)                    "352 " + recipient + " " + channel + " " + users // "<channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
+# define RPL_WHOREPLY(recipient, channel, users)                    "352 " + recipient + " " + channel + " " + users
 # define RPL_ENDOFWHO(recipient, channel)                           "315 " + recipient + " " + channel + " :End of WHO list"
 
-# define RPL_NAMREPLY(recipient, channel, users)                    "353 " + recipient + " = " + channel + " :" + users // "<symbol> <channel> :[prefix]<nick>"
+# define RPL_NAMREPLY(recipient, channel, users)                    "353 " + recipient + " = " + channel + " :" + users
 # define RPL_ENDOFNAMES(recipient, channel)                         "366 " + recipient + " " + channel + " :End of /NAMES list"
 
 # define RPL_INFO(recipient, info)                                  "371 " + recipient + " :" + info
 # define RPL_ENDOFINFO(recipient)                                   "374 " + recipient + " :End of /INFO list"
 
-# define RPL_HELPSTART(subject, text)                               "704 " + subject + " :" + text  //"<client> <subject> :<first line of help section>"
-# define RPL_HELPTXT(subject, text)                                 "705 " + subject + " :" + text  //"<client> <subject> :<line of help text>"
-# define RPL_ENDOFHELP(subject, text)                               "706 " + subject + " :" + text  //"<client> <subject> :<last line of help text>"
+# define RPL_HELPSTART(subject, text)                               "704 " + subject + " :" + text
+# define RPL_HELPTXT(subject, text)                                 "705 " + subject + " :" + text
+# define RPL_ENDOFHELP(subject, text)                               "706 " + subject + " :" + text
 
-
-/* Error Responses */
 
 # define ERR_NOSUCHNICK(recipient, nickname)                "401 " + recipient + " " + nickname + " :No such nick"
 # define ERR_NOSUCHCHANNEL(recipient, channel)              "403 " + recipient + " " + channel + " :No such channel"
@@ -66,20 +61,8 @@
 # define ERR_CANNOTSENDTOSELF(recipient, channel)           "491 " + recipient + " " + channel + " :You cannot kick yourself"
 
 
-/* Command Responses */
-/*
-# define RPL_JOIN(client, channel, target)                  ":" + client + " JOIN " + channel + " * :" + target
-# define RPL_PART(client, channel)                          ":" + client + " PART " + channel
-# define RPL_PRIVMSG(client, target, message)               ":" + client + " PRIVMSG " + target + " :" + message
-# define RPL_QUIT(client, message)                          ":" + client + " QUIT " + message
-# define RPL_KICK(client, channel, target, reason)          ":" + client + " KICK " + channel + " " + target + " :" + reason
-# define RPL_MODE(client, channel, modes, args)             ":" + client + " MODE " + channel + " " + modes + " " + args
-# define RPL_NICK(client)                                   ":" + client + " NICK is now " + client
-# define RPL_NOTICE(client, target, message)                ":" + client + " PRIVMSG " + target + " :" + message
-# define RPL_PING(client, token)                            ":" + client + " PONG :" + token
-*/
 # define RPL_JOIN(client, channel)                        ":" + client + " JOIN " + channel
-# define RPL_PART(client, channel)                        ":" + client + " PART " + channel /*+ " :" + reason*/
+# define RPL_PART(client, channel)                        ":" + client + " PART " + channel
 # define RPL_PRIVMSG(client, target, message)             ":" + client + " PRIVMSG " + target + " :" + message
 # define RPL_QUIT(client, message)                        ":" + client + " QUIT" + message
 # define RPL_KICK(client, channel, reason)                ":" + client + " KICK " + channel + " " + reason
@@ -88,37 +71,7 @@
 # define RPL_NOTICE(client, target, message)              ":" + client + " NOTICE " + target + " :" + message
 # define RPL_PING(token)                                  "PONG :ft_irc :" + token
 
-
-/* Broadcast messages */
-/*
-# define MESSAGE_CLIENT_JOIN(channel, client)                    client + " joined the channel " + channel
-# define MESSAGE_CLIENT_LEAVE(channel, client)                   client + " left " + client + " from channel " + channel
-# define MESSAGE_CLIENT_KICK(channel, client, target, reason)    client + " kicked " + target + " from channel " + channel + " for reason: " + reason
-# define MESSAGE_ADMIN_CHANGE(channel, client)                   client + " is now the admin of the channel " + channel
-# define MESSAGE_CLIENT_JOIN(channel, client)                 client + " joined " + channel
-# define MESSAGE_CLIENT_LEAVE(channel, client)                client + " left " + channel
-*/
 # define MESSAGE_ADMIN_CHANGE(recipient, channel, client)     ":" + recipient + " MODE " + channel + " +q " + client
 # define MESSAGE_CLIENT_KICK(channel, client, target, reason) client + " KICK " + channel + " " + target + " " + reason
 
-#endif // MACROS_HPP
-
-
-
-
-/* 
-On RPL_NAMREPLY <symbol> notes the status of the channel. It can be one of the following:
-
-    ("=", 0x3D) - Public channel.
-
-Prefixos para usuários:
-
-    ~ para dono do canal    (+q)
-    352 irc.example.com #nome_do_canal user1 203.0.113.1 user1 * @ irc.example.com 1 :John Doe
-
-    @ para operadores do canal    (+o)
-    352 irc.example.com #nome_do_canal user2 198.51.100.1 user2 * ~ irc.example.com 1 :Jane Smith
-
-    usuários comuns não possuem symbol
-    352 irc.example.com #nome_do_canal user3 203.0.113.2 user3 *   irc.example.com 1 :Carlos Silva
-*/
+#endif

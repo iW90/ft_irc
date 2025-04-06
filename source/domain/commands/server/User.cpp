@@ -21,15 +21,11 @@ void    User::execute(Client* client, std::vector<std::string> args) {
 
     client->set_realname(_get_realname(args));
 
-    // if (_is_username_taken(args[0], client))
     client->set_username(args[0]);
 
     _set_client_state(client);
     std::cout << "SUCCEDED USER" << std::endl;
 }
-
-
-// Funções auxiliares
 
 bool User::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "USER::Validate parameters..." << std::endl;
@@ -39,20 +35,18 @@ bool User::_has_valid_parameters(Client* client, const std::vector<std::string>&
     return false;
 }
 
-// Função para configurar o realname (removendo ':' e concatenando partes)
 std::string User::_get_realname(std::vector<std::string>& args) {
     std::cout << "USER::Getting real name..." << std::endl;
     std::string realname = args[3];
     if (realname[0] == ':')
-        realname = realname.substr(1);  // Remove o ':'
+        realname = realname.substr(1);
 
-    for (size_t i = 4; i < args.size(); ++i) // Concatena todos os nomes
+    for (size_t i = 4; i < args.size(); ++i)
         realname += " " + args[i];
     
     return realname;
 }
 
-// Função auxiliar para mudar o estado do cliente
 void User::_set_client_state(Client* client) {
     std::cout << "USER::Setting register state..." << std::endl;
     if (client->get_state() != LOGGED_IN || client->get_nickname().empty())

@@ -29,24 +29,17 @@
 
 
 CommandHandler::CommandHandler(Server* server) : _server(server) {
-    // Server
     _commands["PASS"] = new Pass(_server);
     _commands["NICK"] = new Nick(_server);
     _commands["USER"] = new User(_server);
     _commands["QUIT"] = new Quit(_server);
-
-    // General
     _commands["JOIN"] = new Join(_server);
     _commands["PART"] = new Part(_server);
 	_commands["PRIVMSG"] = new PrivMsg(_server);
-
-    // Operator
     _commands["MODE"] = new Mode(_server);
 	_commands["TOPIC"] = new Topic(_server);
     _commands["KICK"] = new Kick(_server);
     _commands["INVITE"] = new Invite(_server);
-
-    // Misc
     _commands["CAP"] = new Cap(_server);
     _commands["HELP"] = new Help(_server);
     _commands["INFO"] = new Info(_server);
@@ -62,9 +55,6 @@ CommandHandler::~CommandHandler () {
     for (std::map<std::string, ACommand *>::iterator it = _commands.begin(); it != _commands.end(); ++it)
         delete it->second;
 }
-
-
-// Métodos
 
 std::string     CommandHandler::_trim(const std::string& str) {
     std::string WHITESPACE = " \n\r\t\f\v";

@@ -29,8 +29,6 @@ void Notice::execute(Client* client, std::vector<std::string> args) {
 }
 
 
-// Channel message
-
 void Notice::_handle_channel_message(Client* client, std::string& channel_name, const std::string& message) {
     std::cout << "NOTICE::Handling channel message..." << std::endl;
 
@@ -44,8 +42,6 @@ void Notice::_handle_channel_message(Client* client, std::string& channel_name, 
 }
 
 
-// Client message
-
 void Notice::_handle_client_message(Client* client, const std::string& target, const std::string& message) {
     std::cout << "NOTICE::Handling client message..." << std::endl;
 
@@ -58,8 +54,6 @@ void Notice::_handle_client_message(Client* client, const std::string& target, c
     std::cout << "NOTICE::Message sent to client..." << std::endl;
 }
 
-
-// Funções auxiliares
 
 bool Notice::_has_valid_parameters(Client* client, const std::vector<std::string>& args) {
     std::cout << "NOTICE::Validate parameters..." << std::endl;

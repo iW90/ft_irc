@@ -10,4 +10,4 @@ enum ClientState {
     DISCONNECTED
 };
 
-#endif // ENUMS_HPP
+#endif

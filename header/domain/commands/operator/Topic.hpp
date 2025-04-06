@@ -18,4 +18,4 @@ class Topic : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // TOPIC_HPP
+#endif

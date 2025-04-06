@@ -15,7 +15,6 @@ Channel::Channel(Client* admin, const std::string& name) :
 
 Channel::~Channel() {}
 
-// Getters
 std::string                 Channel::get_name() const { return _name; }
 Client*                     Channel::get_admin() const { return _admin; }
 std::set<Client*>&          Channel::get_clients() { return _clients; }
@@ -27,9 +26,6 @@ std::pair<bool, std::set<Client*> >&     Channel::get_guests() { return _guests;
 std::pair<bool, std::string>&            Channel::get_topic() { return _topic; }
 std::pair<bool, std::string>&            Channel::get_key() { return _key; }
 std::pair<bool, int>&                    Channel::get_limit() { return _limit; }
-
-
-// Setters
 
 void Channel::set_admin(Client* admin) { _admin = admin; }
 void Channel::set_name(const std::string& name) { _name = name; }
@@ -45,8 +41,6 @@ void Channel::set_topic(bool state, const std::string& topic, const std::string&
     _created = (std::make_pair(creator, _get_time()));
 }
 
-
-// Métodos
 
 Client* Channel::get_operator(Client* target) {
     if (_operators.first && _operators.second.find(target) != _operators.second.end())

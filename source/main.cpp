@@ -9,7 +9,6 @@ int main(int ac, char** av) {
         int         port        = Utils::set_port(ac, av);
         std::string password    = av[2];
 
-        // Injeções de dependência
         IVault*         vault           = new Vault(password);
         ISocket*        server_socket   = new Socket(LISTEN_ADDRESS, port);
         IMultiplexer*   multiplexer     = new Multiplexer(server_socket->get_fd());

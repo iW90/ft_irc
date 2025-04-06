@@ -18,4 +18,4 @@ class PrivMsg : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // PRIV_MSG_HPP
+#endif

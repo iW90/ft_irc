@@ -15,4 +15,4 @@ class List : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // LIST_HPP
+#endif

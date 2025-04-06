@@ -8,8 +8,8 @@
 
 class ServerException : public std::exception {
     private:
-        std::string message_;           // Variável para armazenar a mensagem personalizada
-        std::string original_message_;  // Variável para armazenar a mensagem da exceção original
+        std::string message_;
+        std::string original_message_;
 
     public:
         ServerException(const std::exception& e, const std::string& message);
@@ -19,4 +19,4 @@ class ServerException : public std::exception {
         const char* what() const throw();
 };
 
-#endif // SERVER_EXCEPTION_HPP
+#endif

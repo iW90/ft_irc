@@ -3,14 +3,14 @@
 #ifndef MULTIPLEXER_HPP
 # define MULTIPLEXER_HPP
 
-# include <iostream>        // Necessário para std::cout
-# include <errno.h>         // Necessário para errno
-# include <sys/epoll.h>     // Necessário para epoll
-# include <unistd.h>        // Necessário para ::close()
-# include <netinet/in.h>    // Necessário para sockaddr_in
-# include <cstring>         // Necessário para strstr() e bzero()
-# include <map>             // Necessário para map<x,y>()
-# include <netdb.h>         // Necessário para gethostbyname()
+# include <iostream>
+# include <errno.h>
+# include <sys/epoll.h>
+# include <unistd.h>
+# include <netinet/in.h>
+# include <cstring>
+# include <map>
+# include <netdb.h>
 
 # include "interfaces/IMultiplexer.hpp"
 #include "Constants.hpp"
@@ -35,12 +35,10 @@ class Multiplexer : public IMultiplexer {
         Multiplexer(int server_fd);
         ~Multiplexer();
 
-        // Getters
         int                         get_epoll_fd() const;
         Client*                     get_client(std::string target);
         std::map<int, Client*>&     get_clients();
 
-        // Métodos
         void    subscribe_fd_for_monitoring(int fd);
         void    unsubscribe_fd_for_monitoring(int fd);
 
@@ -55,12 +53,10 @@ class Multiplexer : public IMultiplexer {
         std::string     read_client_message(int client_fd);
         static void     send_client_message(int client_fd, const std::string& message);
 
-
-        // MÉTODOS AINDA NÃO UTILIZADOS
         void    handle_read_event(int fd);
         void    handle_write_event(int fd);
         void    handle_error_event(int fd);
         void    handle_hangup_event(int fd);
 };
 
-#endif //MULTIPLEXER_HPP
+#endif

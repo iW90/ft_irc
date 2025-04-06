@@ -3,10 +3,10 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include <set>         // Necessário para std::set
-# include <map>         // Necessário para std::map
-# include <utility>     // Necessário para pair
-# include <algorithm>   // Necessário para std::find
+# include <set>
+# include <map>
+# include <utility>
+# include <algorithm>
 # include <vector>
 # include <string>
 
@@ -23,7 +23,6 @@ class Channel {
         std::map<Client*, int>  _black_list;
         std::pair<std::string, std::string> _created;
 
-        /* Modes */
         std::pair<bool, std::set<Client*> >     _operators;
         std::pair<bool, std::set<Client*> >     _guests;
         std::pair<bool, std::string>            _topic;
@@ -47,7 +46,6 @@ class Channel {
         std::set<Client*>&          get_clients();
         std::map<Client*, int>&     get_black_list();
 
-        // setters
         void                        set_name(const std::string& name);
         void                        set_admin(Client* admin);
 
@@ -57,7 +55,6 @@ class Channel {
         void                        set_key(bool state, const std::string& key);
         void                        set_limit(bool state, int limit);
 
-        // others
         Client*                     get_operator(Client* target);
         Client*                     get_guest(Client* target);
 
@@ -76,4 +73,4 @@ class Channel {
         std::string                 get_mode_params();
 };
 
-#endif // CHANNEL_HPP
+#endif

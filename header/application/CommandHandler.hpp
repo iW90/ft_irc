@@ -26,4 +26,4 @@ class CommandHandler {
         void    handle_command(Client* client, const std::string& message);
 };
 
-#endif // COMMAND_HANDLER_HPP
+#endif

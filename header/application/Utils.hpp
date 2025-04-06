@@ -16,4 +16,4 @@ class Utils {
         static int          set_port(int argc, char** argv);
 };
 
-#endif // UTILS_HPP
+#endif

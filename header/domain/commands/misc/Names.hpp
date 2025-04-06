@@ -16,4 +16,4 @@ class Names : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // NAMES_HPP
+#endif

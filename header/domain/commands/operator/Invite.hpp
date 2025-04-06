@@ -15,4 +15,4 @@ class Invite : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // INVITE_HPP
+#endif

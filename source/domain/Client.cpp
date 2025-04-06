@@ -9,20 +9,19 @@ Client::Client(int fd, const std::string& host, int port) {
     _channel = NULL;
     _hostname = host;
 
-    memset(&_address, 0, sizeof(_address));   // Limpa a estrutura sockaddr_in
-    _address.sin_family = AF_INET;            // Define o tipo de família de endereço (default: IPv4)
-    _address.sin_port = htons(port);          // Inicializa a porta
+    memset(&_address, 0, sizeof(_address));
+    _address.sin_family = AF_INET;
+    _address.sin_port = htons(port); 
 
-    _address.sin_addr.s_addr = inet_addr(host.c_str()); // Define o IP do client
+    _address.sin_addr.s_addr = inet_addr(host.c_str());
     if (_address.sin_addr.s_addr == INADDR_NONE)
         throw std::runtime_error("Error while converting or invalid address");
 }
 
 Client::~Client() {}
 
-
 int Client::get_fd() const { return _fd; }
-std::string Client::get_port() const { return "_address"; } //implementar
+std::string Client::get_port() const { return "_address"; }
 
 std::string Client::get_nickname() const { return _nickname; }
 std::string Client::get_username() const { return _username; }

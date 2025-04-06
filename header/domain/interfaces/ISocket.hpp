@@ -8,4 +8,4 @@ class ISocket {
         virtual int get_fd() const = 0;
 };
 
-#endif // ISOCKET_HPP
+#endif

@@ -18,4 +18,4 @@ class Kick : public ACommand {
         void execute(Client* client, std::vector<std::string> args);
 };
 
-#endif // KICK_HPP
+#endif
