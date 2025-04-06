@@ -31,6 +31,8 @@ This project is an IRC server implementation in C++, inspired by **RFC 1459** an
         | l | Definir/remover o limite de usuários do canal. |
 
 
+### Command to test split up stuff `(echo -n "NI"; sleep 1; echo -n "CK "; sleep 1; echo " rulyo") | nc 127.0.0.1 6667`
+
 
 
 ## Project Structure
