@@ -69,6 +69,7 @@
 # define RPL_MODE(client, channel, modes, args)           ":" + client + " MODE " + channel + " " + modes + " " + args
 # define RPL_NICK(old_nick, new_nick)                     ":" + old_nick + " NICK " + new_nick
 # define RPL_NOTICE(client, target, message)              ":" + client + " NOTICE " + target + " :" + message
+# define RPL_INVITE(recipient, channel, inviter)          ":" + inviter + " INVITE " + recipient + " :" + channel
 # define RPL_PING(token)                                  "PONG :ft_irc :" + token
 
 # define MESSAGE_ADMIN_CHANGE(recipient, channel, client)     ":" + recipient + " MODE " + channel + " +q " + client

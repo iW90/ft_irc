@@ -38,7 +38,8 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
 
     std::cout << "INVITE::Sending invite..." << std::endl;
     channel->add_to_guests(dest);
-    ClientService::send_message(dest, RPL_INVITING(client->get_nickname(), target, channel_name));
+    ClientService::send_message(client, RPL_INVITING(client->get_nickname(), target, channel_name));
+    ClientService::send_message(dest, RPL_INVITE(dest->get_nickname(), channel_name, client->get_nickname()));
     std::cout << "SUCCEDED INVITE" << std::endl;
 }
 
