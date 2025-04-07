@@ -27,7 +27,7 @@ void Invite::execute(Client* client, std::vector<std::string> args) {
     if (!_is_valid_client(client, dest, target))
         return;
 
-    if (!_is_on_channel(client, channel) || _is_already_on_channel(dest, channel))
+    if (!_is_on_channel(client, channel) || _is_already_on_channel(client, dest, channel))
         return;
 
     if (channel->get_guests().first && !_has_channel_privileges(client, channel))

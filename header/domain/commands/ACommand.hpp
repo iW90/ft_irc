@@ -27,7 +27,7 @@ class ACommand {
 
         bool            _is_already_registered(Client* client);
         bool            _is_on_channel(Client* client, Channel* channel);
-        bool            _is_already_on_channel(Client* client, Channel* channel);
+        bool            _is_already_on_channel(Client* client, Client* dest, Channel* channel);
 
         void            _set_registered(Client* client);
         std::string     _get_prefix(Client* client, Channel* channel);

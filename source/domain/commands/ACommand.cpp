@@ -64,11 +64,11 @@ bool ACommand::_is_client_on_channel(Client* client, Channel* channel) {
     return false;
 }
 
-bool ACommand::_is_already_on_channel(Client* client, Channel* channel) {
+bool ACommand::_is_already_on_channel(Client* client, Client* dest, Channel* channel) {
     std::cout << "ACOMMAND::Validate if client is already on channel..." << std::endl;
-    if (client->get_channel() != channel)
+    if (dest->get_channel() != channel)
         return false;
-    ClientService::send_message(client, ERR_USERONCHANNEL(client->get_nickname(), client->get_nickname(), channel->get_name()));
+    ClientService::send_message(client, ERR_USERONCHANNEL(client->get_nickname(), dest->get_nickname(), channel->get_name()));
     return true;
 }
 
