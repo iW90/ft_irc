@@ -59,7 +59,7 @@
 # define ERR_NOPRIVILEGES(recipient, channel)               "481 " + recipient + " " + channel + " :You're not an administrator"
 # define ERR_CHANOPRIVSNEEDED(recipient, channel)           "482 " + recipient + " " + channel + " :You're not channel operator"
 # define ERR_CANNOTSENDTOSELF(recipient, channel)           "491 " + recipient + " " + channel + " :You cannot kick yourself"
-
+# define ERR_INVALIDMODEPARAM(recipient, channel, args)     "696 " + recipient + " " + channel + " " + args
 
 # define RPL_JOIN(client, channel)                        ":" + client + " JOIN " + channel
 # define RPL_PART(client, channel)                        ":" + client + " PART " + channel

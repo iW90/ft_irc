@@ -85,18 +85,18 @@ std::string Channel::get_active_modes() {
     return modes;
 }
 
-std::string Channel::get_mode_params() {
+std::string Channel::get_mode_params(Client* client) {
     std::string params;
     std::stringstream ss;
 
     if (_limit.first) {
         ss << _limit.second;
-        params += ss.str() + " ";
+        params += ss.str();
     }
 
-    if (_key.first)
-        params += _key.second + " ";
-
+    if (_key.first && (client == get_admin() || get_operator(client))) {
+        params += " " + _key.second;
+    }
 
     return params;
 }

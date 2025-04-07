@@ -1,11 +1,12 @@
 #include "commands/operator/Mode.hpp"
 #include "Channel.hpp"
 #include "Client.hpp"
+#include "Constants.hpp"
 #include "ClientService.hpp"
 #include "ChannelService.hpp"
 #include "Macros.hpp"
 #include "Server.hpp"
-
+#include <sstream>
 
 Mode::Mode(Server* server) : ACommand(server, true) {}
 Mode::~Mode() {}
@@ -40,7 +41,7 @@ void Mode::execute(Client* client, std::vector<std::string> args) {
 
 void Mode::_send_active_modes(Client* client, Channel* channel) {
     std::string active_modes = channel->get_active_modes();
-    std::string mode_params = channel->get_mode_params();
+    std::string mode_params = channel->get_mode_params(client);
 
     ClientService::send_message(client, RPL_CHANNELMODEIS(client->get_nickname(), channel->get_name(), active_modes, mode_params));
 }
@@ -58,7 +59,7 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
     std::string target = args[1];
     if (target.length() != 2)
         return;
-    bool enable_mode = (target.at(0) == '+') ? true : false;
+    bool enable_mode = (target.at(0) == '+');
     char flag = target.at(1);
 
     switch (flag) {
@@ -69,10 +70,10 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
             _set_mode_i(client, channel, enable_mode);
             break;
         case 'l':
-            _set_mode_l(client, channel, enable_mode, args[2]);
+            _set_mode_l(client, channel, enable_mode, args);
             break;
         case 'k':
-            _set_mode_k(client, channel, enable_mode, args[2]);
+            _set_mode_k(client, channel, enable_mode, args);
             break;
         case 'o':
             _set_mode_o(client, channel, enable_mode, args);
@@ -93,35 +94,39 @@ void Mode::_set_mode_i(Client* client, Channel* channel, bool enable_mode) {
     ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+i" : "-i"), ""));
 }
 
-void Mode::_set_mode_l(Client* client, Channel* channel, bool enable_mode, std::string& arg) {
+void Mode::_set_mode_l(Client* client, Channel* channel, bool enable_mode, std::vector<std::string>& args) {
     if (!enable_mode) {
         channel->set_limit(enable_mode, 0);
-        ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+l" : "-l"), (enable_mode ? arg : "")));
-    } else {
-        int limit = arg.empty() ? 0 : atoi(arg.c_str());
-
-        if (arg.empty()) {
-            ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("MODE")));
-            return;
-        }
-
-        if (limit < -1) {
-            ClientService::send_message(client, ERR_UNKNOWNMODE(client->get_nickname(), channel->get_name()));
-            return;
-        }
-
-        channel->set_limit((limit == -1) ? !enable_mode : enable_mode, (limit == -1) ? 0 : limit);
-
-        ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+l" : "-l"), (enable_mode ? arg : "")));
+        ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), "-l", ""));
+        return;
     }
-}
 
-void Mode::_set_mode_k(Client* client, Channel* channel, bool enable_mode, std::string& arg) {
-    if (enable_mode && arg.empty()) {
+    if (args.size() < 3) {
         ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("MODE")));
         return;
     }
-    std::string channel_key = arg.empty() ? "" : arg;
+
+    int limit = -1;
+    std::stringstream ss(args[2]);
+    int parsed;
+
+    if (!(ss >> parsed) || !ss.eof() || parsed < -1 || parsed > MAX_CONNECTIONS) {
+        ClientService::send_message(client, ERR_INVALIDMODEPARAM(client->get_nickname(), channel->get_name(), "l " + args[2] + " :Invalid channel limit"));
+        return;
+    }
+    limit = parsed;
+
+    channel->set_limit((limit == -1) ? !enable_mode : enable_mode, (limit == -1) ? 0 : limit);
+
+    ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), "+l", args[2]));
+}
+
+void Mode::_set_mode_k(Client* client, Channel* channel, bool enable_mode, std::vector<std::string>& args) {
+    if (enable_mode && args.size() < 3) {
+        ClientService::send_message(client, ERR_NEEDMOREPARAMS(client->get_nickname(), std::string("MODE")));
+        return;
+    }
+    std::string channel_key = enable_mode ? args[2] : "";
     channel->set_key(enable_mode, channel_key);
     ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+k" : "-k"), ""));
 }
@@ -167,7 +172,6 @@ void Mode::_set_mode_o(Client* client, Channel* channel, bool enable_mode, std::
             ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+o" : "-o"), nick));
         }
     }
-
 
     std::set<Client*> operators = channel->get_operators().second;
     if (operators.empty())

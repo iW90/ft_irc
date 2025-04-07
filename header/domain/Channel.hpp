@@ -70,7 +70,7 @@ class Channel {
         std::string                 get_creation();
         std::string                 get_creator();
         std::string                 get_active_modes();
-        std::string                 get_mode_params();
+        std::string                 get_mode_params(Client* client);
 };
 
 #endif

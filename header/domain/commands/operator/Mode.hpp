@@ -11,8 +11,8 @@ class Mode : public ACommand {
         void        _send_active_modes(Client* client, Channel* channel);
         void        _set_mode_t(Client* client, Channel* channel, bool enable_mode);
         void        _set_mode_i(Client* client, Channel* channel, bool enable_mode);
-        void        _set_mode_l(Client* client, Channel* channel, bool enable_mode, std::string& arg);
-        void        _set_mode_k(Client* client, Channel* channel, bool enable_mode, std::string& arg);
+        void        _set_mode_l(Client* client, Channel* channel, bool enable_mode, std::vector<std::string>& args);
+        void        _set_mode_k(Client* client, Channel* channel, bool enable_mode, std::vector<std::string>& args);
         void        _set_mode_o(Client* client, Channel* channel, bool enable_mode, std::vector<std::string>& args);
 
 
