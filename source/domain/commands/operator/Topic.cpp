@@ -36,9 +36,9 @@ void Topic::execute(Client* client, std::vector<std::string> args) {
     if (!_is_on_channel(client, channel))
         return;
 
-    if (channel->get_topic().first && !_has_channel_privileges(client, channel))
+    if (channel->has_topic_protection() && !_has_channel_privileges(client, channel))
         return;
-    
+
     _set_new_topic(client, channel, args);
     std::cout << "SUCCEDED TOPIC" << std::endl;
 }
@@ -63,12 +63,9 @@ void Topic::_send_current_topic(Client* client, Channel* channel) {
 
 void Topic::_set_new_topic(Client* client, Channel* channel, const std::vector<std::string>& args) {
     std::cout << "TOPIC::Defining new topic description..." << std::endl;
-    if ((!channel->get_operators().first) || \
-        (channel->get_operators().first && client == channel->get_operator(client))) {
-        std::string topic = _extract_topic(args);
+          std::string topic = _extract_topic(args);
         channel->set_topic(true, topic, client->get_nickname());
         ChannelService::broadcast(channel, RPL_TOPIC(client->get_nickname(), channel->get_name(), channel->get_topic().second));
-    }
 }
 
 std::string Topic::_extract_topic(const std::vector<std::string>& args) {

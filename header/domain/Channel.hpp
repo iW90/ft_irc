@@ -28,6 +28,7 @@ class Channel {
         std::pair<bool, std::string>            _topic;
         std::pair<bool, std::string>            _key;
         std::pair<bool, int>                    _limit;
+        bool                                    _topic_restriction;
 
         std::string _get_time();
 
@@ -40,6 +41,7 @@ class Channel {
         std::pair<bool, std::string>&            get_topic();
         std::pair<bool, std::string>&            get_key();
         std::pair<bool, int>&                    get_limit();
+        bool                                     has_topic_protection();
 
         std::string                 get_name() const;
         Client*                     get_admin() const;
@@ -54,6 +56,7 @@ class Channel {
         void                        set_topic(bool state, const std::string& topic, const std::string& creator);
         void                        set_key(bool state, const std::string& key);
         void                        set_limit(bool state, int limit);
+        void                        set_topic_protection(bool state);
 
         Client*                     get_operator(Client* target);
         Client*                     get_guest(Client* target);

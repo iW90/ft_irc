@@ -85,7 +85,7 @@ void Mode::_process_modes(Client* client, std::vector<std::string> args, Channel
 }
 
 void Mode::_set_mode_t(Client* client, Channel* channel, bool enable_mode) {
-    channel->set_topic(enable_mode, "", client->get_nickname());
+    channel->set_topic_protection(enable_mode);
     ChannelService::broadcast(channel, RPL_MODE(client->get_info(), channel->get_name(), (enable_mode ? "+t" : "-t"), ""));
 }
 

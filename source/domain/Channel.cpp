@@ -11,7 +11,8 @@ Channel::Channel(Client* admin, const std::string& name) :
         _guests(std::make_pair(false, std::set<Client*>())),
         _topic(std::make_pair(false, "")),
         _key(std::make_pair(false, "")),
-        _limit(std::make_pair(false, 0)) {}
+        _limit(std::make_pair(false, 0)),
+        _topic_restriction(false) {}
 
 Channel::~Channel() {}
 
@@ -26,6 +27,7 @@ std::pair<bool, std::set<Client*> >&     Channel::get_guests() { return _guests;
 std::pair<bool, std::string>&            Channel::get_topic() { return _topic; }
 std::pair<bool, std::string>&            Channel::get_key() { return _key; }
 std::pair<bool, int>&                    Channel::get_limit() { return _limit; }
+bool                                     Channel::has_topic_protection() { return _topic_restriction; }
 
 void Channel::set_admin(Client* admin) { _admin = admin; }
 void Channel::set_name(const std::string& name) { _name = name; }
@@ -41,6 +43,9 @@ void Channel::set_topic(bool state, const std::string& topic, const std::string&
     _created = (std::make_pair(creator, _get_time()));
 }
 
+void Channel::set_topic_protection(bool state) { 
+    _topic_restriction = state;
+}
 
 Client* Channel::get_operator(Client* target) {
     if (_operators.first && _operators.second.find(target) != _operators.second.end())
@@ -71,7 +76,7 @@ void Channel::add_to_black_list(Client* client) {
 std::string Channel::get_active_modes() {
     std::string modes = "+nq";
 
-    if (_topic.first)
+    if (has_topic_protection())
         modes += "t";
     if (_guests.first)
         modes += "i";
@@ -86,8 +91,8 @@ std::string Channel::get_active_modes() {
 }
 
 std::string Channel::get_mode_params(Client* client) {
-    std::string params;
-    std::stringstream ss;
+    std::string         params;
+    std::stringstream   ss;
 
     if (_limit.first) {
         ss << _limit.second;
@@ -95,11 +100,15 @@ std::string Channel::get_mode_params(Client* client) {
     }
 
     if (_key.first && (client == get_admin() || get_operator(client))) {
-        params += " " + _key.second;
+        if (!params.empty()) {
+            params += " ";
+        }
+        params += _key.second;
     }
 
     return params;
 }
+
 
 std::string Channel::_get_time() {
     std::time_t now = std::time(NULL);
