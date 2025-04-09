@@ -1,4 +1,5 @@
 #include "Multiplexer.hpp"
+#include "Channel.hpp"
 #include "Client.hpp"
 #include "CommandHandler.hpp"
 #include "Utils.hpp"
@@ -91,7 +92,13 @@ void Multiplexer::disconnect_client(int client_fd) {
 
     std::map<int, Client*>::iterator it = _clients.find(client_fd);
     if (it != _clients.end()) {
-        Client* client = it->second;
+        Client*     client = it->second;
+        Channel*    channel = client->get_channel();
+        if (channel) {
+            channel->remove_from_clients(client);
+            channel->remove_from_guests(client);
+            channel->remove_from_operators(client);
+        }
         _clients.erase(it);
         delete client;
     }
