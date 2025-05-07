@@ -1,8 +1,10 @@
-# ft_irc - École 42 Project
+# 42 Cursus - ft_irc
 
-This project is an IRC server implementation in C++, inspired by **RFC 1459** and modern IRC servers. The goal is to create a lightweight, event-driven server capable of handling multiple clients, supporting IRC protocol features, and managing real-time communication across channels.
+<img src="./assets/images/ft_irce.png" alt="completion-without-bonus-badge" align="left">
 
-## Features
+Este projeto é uma implementação de servidor IRC em C++ 98, utilizando a RFC 1459. O objetivo é criar um servidor leve, orientado a eventos, capaz de lidar com múltiplos clientes, suportar os recursos do protocolo IRC e gerenciar a comunicação em tempo real entre canais. Os projeto é compatível com os clients WeeChat e HexChat (este segundo sem todas as funcionalidades). O foco está no uso de multiplexadores para o gerenciamento não-bloqueante dos sockets.
+
+## Features <img src="https://img.shields.io/badge/GRADE-100%2F100-green" align="right">
 
 - Compliant with the **IRC protocol (RFC 1459)**.
 - Handles multiple clients concurrently using **multiplexing** (epoll).
