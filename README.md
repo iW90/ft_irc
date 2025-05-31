@@ -53,3 +53,4 @@ Este projeto é uma implementação de servidor IRC em C++ 98, utilizando a RFC 
 
 - **source/\*\***: Diretório para arquivos cpp.
 - **header/\*\***: Diretório para arquivos hpp.
+- Utilizada Clean Arch para divisão do código em camadas Application, Domain e Infrastructure.
