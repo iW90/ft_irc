@@ -1,17 +1,17 @@
 # 42 Cursus - ft_irc
 
-<img src="./assets/images/ft_irce.png" alt="completion-without-bonus-badge" align="left">
+<img src="./assets/ft_irce.png" alt="completion-without-bonus-badge" align="left">
 
 Este projeto é uma implementação de servidor IRC em C++ 98, utilizando a RFC 1459. O objetivo é criar um servidor leve, orientado a eventos, capaz de lidar com múltiplos clientes, suportar os recursos do protocolo IRC e gerenciar a comunicação em tempo real entre canais. Os projeto é compatível com os clients WeeChat e HexChat (este segundo sem todas as funcionalidades). O foco está no uso de multiplexadores para o gerenciamento não-bloqueante dos sockets.
 
 ## Features <img src="https://img.shields.io/badge/GRADE-100%2F100-green" align="right">
 
-- Compliant with the **IRC protocol (RFC 1459)**.
-- Handles multiple clients concurrently using **multiplexing** (epoll).
-- Channel creation and management.
-- Client nickname and user state management.
-- Event-driven architecture for scalability.
-- Supports basic IRC commands such as:
+- Compatível com **IRC protocol (RFC 1459)**.
+- Lida com múltiplos clients através de **multiplexing** (epoll).
+- Criação e gerenciamento de canais.
+- Gerenciamento de nickname do client e status do usuário.
+- Arquitetura orientada a eventos para escalabilidade.
+- Suporte a comandos básicos do IRC, como:
     - [x] `PASS <password>`: Entra com a senha do Server
     - [x] `NICK <nickname>`: Define seu nickname de usuário
     - [x] `USER <username> <hostname> <servername> :<realname>`: Define seu nome de usuário e seu nome real
@@ -33,7 +33,7 @@ Este projeto é uma implementação de servidor IRC em C++ 98, utilizando a RFC 
         | l | Definir/remover o limite de usuários do canal. |
 
 
-### Command to test split up stuff
+### Comando para testar componentes separados
 
 - `(echo -n "NI"; sleep 1; echo -n "CK "; sleep 1; echo " rulyo") | nc 127.0.0.1 6667`
 
@@ -51,5 +51,5 @@ Este projeto é uma implementação de servidor IRC em C++ 98, utilizando a RFC 
 
 ## Project Structure
 
-- **source/\*\***: Directory for cpp files.
-- **header/\*\***: Directory for hpp files.
+- **source/\*\***: Diretório para arquivos cpp.
+- **header/\*\***: Diretório para arquivos hpp.
